@@ -1,6 +1,6 @@
 #include "BackgroundLayer.h"
 #include "ObjectTag.h"
-//#include "ObjectTag.h"
+
 
 BackgroundLayer::BackgroundLayer()
 {
@@ -19,25 +19,7 @@ bool BackgroundLayer::init()
 
 	Size visibleSize = Director::getInstance()->getWinSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
-	/*
-	m_bg1 = Sprite::create("border/border1.png");
-	Size borderSize = m_bg1->getContentSize();
-	m_bg1->setPosition(Point(borderSize.width * 0.5f, borderSize.height * 0.5f));
-	this->addChild(m_bg1);
 
-	m_bg2 = Sprite::create("border/border1.png");
-	m_bg2->setPosition(Point(borderSize.width * 0.5f, -borderSize.height * 0.5f));
-	this->addChild(m_bg2);
-
-	m_bg3 = Sprite::create("border/border2.png");
-	m_bg4->setPosition(Point(borderSize.width * 0.5f, borderSize.height * 0.5f));
-	this->addChild(m_bg1);
-
-	m_bg4 = Sprite::create("border/border2.png");
-	m_bg4->setPosition(Point(borderSize.width * 0.5f, -borderSize.height * 0.5f));
-	this->addChild(m_bg2);
-
-	*/
 	auto border_left = Sprite::create("border/border_1.png");
 	auto border_right = Sprite::create("border/border_2.png");
 	//border->setScale(0.5);
@@ -50,16 +32,13 @@ bool BackgroundLayer::init()
 	border3 = createBorder_left(Point((visibleSize.width / 2 - bgSize.width / 4 + borderSize_left.width / 4 / 1.0556), visibleSize.height * 1.5f));
 	this->addChild(border3);
 	border2 = createBorder_right(Point((visibleSize.width / 2 + bgSize.width / 4 - borderSize_right.width / 4 / 1.0556), visibleSize.height * 0.5f));
-	//border2->setFlippedX(true);
+
 	this->addChild(border2);
 	border4 = createBorder_right(Point((visibleSize.width / 2 + bgSize.width / 4 - borderSize_right.width / 4 / 1.0556), visibleSize.height * 1.5f));
-	//border4->setFlippedX(true);
+
 	this->addChild(border4);
 	
 
-	//     border1->setTag(ObjectTag_Border);
-	//     border2->setTag(ObjectTag_Border);
-	//     border3->setTag(ObjectTag_Border);
 	return true;
 }
 
@@ -74,12 +53,7 @@ Sprite* BackgroundLayer::createBorder_left(Point pos)
 	int y = visibleSize.height;
 
 	log("%d  %d\n", x, y);
-	//auto body = PhysicsBody::createBox(borderSize);
-	//body->setDynamic(false);
-	//body->setCategoryBitmask(1);    // 0001
-	//body->setCollisionBitmask(1);   // 0001
-	//body->setContactTestBitmask(1); // 0001
-	//border->setPhysicsBody(body);
+
 	border->setPosition(pos);
 
 	border->setTag(ObjectTag_Border);
@@ -92,12 +66,6 @@ Sprite* BackgroundLayer::createBorder_right(Point pos)
 	border->setScale(0.5 / 1.0556);
 	Size borderSize = border->getContentSize();
 
-	//auto body = PhysicsBody::createBox(borderSize);
-	//body->setDynamic(false);
-	//body->setCategoryBitmask(1);    // 0001
-	//body->setCollisionBitmask(1);   // 0001
-	//body->setContactTestBitmask(1); // 0001
-	//border->setPhysicsBody(body);
 	border->setPosition(pos);
 
 	border->setTag(ObjectTag_Border);
