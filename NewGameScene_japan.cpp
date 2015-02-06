@@ -401,7 +401,7 @@ void NewGameScene_japan::newEnemy_crow(float t){
 	crow->setTag(110);
 	Vector<SpriteFrame *> allframe;
 	for (int i = 0; i < 4; i++){
-		SpriteFrame *sf = SpriteFrame::create("japan/crow", Rect(i * 355 / 4, 0, 355 / 4, 72));
+		SpriteFrame *sf = SpriteFrame::create("japan/crow.png", Rect(i * 355 / 4, 0, 355 / 4, 72));
 		allframe.pushBack(sf);
 	}
 	Animation * ani = Animation::createWithSpriteFrames(allframe, 0.1);
