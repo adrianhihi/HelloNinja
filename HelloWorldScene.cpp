@@ -4,6 +4,7 @@
 #include "NewGameScene_japan.h"
 #include "Setting.h"
 #include "BgLayer.h"
+#include "halloween.h"
 
 USING_NS_CC;
 HelloWorld::~HelloWorld(){}
@@ -68,18 +69,20 @@ bool HelloWorld::init()
 	//main menu
 	auto menu_item_1 = MenuItemImage::create("Menu/Ocean1.png"			, "Menu/Ocean2.png"			, CC_CALLBACK_1(HelloWorld::Play		, this));
 	
-	auto menu_item_2 = MenuItemImage::create("Menu/Nihon1.png"			, "Menu/Nihon4.png"			, CC_CALLBACK_1(HelloWorld::Nihon	, this));
+	auto menu_item_2 = MenuItemImage::create("Menu/Nihon1.png"			, "Menu/Nihon2.png"			, CC_CALLBACK_1(HelloWorld::Nihon	, this));
 
-	auto menu_item_3 = MenuItemImage::create("Menu/Resume.png", "Menu/Resume_1.png", CC_CALLBACK_1(HelloWorld::Resume, this));
+	auto menu_item_3 = MenuItemImage::create("Menu/Horror1.png"			, "Menu/Horror2.png"		, CC_CALLBACK_1(HelloWorld::Halloween, this));
 
-	auto menu_item_4 = MenuItemImage::create("Menu/Highscores.png", "Menu/Highscores_1.png", CC_CALLBACK_1(HelloWorld::Highscores, this));
+	auto menu_item_4 = MenuItemImage::create("Menu/Resume.png", "Menu/Resume_1.png", CC_CALLBACK_1(HelloWorld::Resume, this));
+
+	auto menu_item_5 = MenuItemImage::create("Menu/Highscores.png", "Menu/Highscores_1.png", CC_CALLBACK_1(HelloWorld::Highscores, this));
 
 	//menu_item_1->setPosition(Vec2(origin.x + visibleSize.width *0.5f, (visibleSize.height *0.2f) * 4));
 	//menu_item_2->setPosition(Vec2(origin.x + visibleSize.width *0.5f, (visibleSize.height *0.2f) * 3));
 	//menu_item_3->setPosition(Vec2(origin.x + visibleSize.width *0.5f, (visibleSize.height *0.2f) * 2));
 	//menu_item_4->setPosition(Vec2(origin.x + visibleSize.width *0.5f, (visibleSize.height *0.2f) * 1));
 
-	auto *menu = Menu::create(menu_item_1, menu_item_2, menu_item_3, menu_item_4, NULL);
+	auto *menu = Menu::create(menu_item_1, menu_item_2, menu_item_3, menu_item_4, menu_item_5, NULL);
 	menu->setScale(0.5);
 	menu->setPosition(Vec2(visibleSize.width / 4 + origin.x, visibleSize.height / 4 + origin.y));
 	//auto *menu = Menu::create(menu_item_1, NULL);
@@ -134,6 +137,16 @@ void HelloWorld::Nihon(cocos2d::Ref *pSender){
 	CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/click.wav");
 	CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(0.2);
 	auto scene = NewGameScene_japan::createScene();
+	Director::getInstance()->pushScene(scene);
+
+}
+
+void HelloWorld::Halloween(cocos2d::Ref *pSender){
+	CCLOG("Nihon");
+	CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/click.wav");
+	CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/click.wav");
+	CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(0.2);
+	auto scene = Halloween::createScene();
 	Director::getInstance()->pushScene(scene);
 
 }
