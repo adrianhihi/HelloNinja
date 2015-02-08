@@ -3,8 +3,10 @@
 #include "BackgroundLayer.h"
 #include "Setting.h"
 #include "Player.h"
+
 #include "ObjectTag.h"
-//#include "SimpleAudioEngine.h"
+
+#include "SimpleAudioEngine.h"
 
 NewGame::~NewGame(){}
 
@@ -225,43 +227,43 @@ void NewGame::menuCloseCallback(Ref* pSender)
 //	moveDownBtn->addTouchEventListener(this, toucheventselector(NewGame::moveDown));
 //}
 
-void NewGame::moveToLeft(Ref* sender, TouchEventType type)
-{
-	Size visibleSize = Director::getInstance()->getWinSize();
-	auto bg_sprite_4 = Sprite::create("seaworld/s4.png");
-	bg_sprite_4->setScale(0.5);
-	auto bg_width = bg_sprite_4->getContentSize().width;
-	auto sp_width = m_player->getContentSize().width;
-	auto Move_By = MoveTo::create(2, Point((visibleSize.width) * 0.5f, visibleSize.height * 0.36f));
-	switch (type)
-	{
-	case TOUCH_EVENT_ENDED:
-		m_player->runAction(Move_By);
-		//m_player->moveToLeft();
-		break;
-	}
-	//m_player->moveToLeft();
-	
-}
+//void NewGame::moveToLeft(Ref* sender, TouchEventType type)
+//{
+//	Size visibleSize = Director::getInstance()->getWinSize();
+//	auto bg_sprite_4 = Sprite::create("seaworld/s4.png");
+//	bg_sprite_4->setScale(0.5);
+//	auto bg_width = bg_sprite_4->getContentSize().width;
+//	auto sp_width = m_player->getContentSize().width;
+//	auto Move_By = MoveTo::create(2, Point((visibleSize.width) * 0.5f, visibleSize.height * 0.36f));
+//	switch (type)
+//	{
+//	case TOUCH_EVENT_ENDED:
+//		m_player->runAction(Move_By);
+//		//m_player->moveToLeft();
+//		break;
+//	}
+//	//m_player->moveToLeft();
+//	
+//}
 
-void NewGame::moveToRight(Ref* sender, TouchEventType type)
-{
-	Size visibleSize = Director::getInstance()->getWinSize();
-	auto bg_sprite_4 = Sprite::create("seaworld/s4.png");
-	bg_sprite_4->setScale(0.5);
-	auto bg_width = bg_sprite_4->getContentSize().width;
-	auto sp_width = m_player->getContentSize().width;
-	auto Move_By = MoveTo::create(2, Point((visibleSize.width) * 0.5f, visibleSize.height * 0.36f));
-	switch (type)
-	{
-	case TOUCH_EVENT_ENDED:
-		m_player->runAction(Move_By);
-		//m_player->moveToRight();
-		break;
-	}
-	//m_player->moveToRight();
-	//CCLOG("------------>");
-}
+//void NewGame::moveToRight(Ref* sender, TouchEventType type)
+//{
+//	Size visibleSize = Director::getInstance()->getWinSize();
+//	auto bg_sprite_4 = Sprite::create("seaworld/s4.png");
+//	bg_sprite_4->setScale(0.5);
+//	auto bg_width = bg_sprite_4->getContentSize().width;
+//	auto sp_width = m_player->getContentSize().width;
+//	auto Move_By = MoveTo::create(2, Point((visibleSize.width) * 0.5f, visibleSize.height * 0.36f));
+//	switch (type)
+//	{
+//	case TOUCH_EVENT_ENDED:
+//		m_player->runAction(Move_By);
+//		//m_player->moveToRight();
+//		break;
+//	}
+//	//m_player->moveToRight();
+//	//CCLOG("------------>");
+//}
 
 //void NewGame::quickMove(Ref* sender, TouchEventType type)
 //{
