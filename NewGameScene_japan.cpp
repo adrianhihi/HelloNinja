@@ -1,7 +1,7 @@
 #include "NewGameScene_japan.h"
 #include "HelloWorldScene.h"
 #include "BackgroundLayer.h"
-#include "simpleAudioEngine.h"
+//#include "simpleAudioEngine.h"
 #include "Player.h"
 #include "ObjectTag.h"
 #include "BackgroundLayer_japan.h"
