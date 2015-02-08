@@ -4,13 +4,6 @@
 #include "BackgroundLayer.h"
 //#include "BgLayer.h"
 #include "Player.h"
-#include "cocostudio/CocoStudio.h"
-#include "editor-support/cocostudio/CCSGUIReader.h"
-#include "cocostudio/CocoStudio.h"
-#include "ui/CocosGUI.h"
-#include "ObjectTag.h"
-#include "MonsterLayer.h"
-#include "Monster.h"
 #include "BackgroundLayer_japan.h"
 
 Setting::~Setting(){}
