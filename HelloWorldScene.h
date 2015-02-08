@@ -1,47 +1,56 @@
-#ifndef __NEWGAME_SCENE_H__
-#define __NEWGAME_SCENE_H__
+#ifndef __HELLOWORLD_SCENE_H__
+#define __HELLOWORLD_SCENE_H__
 
 #include "cocos2d.h"
 
-
-USING_NS_CC;
-class BackgroundLayer;
-class Player;
-
-
-class NewGame : public cocos2d::Layer
+class BgLayer;
+class HelloWorld : public cocos2d::Layer
 {
 public:
-	~NewGame();
+	~HelloWorld();
 	// there's no 'id' in cpp, so we recommend returning the class instance pointer
-	static cocos2d::Scene* createScene();
-	// Here's a difference. Method 'init' in cocos2d-x returns bool, instead of returning 'id' in cocos2d-iphone
-	virtual bool init();
-	virtual void onExit() override;
-	// a selector callback
-	void menuCloseCallback(cocos2d::Ref* pSender);
-	//void onTouchesBegan(const std::vector<cocos2d::Touch *> &touches, cocos2d::Event * event4);
-	// implement the "static create()" method manually
-	virtual bool onTouchBegan(Touch *touch, Event *unused_event);
-	virtual void onTouchMoved(Touch *touch, Event *unused_event);
-	virtual void onTouchEnded(Touch *touch, Event *unused_event);
-	CREATE_FUNC(NewGame);
-	void GoBack(cocos2d::Ref* pSender);
-	//__________________________________________________
+    static cocos2d::Scene* createScene();
+
+    // Here's a difference. Method 'init' in cocos2d-x returns bool, instead of returning 'id' in cocos2d-iphone
+    virtual bool init();
+    
+    // a selector callback
+    void menuCloseCallback(cocos2d::Ref* pSender);
+	void clickStart(cocos2d::Ref* pSender);
+	void clickResume(cocos2d::Ref* pSender);
+	void clickOptions(cocos2d::Ref* pSender);
+	void clickLevel(cocos2d::Ref* pSender);
+
+
+
+
+
+	void Play(cocos2d::Ref* pSender);
+	void Highscores(cocos2d::Ref* pSender);
+	//void Settings(cocos2d::Ref* pSender);
+	void Resume(cocos2d::Ref* pSender);
+	void Nihon(cocos2d::Ref* pSender);
+	void Halloween(cocos2d::Ref* pSender);
+
+    // implement the "static create()" method manually
+    CREATE_FUNC(HelloWorld);
+
+	cocos2d::Sprite * Sprite_1;
+
+	void StopMusic(float dt);
+	void PauseMusic(float dt);
+	void ResumeMusic(float dt);
+
+	bool onTouchBegan(cocos2d::Touch *touch, cocos2d::Event * event1);
+	void onTouchMoved(cocos2d::Touch *touch, cocos2d::Event * event2);
+	void onTouchEnded(cocos2d::Touch *touch, cocos2d::Event * event3);
+
+	void onTouchesBegan(const std::vector<cocos2d::Touch *> &touches, cocos2d::Event * event4);
+	void onTouchesMoved(const std::vector<cocos2d::Touch *> &touches, cocos2d::Event * event5);
+	void onTouchesEnded(const std::vector<cocos2d::Touch *> &touches, cocos2d::Event * event5);
 private:
 	void logic(float dt);
-	void createOprUI();
-	//void createTouch();
-	//void moveToLeft(Ref* sender, TouchEventType type);
-	//void moveToRight(Ref* sender, TouchEventType type);
-	//void quickMove(Ref* sender, TouchEventType type);
-	//void moveDown(Ref* sender, TouchEventType type);
-
-	//int flag = 0;
-	bool onContactBegin(PhysicsContact& contact);
-	BackgroundLayer* m_backgroundLayer;
-	Player* m_player;
-	//MonsterLayer* m_monsterLayer;
+	BgLayer* m_backgroundLayer;
 };
 
-#endif // __NEWGAME_SCENE_H__
+#endif // __HELLOWORLD_SCENE_H__
