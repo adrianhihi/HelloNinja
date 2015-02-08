@@ -2,9 +2,7 @@
 #define __SETTING_SCENE_H__
 
 #include "cocos2d.h"
-#include "editor-support/cocostudio/CCSGUIReader.h"
-#include "cocostudio/CocoStudio.h"
-#include "ui/CocosGUI.h"
+
 
 using namespace cocos2d::ui;
 using namespace cocostudio;
