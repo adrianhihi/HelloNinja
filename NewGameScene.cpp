@@ -4,7 +4,7 @@
 #include "Setting.h"
 #include "Player.h"
 #include "ObjectTag.h"
-#include "SimpleAudioEngine.h"
+//#include "SimpleAudioEngine.h"
 
 NewGame::~NewGame(){}
 
