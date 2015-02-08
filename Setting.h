@@ -3,9 +3,8 @@
 
 #include "cocos2d.h"
 
-
-using namespace cocos2d::ui;
-using namespace cocostudio;
+//using namespace cocos2d::ui;
+//using namespace cocostudio;
 USING_NS_CC;
 class BackgroundLayer_japan;
 
