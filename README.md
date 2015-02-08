@@ -1,3 +1,3 @@
 # Ninja-Game
-CSCI526 Project
+CSCI526 Project<br/>
 test
