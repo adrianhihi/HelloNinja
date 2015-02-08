@@ -1,10 +1,12 @@
 #include "NewGameScene_japan.h"
 #include "HelloWorldScene.h"
 #include "BackgroundLayer.h"
-//#include "simpleAudioEngine.h"
+//#include "BgLayer.h"
+#include "simpleAudioEngine.h"
 #include "Player.h"
-#include "ObjectTag.h"
+
 #include "BackgroundLayer_japan.h"
+#include "GameOver.h"
 
 
 NewGameScene_japan::~NewGameScene_japan(){}
@@ -37,9 +39,14 @@ Scene* NewGameScene_japan::createScene()
 	auto layer = NewGameScene_japan::create();
 	// add layer as a child to scene
 	NewGameScene_japan->addChild(layer);
-	// add background layer
 	layer->m_backgroundLayer = backgroundLayer;
 	backgroundLayer->setTag(9);
+	//add the monster layer
+	//auto monsterLayer = MonsterLayer::create();
+	//NewGame_scene->addChild(monsterLayer, 5);
+
+	//layer->m_monsterLayer = monsterLayer;
+
 	return NewGameScene_japan;
 }
 
@@ -48,7 +55,7 @@ bool NewGameScene_japan::init()
 	if (!Layer::init()){
 		return false;
 	}
-
+	//this->schedule(schedule_selector(TollgateScene::logic));
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
@@ -64,6 +71,11 @@ bool NewGameScene_japan::init()
 	if (!Layer::init()){
 		return false;
 	}
+	//this->schedule(schedule_selector(TollgateScene::logic));
+	//set up the border
+
+	// position the label on the center of the screen
+
 	//menu
 	auto menu_item_1 = MenuItemFont::create("Go Back", CC_CALLBACK_1(NewGameScene_japan::GoBack, this));
 	menu_item_1->setPosition(Vec2(origin.x + visibleSize.width * 0.5,
@@ -71,15 +83,15 @@ bool NewGameScene_japan::init()
 
 
 	auto *menu = Menu::create(menu_item_1, NULL);
-
 	menu->setScale(0.5);
+	//menu->setPosition(Vec2(origin.x + visibleSize.width / 2 + 380, origin.y + visibleSize.height - label->getContentSize().height - 300));
+	//auto *menu = Menu::create(menu_item_1, NULL);
 	menu->setPosition(Point(0, 0));
 	menu->setColor(Color3B::BLUE);
 	this->addChild(menu, 6);
 
 	////background
 	auto bg_sprite_1 = Sprite::create("japan/japan1.png");
-	//my picture is too big for me, so I scale it, you guys can delete this
 	bg_sprite_1->setScale(0.5);
 	// position the sprite on the center of the screen
 	bg_sprite_1->setPosition(Point(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
@@ -145,6 +157,8 @@ bool NewGameScene_japan::init()
 	this->schedule(schedule_selector(NewGameScene_japan::newEnemy_right), random_number_2);
 	this->schedule(schedule_selector(NewGameScene_japan::moveEnemy), 0.01f);
 	this->schedule(schedule_selector(NewGameScene_japan::newEnemy_crow), random_number_3);
+	this->schedule(schedule_selector(NewGameScene_japan::moveEnemy), 0.01f);
+	//http://www.hawstein.com/posts/ctci-solutions-contents.html
 
 	this->scheduleUpdate();
 
@@ -183,12 +197,15 @@ void NewGameScene_japan::menuCloseCallback(Ref* pSender)
 void NewGameScene_japan::logic(float dt)
 {
 	m_backgroundLayer->logic(dt);
-
+	//m_monsterLayer->logic(dt);
 }
 
 bool NewGameScene_japan::onTouchBegan(Touch *touch, Event *unsured_event){
 	
 	auto my_player = dynamic_cast<Player*>(this->getChildByTag(0));
+	//CCSize size = CCDirector::sharedDirector()->getWinSize();
+	//Vec2 visibleSize = Director::sharedDirector()->getVisibleSize();
+	//Vec2 origin = CCDirector::sharedDirector()->getVisibleOrigin();
 	Size visibleSize = Director::getInstance()->getWinSize();
 
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
@@ -215,7 +232,15 @@ bool NewGameScene_japan::onTouchBegan(Touch *touch, Event *unsured_event){
 	auto  MoveToLeft = MoveTo::create(0.5, Point(x_left, visibleSize.height * 0.36f));
 
 	if (player_x == x_right){
-
+		/*auto label = Label::createWithTTF("You have been fucked up!\n            Loser!", "fonts/Marker Felt.ttf", 24);
+		label->setPosition(Vec2(origin.x + visibleSize.width / 2,
+			origin.y + visibleSize.height - label->getContentSize().height));
+		auto Move_Down_3 = MoveBy::create(2, Vec2(0, -visibleSize.height / 2));
+		auto action_3 = RepeatForever::create(Move_Down_3);
+		label->setColor(Color3B::RED);
+		label->runAction(action_3);
+		this->addChild(label, 8);*/
+		//my_player->setScaleX((my_player->getScaleX()) * -1.f);
 		my_player->isLeft = true;
 		//my_player->moveToLeft();
 
@@ -223,8 +248,18 @@ bool NewGameScene_japan::onTouchBegan(Touch *touch, Event *unsured_event){
 		my_player->runAction(MoveToLeft);
 	}
 	else if (player_x == x_left){
-		my_player->runAction(MoveToRight);
+		//auto label = Label::createWithTTF("Go to the Left, or you'll lose!\n            Now!", "fonts/Marker Felt.ttf", 24);
+		//label->setPosition(Vec2(origin.x + visibleSize.width / 2,
+		//	origin.y + visibleSize.height - label->getContentSize().height));
+		//auto Move_Down_3 = MoveBy::create(2, Vec2(0, -visibleSize.height / 2));
+		//auto action_3 = RepeatForever::create(Move_Down_3);
+		//label->setColor(Color3B::RED);
+		//label->runAction(action_3);
+		//this->addChild(label, 8);
 
+
+		my_player->runAction(MoveToRight);
+		//my_player->setScaleX((my_player->getScaleX()) * -1.f);
 		my_player->isLeft = false;
 		//my_player->moveToRight();
 	}
@@ -256,7 +291,6 @@ void NewGameScene_japan::onTouchEnded(Touch *touch, Event *unused_event){
 	//	player->isLeft = true;
 	//	player->moveToLeft();
 	//}
-	//*******these codes copied from Oscar, still got some problems*******//
 }
 
 void NewGameScene_japan::onTouchCancelled(Touch *touch, Event *unused_event){
@@ -267,6 +301,16 @@ void NewGameScene_japan::onTouchCancelled(Touch *touch, Event *unused_event){
 //enemy
 void NewGameScene_japan::moveEnemy(float t) {
 	auto size = Director::getInstance()->getWinSize();
+	//if (auto identifier = this->getChildByTag(110)){
+
+	//	//identifier->setPositionX(identifier->getPositionX() + 10);
+	//	identifier->setPositionX(identifier->getPositionY() - 3);
+	//	if (identifier->getPositionY() < 0) {
+	//		identifier->removeFromParent();
+	//	}
+	//	
+	//}
+	//else{
 		for (auto enemy : allEnemy) {
 			enemy->setPositionY(enemy->getPositionY() - 3);
 			if (enemy->getPositionY() < 0) {
@@ -274,7 +318,7 @@ void NewGameScene_japan::moveEnemy(float t) {
 				//allEnemy.eraseObject(enemy);
 			}
 		}
-
+	//}
 };
 void NewGameScene_japan::killMe(Node * pSender) {
 	pSender->removeFromParentAndCleanup(true);
@@ -316,6 +360,7 @@ void NewGameScene_japan::newEnemy_left(float t) {
 
 	enemy->setPosition(Point(random_number % (int)(max_number - min_number) + min_number, size.height));
 
+	//log("*****%f*****\n", random_number % (int)(max_number - min_number) + min_number);
 	this->addChild(enemy, 7);
 	allEnemy.pushBack(enemy);
 }
@@ -341,6 +386,11 @@ void NewGameScene_japan::newEnemy_right(float t) {
 	}
 	auto sp_width = enemy->getContentSize().width * 0.5f;
 
+	/*auto random_number = rand() % 600;
+	auto min_number = size.width * 0.5f;
+	auto max_number = size.width * 0.5f + 0.5f * bg_width - border_width;
+
+	enemy->setPosition(Point(random_number % (int)(max_number - min_number) + min_number, size.height));*/
 
 	enemy->setPosition(Point(size.width * 0.5f + bg_width * 0.5f - border_width, size.height));
 	this->addChild(enemy, 7);
@@ -349,19 +399,19 @@ void NewGameScene_japan::newEnemy_right(float t) {
 void NewGameScene_japan::newEnemy_crow(float t){
 	auto size = Director::getInstance()->getWinSize();
 	auto crow = Sprite::create();
+	auto bg_sprite_4 = Sprite::create("japan/japan4.png");
+	auto bg_width = bg_sprite_4->getContentSize().width * 0.5f;
 	crow->setTag(110);
 	Vector<SpriteFrame *> allframe;
 	for (int i = 0; i < 4; i++){
-		SpriteFrame *sf = SpriteFrame::create("japan/crow.png", Rect(i * 355 / 4, 0, 355 / 4, 72));
+		SpriteFrame *sf = SpriteFrame::create("japan/crow.png", Rect(i * 347 / 4, 0, 347 / 4, 73));
 		allframe.pushBack(sf);
 	}
 	Animation * ani = Animation::createWithSpriteFrames(allframe, 0.1);
 	crow->runAction(RepeatForever::create(Animate::create(ani)));
-	//auto Move_1 = RepeatForever::create(Animate::create(ani));
-	
-	//this->addChild(crow, 7);
-	auto Move_2 = MoveBy::create(5, Vec2(100, 0));
 	crow->setPosition(Point(start_point, 0.8f * size.height));
+
+	auto Move_2 = MoveBy::create(4, Vec2(bg_width, 0));
 	crow->runAction(Move_2);
 	this->addChild(crow, 7);
 	allEnemy.pushBack(crow);
@@ -408,6 +458,13 @@ void NewGameScene_japan::update(float t) {
 				enemy->removeFromParent();
 				allEnemy.eraseObject(enemy);
 				this->runAction(Sequence::create(shake1, shake2, shake3, shake1, shake2, shake3, shake1, shake2, shake3, shake1, shake2, shake3, NULL));
+				//AudioServicePlaySystemSound(kSystemSoundID_Vibrate);
+
+				//in ios/SimpleAudioEngine.mm, add 
+				//void SimpleAudioEngine::vibrate(){
+				//	AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+				//}
+
 				auto label = Label::createWithTTF("HP -1", "fonts/Marker Felt.ttf", 24);
 				label->setPosition(Point(origin.x + visibleSize.width / 2, 0));
 				auto Move_Down_3 = MoveBy::create(1, Vec2(0, visibleSize.height / 2));
@@ -424,15 +481,6 @@ void NewGameScene_japan::update(float t) {
 			allEnemy.eraseObject(enemy);
 			this->runAction(Sequence::create(shake1, shake2, shake3, shake1, shake2, shake3, shake1, shake2, shake3, shake1, shake2, shake3, NULL));
 
-			auto label = Label::createWithTTF("You Suck!", "fonts/Marker Felt.ttf", 24);
-			label->setPosition(Point(origin.x + visibleSize.width / 2, 0));
-			auto Move_Down_3 = MoveBy::create(1, Vec2(0, visibleSize.height / 2));
-			auto action_3 = RepeatForever::create(Move_Down_3);
-			label->setColor(Color3B::RED);
-			label->runAction(action_3);
-			this->addChild(label, 8);
-			
-			//add game over scene
 			this->pause();
 			Director::getInstance()->replaceScene(TransitionJumpZoom::create(2, GameOver::createScene()));
 
