@@ -3,9 +3,12 @@
 
 #include "cocos2d.h"
 
+using namespace cocos2d::ui;
+//using namespace cocostudio;
 USING_NS_CC;
 class BackgroundLayer;
 class Player;
+class MonsterLayer;
 
 class NewGame : public cocos2d::Layer
 {
@@ -28,12 +31,12 @@ public:
 	//__________________________________________________
 private:
 	void logic(float dt);
-	void createOprUI();
-	//void createTouch();
-	void moveToLeft(Ref* sender, TouchEventType type);
-	void moveToRight(Ref* sender, TouchEventType type);
-	void quickMove(Ref* sender, TouchEventType type);
-	void moveDown(Ref* sender, TouchEventType type);
+//	void createOprUI();
+//	//void createTouch();
+//	void moveToLeft(Ref* sender, TouchEventType type);
+//	void moveToRight(Ref* sender, TouchEventType type);
+//	void quickMove(Ref* sender, TouchEventType type);
+//	void moveDown(Ref* sender, TouchEventType type);
 
 	//int flag = 0;
 	bool onContactBegin(PhysicsContact& contact);
@@ -43,3 +46,4 @@ private:
 };
 
 #endif // __NEWGAME_SCENE_H__
+
