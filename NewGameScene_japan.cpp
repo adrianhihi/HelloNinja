@@ -149,7 +149,7 @@ bool NewGameScene_japan::init()
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(event, this);
 
 	//Enemy
-	float random_number_1 = random() % 2 + 1;
+	float random_number_1 = rand() % 2 + 1;
 	float random_number_2 = rand() % 3 + 1;
 	float random_number_3 = rand() % 4 + 1;
 	this->schedule(schedule_selector(NewGameScene_japan::newEnemy_left), random_number_1);
