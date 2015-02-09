@@ -5,11 +5,12 @@
 #include "Player.h"
 
 
-
+using namespace cocos2d::ui;
+//using namespace cocostudio;
 USING_NS_CC;
 class BackgroundLayer_japan;
 class Player;
-//class MonsterLayer;
+class MonsterLayer;
 
 //class MonsterLayer_japan;
 
@@ -48,7 +49,7 @@ private:
 	void jumpToMenu();
 	float start_point;
 	int HP = 5;
-	//MonsterLayer* m_monsterLayer;
+	MonsterLayer* m_monsterLayer;
 	cocos2d::Vec2 testTouchBegin;
 };
 
