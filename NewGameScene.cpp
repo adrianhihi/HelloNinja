@@ -245,7 +245,7 @@ void NewGame::menuCloseCallback(Ref* pSender)
 //	//m_player->moveToLeft();
 //	
 //}
-
+//
 //void NewGame::moveToRight(Ref* sender, TouchEventType type)
 //{
 //	Size visibleSize = Director::getInstance()->getWinSize();
