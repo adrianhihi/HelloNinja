@@ -45,6 +45,7 @@ Scene* NewGame::createScene()
 
 	//layer->m_monsterLayer = monsterLayer;
 	
+
 	return NewGame_scene;
 }
 
@@ -122,15 +123,16 @@ bool NewGame::init()
 	bg_sprite_4->setPosition(Point(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
 
 	// add the sprite as a child to this layer
-	this->addChild(bg_sprite_4, 0);
+	this->addChild(bg_sprite_4, 0, 130);
 
 	this->schedule(schedule_selector(NewGame::logic));
 
 	//player
 	auto bg_width = bg_sprite_4->getContentSize().width;
 	m_player = Player::create();
-	auto player_width = m_player->getContentSize().width;
-	m_player->setPosition(Point((visibleSize.width - 0.5 * bg_width) * 0.5f + 50, visibleSize.height * 0.36f));
+	auto player_width = 100;
+
+	m_player->setPosition(bg_sprite_4->getBoundingBox().getMinX() + player_width*0.5, bg_sprite_4->getBoundingBox().size.height * 0.2f);
 	m_player->setTag(110);
 	this->addChild(m_player, 5);
 
@@ -358,7 +360,7 @@ bool NewGame::onTouchBegan(Touch *touch, Event *unsured_event){
 	int px = touch->getLocation().x;
 	int py = touch->getLocation().y;
 
-	auto my_player = this->getChildByTag(110);
+	Player *my_player = (Player *)(this->getChildByTag(110));
 
 	Size visibleSize = Director::getInstance()->getWinSize();
 	auto bg_sprite_4 = Sprite::create("seaworld/s4.png");
@@ -372,15 +374,22 @@ bool NewGame::onTouchBegan(Touch *touch, Event *unsured_event){
 	int x_right = (visibleSize.width + 0.5 * bg_width) * 0.5f - 50;
 	int x_left	= (visibleSize.width - 0.5 * bg_width) * 0.5f + 50;
 
+	//=================
+
+	testTouchBegin = touch->getLocation();
+
+	//=================
+	/*
 	auto MoveToRight = MoveTo::create(0.5, Point(x_right, visibleSize.height * 0.36f));
 	auto  MoveToLeft = MoveTo::create(0.5, Point(x_left , visibleSize.height * 0.36f));
-
+	
 	if (player_x == x_right){
 		my_player->runAction(MoveToLeft);
 	}
 	else if (player_x == x_left){
 		my_player->runAction(MoveToRight);
 	}
+	*/
 	return true;
 }
 
@@ -389,6 +398,82 @@ void NewGame::onTouchMoved(Touch * touch, Event *unsured_event){
 	
 }
 
-void NewGame::onTouchEnded(Touch *touch, Event *unused_event){
+void NewGame::onTouchEnded(Touch *touch, Event *unused_event)
+{
+	
+	Player *my_player = (Player *)(this->getChildByTag(110));
+	
+
+	if (testTouchBegin.distance(touch->getLocation()) > 1 && testTouchBegin.x<touch->getLocation().x && my_player->isLeft == true)
+	{
+		my_player->setScaleX((my_player->getScaleX()) * -1.f);
+		my_player->isLeft = false;
+		my_player->isInAir = true;
+		my_player->isMovingLeft = false;
+	}
+
+	else if (testTouchBegin.distance(touch->getLocation()) > 1 && testTouchBegin.x>touch->getLocation().x && my_player->isLeft == false)
+	{
+		my_player->setScaleX((my_player->getScaleX()) * -1.f);
+		my_player->isLeft = true;
+		my_player->isInAir = true;
+		my_player->isMovingLeft = true;
+	}
+
+}
+
+void NewGame::update(float time)
+{
+	Player *my_player = (Player *)(this->getChildByTag(110));
+	auto bg_sprite_4 = dynamic_cast<Sprite*>(this->getChildByTag(130));
+
+	cocos2d::Vec2 bgSize = bg_sprite_4->getBoundingBox().size;
+	float a = -0.2*bgSize.y / (0.25 * (bgSize.x - 100) * (bgSize.x - 100));
+	Vec2 origin = origin = Vec2(bg_sprite_4->getBoundingBox().getMinX(), bg_sprite_4->getBoundingBox().getMinY());
+
+
+	if (my_player->isInAir&&!my_player->isMovingLeft)
+	{
+		my_player->setPositionX(my_player->getPositionX() + 10);
+		float y = a * (my_player->getPositionX() - origin.x - 0.5 * 100)*(my_player->getPositionX() - origin.x - bgSize.x + 0.5 * 100);
+		my_player->setPositionY(y + bgSize.y*0.2);
+
+		if (my_player->getPositionX() >= origin.x + bgSize.x - 100 / 2)
+		{
+			my_player->isInAir = false;
+			my_player->setPosition(bg_sprite_4->getBoundingBox().getMaxX() - 100 * 0.5, origin.y + bgSize.y*0.2);
+		}
+		/*
+		else if (this->getPositionX() >= origin.x + bgSize.x / 2 && isLeft)
+		{
+		this->setScaleX((this->getScaleX()) * -1.f);
+		isLeft = false;
+		}
+		*/
+
+	}
+	else if (my_player->isInAir&&my_player->isMovingLeft)
+	{
+
+		my_player->setPosition(my_player->getPositionX() - 10, origin.y + bgSize.y*0.2);
+		float y = a * (my_player->getPositionX() - origin.x - 0.5 * 100)*(my_player->getPositionX() - origin.x - bgSize.x + 0.5 * 100);
+		my_player->setPositionY(y + bgSize.y*0.2);
+
+		if (my_player->getPositionX() <= origin.x + 100 / 2)
+		{
+			my_player->isInAir = false;
+			my_player->setPosition(bg_sprite_4->getBoundingBox().getMinX() + 100 * 0.5, origin.y + bgSize.y*0.2);
+		}
+		/*
+		else if (this->getPositionX() <= origin.x + bgSize.x / 2 && !isLeft)
+		{
+		this->setScaleX((this->getScaleX()) * -1.f);
+		isLeft = true;
+		}
+		*/
+	}
+	return;
+
+
 
 }

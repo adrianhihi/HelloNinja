@@ -43,6 +43,10 @@ private:
 	BackgroundLayer* m_backgroundLayer;
 	Player* m_player;
 	MonsterLayer* m_monsterLayer;
+
+	Vec2 testTouchBegin;
+	void update(float time);
+
 };
 
 #endif // __NEWGAME_SCENE_H__
