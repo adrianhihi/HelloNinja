@@ -28,15 +28,15 @@ bool BackgroundLayer::init()
 	Size borderSize_left = border_left->getContentSize();
 	Size borderSize_right = border_right->getContentSize();
 	border1 = createBorder_left(Point((visibleSize.width / 2 - bgSize.width / 4 + borderSize_left.width / 4 / 1.0556), visibleSize.height * 0.5f));
-	this->addChild(border1);
+	this->addChild(border1,0);
 	border3 = createBorder_left(Point((visibleSize.width / 2 - bgSize.width / 4 + borderSize_left.width / 4 / 1.0556), visibleSize.height * 1.5f));
-	this->addChild(border3);
+	this->addChild(border3,1);
 	border2 = createBorder_right(Point((visibleSize.width / 2 + bgSize.width / 4 - borderSize_right.width / 4 / 1.0556), visibleSize.height * 0.5f));
 
-	this->addChild(border2);
+	this->addChild(border2,2);
 	border4 = createBorder_right(Point((visibleSize.width / 2 + bgSize.width / 4 - borderSize_right.width / 4 / 1.0556), visibleSize.height * 1.5f));
 
-	this->addChild(border4);
+	this->addChild(border4,3);
 	
 
 	return true;

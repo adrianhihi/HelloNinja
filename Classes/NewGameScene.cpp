@@ -5,12 +5,13 @@
 #include "Player.h"
 
 #include "ObjectTag.h"
+#include "cocos2d.h"
 
 #include "SimpleAudioEngine.h"
 
 NewGame::~NewGame(){}
 
-
+using namespace cocos2d;
 Scene* NewGame::createScene()
 {
 	auto NewGame_scene = Scene::createWithPhysics();
@@ -58,7 +59,8 @@ bool NewGame::init()
 	Size visibleSize = Director::getInstance()->getWinSize();
 
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
-	//set up the border
+	//set up the 
+
 
 	
 
@@ -79,13 +81,7 @@ bool NewGame::init()
 		origin.y + menu_item_1->getContentSize().height / 2 - 280));
 
 
-	auto *menu = Menu::create(menu_item_1, NULL);
-	menu->setScale(0.5);
-	//menu->setPosition(Vec2(origin.x + visibleSize.width / 2 + 380, origin.y + visibleSize.height - label->getContentSize().height - 300));
-	//auto *menu = Menu::create(menu_item_1, NULL);
-	menu -> setPosition(Point(0, 0));
-
-	this->addChild(menu, 6);
+	
 
 	auto bg_sprite_1 = Sprite::create("seaworld/s1.png");
 	bg_sprite_1->setScale(0.5);
@@ -169,6 +165,25 @@ bool NewGame::init()
 	this->scheduleUpdate();
 	//_____________________________________________________________
 
+	//===============
+	auto abilityButtonItem = MenuItemImage::create(
+		"bang.png",
+		"bang.png",
+		CC_CALLBACK_1(NewGame::playerAbility_Teleportation, this)
+		);
+
+	//abilityButtonItem->setScale(5);
+	abilityButtonItem->setPosition(bg_sprite_4->getPosition() - bg_sprite_4->getContentSize()/2 + abilityButtonItem->getBoundingBox().size*1.25);
+
+	// create menu, it's an autorelease object
+	auto *menu = Menu::create(menu_item_1, abilityButtonItem, NULL);
+	menu->setScale(0.5);
+	//menu->setPosition(Vec2(origin.x + visibleSize.width / 2 + 380, origin.y + visibleSize.height - label->getContentSize().height - 300));
+	//auto *menu = Menu::create(menu_item_1, NULL);
+	menu->setPosition(Point(0, 0));
+
+	this->addChild(menu, 100);
+	//===============
 
 	///*contact listener*/
 	//auto contactListener = EventListenerPhysicsContact::create();
@@ -178,6 +193,8 @@ bool NewGame::init()
 
 	return true;
 }
+
+
 
 
 void NewGame::onExit()
@@ -191,6 +208,11 @@ void NewGame::logic(float dt)
 	m_backgroundLayer->logic(dt);
 	//m_monsterLayer->logic(dt);
 }
+
+void NewGame::playerAbility_Teleportation(cocos2d::Ref *pSender){
+	
+}
+
 
 void NewGame::GoBack(cocos2d::Ref *pSender){
 	CCLOG("go back");

@@ -26,8 +26,11 @@ public:
 	virtual bool onTouchBegan(Touch *touch, Event *unused_event);
 	virtual void onTouchMoved(Touch *touch, Event *unused_event);
 	virtual void onTouchEnded(Touch *touch, Event *unused_event);
+
+
 	CREATE_FUNC(NewGame);
 	void GoBack(cocos2d::Ref* pSender);
+	void playerAbility_Teleportation(cocos2d::Ref* pSender);
 	//__________________________________________________
 private:
 	void logic(float dt);
@@ -44,6 +47,7 @@ private:
 	Player* m_player;
 	MonsterLayer* m_monsterLayer;
 
+	
 	Vec2 testTouchBegin;
 	void update(float time);
 
