@@ -56,7 +56,7 @@ Sprite* BackgroundLayer_japan::createBorder_left(Point pos)
 
 Sprite* BackgroundLayer_japan::createBorder_right(Point pos)
 {
-	auto border = Sprite::create("border/border_j.png");
+	auto border = Sprite::create("border/border_j_2.png");
 	Size borderSize = border->getContentSize();
 
 	border->setPosition(pos);
@@ -69,7 +69,7 @@ void BackgroundLayer_japan::logic(float dt) {
     int posY1 = border1->getPositionY();
     int posY2 = border3->getPositionY();
     
-    int iSpeed = -20;
+    iSpeed = -10;
     
     
     posY1 += iSpeed;

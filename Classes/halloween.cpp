@@ -39,11 +39,7 @@ Scene* Halloween::createScene()
 	Halloween->addChild(layer);
 	layer->m_backgroundLayer = backgroundLayer;
 	backgroundLayer->setTag(9);
-	//add the monster layer
-	//auto monsterLayer = MonsterLayer::create();
-	//NewGame_scene->addChild(monsterLayer, 5);
 
-	//layer->m_monsterLayer = monsterLayer;
 
 	return Halloween;
 }
@@ -73,7 +69,7 @@ bool Halloween::init()
 	//menu
 	auto menu_item_1 = MenuItemFont::create("Go Back", CC_CALLBACK_1(Halloween::GoBack, this));
     menu_item_1->setScale(1.2);
-    menu_item_1->setPosition(Vec2(visibleSize.width - menu_item_1->getContentSize().width / 2 -borderWidth,
+    menu_item_1->setPosition(Vec2(visibleSize.width - menu_item_1->getContentSize().width -borderWidth/2,
                                   menu_item_1->getContentSize().height / 2));
 
 
@@ -121,8 +117,8 @@ bool Halloween::init()
 	//player
 
     auto m_player = Player::create();
-    m_player->setPosition(Point(borderWidth * 0.6 + m_player->playerWidth/2, visibleSize.height * 0.16f));
 	m_player->setTag(0);
+    m_player->setPosition(Point(borderWidth + m_player->playerWidth/2, visibleSize.height * 0.16f));
 	this->addChild(m_player, 5, 0);
 
 	EventListenerTouchOneByOne * event = EventListenerTouchOneByOne::create();
@@ -165,19 +161,7 @@ void Halloween::GoBack(cocos2d::Ref *pSender){
     Director::getInstance()->replaceScene(HelloWorld::createScene());
 }
 
-void Halloween::menuCloseCallback(Ref* pSender)
-{
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WP8) || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
-	MessageBox("You pressed the close button. Windows Store Apps do not implement a close button.", "Alert");
-	return;
-#endif
 
-	Director::getInstance()->end();
-
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-	exit(0);
-#endif
-}
 void Halloween::logic(float dt)
 {
 	m_backgroundLayer->logic(dt);
@@ -186,36 +170,33 @@ void Halloween::logic(float dt)
 
 bool Halloween::onTouchBegan(Touch *touch, Event *unsured_event){
 
-	auto my_player = dynamic_cast<Player*>(this->getChildByTag(0));
-	Size visibleSize = Director::getInstance()->getWinSize();
-
-	Vec2 origin = Director::getInstance()->getVisibleOrigin();
-
-	// add the label as a child to this layer
-
-
-
-
-	int player_x = my_player->getPosition().x;
-
-    int x_right = visibleSize.width - borderWidth*0.6 - my_player->playerWidth/2;
-    int x_left = borderWidth * 0.6 + my_player->playerWidth/2;
-
-	auto MoveToRight = MoveTo::create(0.5, Point(x_right, visibleSize.height * 0.16f));
-	auto  MoveToLeft = MoveTo::create(0.5, Point(x_left, visibleSize.height * 0.16f));
-
-	if (player_x == x_right){
-
-		my_player->isLeft = true;
-
-		my_player->runAction(MoveToLeft);
-	}
-	else if (player_x == x_left){
-		my_player->runAction(MoveToRight);
-		my_player->isLeft = false;
-	}
-	testTouchBegin = touch->getLocation();
-	return true;
+    auto my_player = dynamic_cast<Player*>(this->getChildByTag(0));
+    
+    Size size = Director::getInstance()->getWinSize();
+    
+    // add the label as a child to this layer
+    
+    
+    
+    int player_x = my_player->getPosition().x;
+    
+    
+    int x_right = size.width - borderWidth - my_player->playerWidth/2;
+    int x_left = borderWidth + my_player->playerWidth/2;
+    
+    if (player_x == x_right){
+        
+        my_player->isLeft = true;
+        
+        my_player-> runAction(MoveTo::create(0.5, Point(x_left, size.height * 0.16f)));
+    }
+    else if (player_x == x_left){
+        my_player-> runAction(MoveTo::create(0.5, Point(x_right, size.height * 0.16f)));
+        my_player->isLeft = false;
+    }
+    testTouchBegin = touch->getLocation();
+    return true;
+    return true;
 }
 
 void Halloween::onTouchMoved(Touch * touch, Event *unsured_event){

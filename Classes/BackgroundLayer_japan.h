@@ -14,6 +14,7 @@ public:
 
 	void logic(float dt);
     int borderWidth;
+    int iSpeed;
 private:
 	Sprite* m_bg1;
 	Sprite* m_bg2;

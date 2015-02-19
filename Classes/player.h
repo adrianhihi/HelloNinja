@@ -6,6 +6,11 @@
 using namespace std;
 using namespace cocos2d;
 USING_NS_CC;
+
+enum direction{
+    DIR_LEFT,
+    DIR_RIGHT
+};
 class Player : public Node
 {
 public:
@@ -17,9 +22,6 @@ public:
 	void bindSprite(CCSprite* sprite);
 	CREATE_FUNC(Player);
 	virtual bool init();
-	void moveToRight();
-	void moveToLeft();
-	Vec2 TouchBegin;
 
 	int score;
 	bool isInAir;
@@ -27,18 +29,20 @@ public:
 	bool isLeft;
 	bool isDead;
 
-	Vec2 origin;
-	Vec2 bgSize;
-	void logic(float dt);
-
+	void logic();
 	void beAtked(int iValue);
     int playerWidth;
+    direction m_dir;
 private:
-
-
+    
+    
+    Vector<SpriteFrame *> allframe;
+    Animate * ani;
+    
+    Sprite * spPlayer;
+    
 	void playerInit(float spriteScale);
 
-	void update(float time);
 	float flyingTime;
 
 

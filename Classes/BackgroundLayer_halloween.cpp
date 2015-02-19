@@ -56,7 +56,7 @@ Sprite* BackgroundLayer_halloween::createBorder_left(Point pos)
 
 Sprite* BackgroundLayer_halloween::createBorder_right(Point pos)
 {
-	auto border = Sprite::create("border/border_h_1.png");
+	auto border = Sprite::create("border/border_h_2.png");
 	Size borderSize = border->getContentSize();
 
 	border->setPosition(pos);
