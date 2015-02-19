@@ -209,8 +209,25 @@ void NewGame::logic(float dt)
 	//m_monsterLayer->logic(dt);
 }
 
-void NewGame::playerAbility_Teleportation(cocos2d::Ref *pSender){
-	
+void NewGame::playerAbility_Teleportation(cocos2d::Ref *pSender)
+{
+	Player *my_player = (Player *)(this->getChildByTag(110));
+	auto bg_sprite_4 = dynamic_cast<Sprite*>(this->getChildByTag(130));
+
+	cocos2d::Vec2 bgSize = bg_sprite_4->getBoundingBox().size;
+	Vec2 origin = origin = Vec2(bg_sprite_4->getBoundingBox().getMinX(), bg_sprite_4->getBoundingBox().getMinY());
+
+
+	if (!my_player->isInAir&&my_player->isLeft)
+	{
+		my_player->isLeft = false;
+		my_player->setPosition(bg_sprite_4->getBoundingBox().getMaxX() - 100 * 0.5, origin.y + bgSize.y*0.2);
+	}
+	else if (!my_player->isInAir&&!my_player->isLeft)
+	{
+		my_player->isLeft = true;
+		my_player->setPosition(bg_sprite_4->getBoundingBox().getMinX() + 100 * 0.5, origin.y + bgSize.y*0.2);
+	}	
 }
 
 
