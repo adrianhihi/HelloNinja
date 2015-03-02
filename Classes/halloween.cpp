@@ -16,8 +16,6 @@ Scene* Halloween::createScene()
 {
 
 	auto Halloween = Scene::createWithPhysics();
-	// 'scene' is an autorelease object
-	auto NewGame_scene = Scene::create();
 	Vect gravity(0, -0.5f);
 	Halloween->getPhysicsWorld()->setGravity(gravity);
 	Halloween->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
@@ -41,11 +39,7 @@ Scene* Halloween::createScene()
 	Halloween->addChild(layer);
 	layer->m_backgroundLayer = backgroundLayer;
 	backgroundLayer->setTag(9);
-	//add the monster layer
-	//auto monsterLayer = MonsterLayer::create();
-	//NewGame_scene->addChild(monsterLayer, 5);
 
-	//layer->m_monsterLayer = monsterLayer;
 
 	return Halloween;
 }
@@ -55,11 +49,11 @@ bool Halloween::init()
 	if (!Layer::init()){
 		return false;
 	}
-	//this->schedule(schedule_selector(TollgateScene::logic));
+
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
-	//set up the border
+
 
 	// position the label on the center of the screen
 	auto label = Label::createWithTTF("Halloween Mission!", "fonts/Marker Felt.ttf", 24);
@@ -68,61 +62,51 @@ bool Halloween::init()
 
 	// add the label as a child to this layer
 	this->addChild(label, 2);
-	if (!Layer::init()){
-		return false;
-	}
-	//this->schedule(schedule_selector(TollgateScene::logic));
-	//set up the border
+    auto border = BackgroundLayer_halloween::create();
+    borderWidth = border->borderWidth;
 
-	// position the label on the center of the screen
 
 	//menu
 	auto menu_item_1 = MenuItemFont::create("Go Back", CC_CALLBACK_1(Halloween::GoBack, this));
-	menu_item_1->setPosition(Vec2(origin.x + visibleSize.width * 0.5,
-		origin.y + visibleSize.height / 2 - 280));
+    menu_item_1->setScale(1.2);
+    menu_item_1->setPosition(Vec2(visibleSize.width - menu_item_1->getContentSize().width -borderWidth/2,
+                                  menu_item_1->getContentSize().height / 2));
 
 
 	auto *menu = Menu::create(menu_item_1, NULL);
-	menu->setScale(0.5);
-	//menu->setPosition(Vec2(origin.x + visibleSize.width / 2 + 380, origin.y + visibleSize.height - label->getContentSize().height - 300));
-	//auto *menu = Menu::create(menu_item_1, NULL);
 	menu->setPosition(Point(0, 0));
 	menu->setColor(Color3B::BLUE);
 	this->addChild(menu, 6);
 
 	////background
 	auto bg_sprite_1 = Sprite::create("halloween/Halloween1.png");
-	bg_sprite_1->setScale(0.5);
 	// position the sprite on the center of the screen
 	bg_sprite_1->setPosition(Point(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
-	auto Move_Down_1 = MoveTo::create(60, Point(visibleSize.width / 2 + origin.x, -visibleSize.height / 2));
-	auto action_1 = RepeatForever::create(Move_Down_1);
-	bg_sprite_1->runAction(action_1);
+	auto Move_Down_1 = MoveTo::create(100, Point(visibleSize.width / 2 + origin.x, -visibleSize.height / 2));
+//	auto action_1 = RepeatForever::create(Move_Down_1);
+	bg_sprite_1->runAction(Move_Down_1);
 	// add the sprite as a child to this layer
 	this->addChild(bg_sprite_1, 4);
 
 	auto bg_sprite_2 = Sprite::create("halloween/Halloween2.png");
-	bg_sprite_2->setScale(0.5);
 	// position the sprite on the center of the screen
 	bg_sprite_2->setPosition(Point(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
-	auto Move_Down_2 = MoveTo::create(100, Point(visibleSize.width / 2 + origin.x, -visibleSize.height / 2));
-	auto action_2 = RepeatForever::create(Move_Down_2);
-	bg_sprite_2->runAction(action_2);
+	auto Move_Down_2 = MoveTo::create(300, Point(visibleSize.width / 2 + origin.x, -visibleSize.height / 2));
+//	auto action_2 = RepeatForever::create(Move_Down_2);
+	bg_sprite_2->runAction(Move_Down_2);
 
 	// add the sprite as a child to this layer
 	this->addChild(bg_sprite_2, 3);
 	auto bg_sprite_3 = Sprite::create("halloween/Halloween3.png");
-	bg_sprite_3->setScale(0.5);
 	// position the sprite on the center of the screen
 	bg_sprite_3->setPosition(Point(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
-	auto Move_Down_3 = MoveTo::create(200, Point(visibleSize.width / 2 + origin.x, -visibleSize.height / 2));
-	auto action_3 = RepeatForever::create(Move_Down_3);
-	bg_sprite_3->runAction(action_3);
+	auto Move_Down_3 = MoveTo::create(500, Point(visibleSize.width / 2 + origin.x, -visibleSize.height / 2));
+//	auto action_3 = RepeatForever::create(Move_Down_3);
+	bg_sprite_3->runAction(Move_Down_3);
 
 	// add the sprite as a child to this layer
 	this->addChild(bg_sprite_3, 2);
 	auto bg_sprite_4 = Sprite::create("halloween/Halloween4.png");
-	bg_sprite_4->setScale(0.5);
 	// position the sprite on the center of the screen
 	bg_sprite_4->setPosition(Point(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
 	bg_sprite_4->setTag(1);
@@ -132,12 +116,9 @@ bool Halloween::init()
 
 	//player
 
-	auto bg_width = bg_sprite_4->getContentSize().width;
-	m_player = Player::create();
-	auto player_width = m_player->getContentSize().width;
-	start_point = (visibleSize.width - 0.5 * bg_width) * 0.5f + 75;
-	m_player->setPosition(Point((visibleSize.width - 0.5 * bg_width) * 0.5f + 75, visibleSize.height * 0.36f));
+    auto m_player = Player::create();
 	m_player->setTag(0);
+    m_player->setPosition(Point(borderWidth + m_player->playerWidth/2, visibleSize.height * 0.16f));
 	this->addChild(m_player, 5, 0);
 
 	EventListenerTouchOneByOne * event = EventListenerTouchOneByOne::create();
@@ -149,7 +130,7 @@ bool Halloween::init()
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(event, this);
 
 	//Enemy
-	float random_number_1 = random() % 2 + 1;
+	float random_number_1 = rand() % 2 + 1;
 	float random_number_2 = rand() % 3 + 1;
 	float random_number_3 = rand() % 4 + 1;
 	this->schedule(schedule_selector(Halloween::newEnemy_left), random_number_1);
@@ -177,23 +158,10 @@ void Halloween::onExit()
 
 
 void Halloween::GoBack(cocos2d::Ref *pSender){
-	CCLOG("go back");
-	Director::getInstance()->popScene();
+    Director::getInstance()->replaceScene(HelloWorld::createScene());
 }
 
-void Halloween::menuCloseCallback(Ref* pSender)
-{
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WP8) || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
-	MessageBox("You pressed the close button. Windows Store Apps do not implement a close button.", "Alert");
-	return;
-#endif
 
-	Director::getInstance()->end();
-
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-	exit(0);
-#endif
-}
 void Halloween::logic(float dt)
 {
 	m_backgroundLayer->logic(dt);
@@ -202,47 +170,33 @@ void Halloween::logic(float dt)
 
 bool Halloween::onTouchBegan(Touch *touch, Event *unsured_event){
 
-	auto my_player = dynamic_cast<Player*>(this->getChildByTag(0));
-	//CCSize size = CCDirector::sharedDirector()->getWinSize();
-	//Vec2 visibleSize = Director::sharedDirector()->getVisibleSize();
-	//Vec2 origin = CCDirector::sharedDirector()->getVisibleOrigin();
-	Size visibleSize = Director::getInstance()->getWinSize();
-
-	Vec2 origin = Director::getInstance()->getVisibleOrigin();
-
-	// add the label as a child to this layer
-
-	int px = touch->getLocation().x;
-	int py = touch->getLocation().y;
-
-	//auto my_player = this->getChildByTag(0);
-
-	auto bg_sprite_4 = Sprite::create("halloween/Halloween4.png");
-	bg_sprite_4->setScale(0.5);
-	auto bg_width = bg_sprite_4->getContentSize().width;
-	auto sp_width = m_player->getContentSize().width;
-
-	int player_x = my_player->getPosition().x;
-	int player_y = my_player->getPosition().y;
-
-	int x_right = (visibleSize.width + 0.5 * bg_width) * 0.5f - 75;
-	int x_left = (visibleSize.width - 0.5 * bg_width) * 0.5f + 75;
-
-	auto MoveToRight = MoveTo::create(0.5, Point(x_right, visibleSize.height * 0.36f));
-	auto  MoveToLeft = MoveTo::create(0.5, Point(x_left, visibleSize.height * 0.36f));
-
-	if (player_x == x_right){
-
-		my_player->isLeft = true;
-
-		my_player->runAction(MoveToLeft);
-	}
-	else if (player_x == x_left){
-		my_player->runAction(MoveToRight);
-		my_player->isLeft = false;
-	}
-	testTouchBegin = touch->getLocation();
-	return true;
+    auto my_player = dynamic_cast<Player*>(this->getChildByTag(0));
+    
+    Size size = Director::getInstance()->getWinSize();
+    
+    // add the label as a child to this layer
+    
+    
+    
+    int player_x = my_player->getPosition().x;
+    
+    
+    int x_right = size.width - borderWidth - my_player->playerWidth/2;
+    int x_left = borderWidth + my_player->playerWidth/2;
+    
+    if (player_x == x_right){
+        
+        my_player->isLeft = true;
+        
+        my_player-> runAction(MoveTo::create(0.5, Point(x_left, size.height * 0.16f)));
+    }
+    else if (player_x == x_left){
+        my_player-> runAction(MoveTo::create(0.5, Point(x_right, size.height * 0.16f)));
+        my_player->isLeft = false;
+    }
+    testTouchBegin = touch->getLocation();
+    return true;
+    return true;
 }
 
 void Halloween::onTouchMoved(Touch * touch, Event *unsured_event){
@@ -294,7 +248,7 @@ void Halloween::jumpToMenu(){
 void Halloween::newEnemy_left(float t) {
 	auto size = Director::getInstance()->getWinSize();
 	auto bg_sprite_4 = Sprite::create("halloween/Halloween4.png");
-	auto border = Sprite::create("border/border_h.png");
+	auto border = Sprite::create("border/border_h_1.png");
 	auto bg_width = 0.5f * (bg_sprite_4->getContentSize().width);
 	auto border_width = border->getContentSize().width;
 
@@ -329,7 +283,7 @@ void Halloween::newEnemy_left(float t) {
 void Halloween::newEnemy_right(float t) {
 	auto size = Director::getInstance()->getWinSize();
 	auto bg_sprite_4 = Sprite::create("halloween/Halloween4.png");
-	auto border = Sprite::create("border/border_h.png");
+	auto border = Sprite::create("border/border_h_1.png");
 	auto bg_width = 0.5f * (bg_sprite_4->getContentSize().width);
 	auto border_width = border->getContentSize().width;
 

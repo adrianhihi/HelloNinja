@@ -29,6 +29,7 @@ public:
 	// implement the "static create()" method manually
 	CREATE_FUNC(Halloween);
 	void GoBack(cocos2d::Ref* pSender);
+    int borderWidth;
 	//__________________________________________________
 private:
 	void logic(float dt);

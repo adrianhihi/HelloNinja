@@ -30,8 +30,9 @@ bool AppDelegate::applicationDidFinishLaunching() {
         glview = GLViewImpl::create("Hello Ninja!");
         director->setOpenGLView(glview);
     }
-	glview->setFrameSize(1120, 629.6);
-	glview->setDesignResolutionSize(1120, 629.6, ResolutionPolicy::SHOW_ALL);
+
+	//glview->setFrameSize(480, 720);
+
     // turn on display FPS
     director->setDisplayStats(true);
 

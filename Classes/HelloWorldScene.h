@@ -2,6 +2,7 @@
 #define __HELLOWORLD_SCENE_H__
 
 #include "cocos2d.h"
+USING_NS_CC;
 
 class BgLayer;
 class HelloWorld : public cocos2d::Layer
@@ -48,9 +49,11 @@ public:
 	void onTouchesBegan(const std::vector<cocos2d::Touch *> &touches, cocos2d::Event * event4);
 	void onTouchesMoved(const std::vector<cocos2d::Touch *> &touches, cocos2d::Event * event5);
 	void onTouchesEnded(const std::vector<cocos2d::Touch *> &touches, cocos2d::Event * event5);
+
 private:
-	void logic(float dt);
-	BgLayer* m_backgroundLayer;
+    Sprite* m_bg1;
+    Sprite* m_bg2;
+    void bgMv(float t);
 };
 
 #endif // __HELLOWORLD_SCENE_H__

@@ -32,25 +32,57 @@ public:
 	// implement the "static create()" method manually
 	CREATE_FUNC(NewGameScene_japan);
 	void GoBack(cocos2d::Ref* pSender);
+    int borderWidth;
+
+	float bg_scale;
+	Size bg_size;
+	Point bg_origin;
+
+	enum Scene_Tag :int
+	{
+		border1 = 1000,
+		border2 = 1001,
+		border3 = 1002,
+		border4 = 1003,
+		player = 0,
+	};
+
+	const int iSpeed = -10;
+	int score;
+
+	void playerAbility_Teleportation(cocos2d::Ref* pSender);
+
 	//__________________________________________________
 private:
-	void logic(float dt);
+    
+    int enemyLeftRightDis;
+    void logic(float t);
 	Player* m_player;
 	bool onContactBegin(PhysicsContact& contact);
 	BackgroundLayer_japan* m_backgroundLayer;
 
-	Vector<Sprite *> allEnemy;
-	void newEnemy_left(float t);
-	void newEnemy_right(float t);
-	void newEnemy_crow(float t);
-	void moveEnemy(float t);
+    Vector<Sprite *> allEnemyFallen;
+	Vector<Sprite *> allEnemyRoof;
+    Vector<Sprite *> allStar;
+    Vector<Sprite *> allEnemyLeftCrow;
+    Vector<Sprite *> allEnemyRightCrow;
+	void newEnemy(float t);
+//	void newEnemy_crow(float t);
+	void moveEnemyRoof(float t);
+    void moveEnemyFallen(float t);
+    void moveStar(float t);
+    void moveEnemyRight(float t);
+    void moveEnemyLeft(float t);
+    void EnemyFlip();
 	void update(float t);
 	void killMe(Node * pSender);
 	void jumpToMenu();
 	float start_point;
-	int HP = 5;
+	int HP = 3;
 	MonsterLayer* m_monsterLayer;
 	cocos2d::Vec2 testTouchBegin;
+
+	
 };
 
 #endif // __NEWGAMESCENE_JHAPAN_SCENE_H__

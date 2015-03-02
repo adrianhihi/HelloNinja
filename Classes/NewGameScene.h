@@ -26,31 +26,18 @@ public:
 	virtual bool onTouchBegan(Touch *touch, Event *unused_event);
 	virtual void onTouchMoved(Touch *touch, Event *unused_event);
 	virtual void onTouchEnded(Touch *touch, Event *unused_event);
-
-
 	CREATE_FUNC(NewGame);
 	void GoBack(cocos2d::Ref* pSender);
-	void playerAbility_Teleportation(cocos2d::Ref* pSender);
 	//__________________________________________________
 private:
+    int borderWidth;
 	void logic(float dt);
-//	void createOprUI();
-//	//void createTouch();
-//	void moveToLeft(Ref* sender, TouchEventType type);
-//	void moveToRight(Ref* sender, TouchEventType type);
-//	void quickMove(Ref* sender, TouchEventType type);
-//	void moveDown(Ref* sender, TouchEventType type);
 
 	//int flag = 0;
 	bool onContactBegin(PhysicsContact& contact);
 	BackgroundLayer* m_backgroundLayer;
 	Player* m_player;
 	MonsterLayer* m_monsterLayer;
-
-	
-	Vec2 testTouchBegin;
-	void update(float time);
-
 };
 
 #endif // __NEWGAME_SCENE_H__
