@@ -1,340 +1,199 @@
-#include "HelloWorldScene.h"
-#include "SimpleAudioEngine.h"
 #include "NewGameScene.h"
-#include "NewGameScene_japan.h"
+#include "HelloWorldScene.h"
+#include "BackgroundLayer.h"
 #include "Setting.h"
-#include "halloween.h"
-#include "MenuSettings.h"
+#include "Player.h"
 
-USING_NS_CC;
-HelloWorld::~HelloWorld(){}
-Scene* HelloWorld::createScene()
+#include "ObjectTag.h"
+
+#include "SimpleAudioEngine.h"
+
+NewGame::~NewGame(){}
+
+
+Scene* NewGame::createScene()
 {
-    auto scene = Scene::create();
-    auto layer = HelloWorld::create();
-    scene->addChild(layer);
+	auto NewGame_scene = Scene::createWithPhysics();
+	// 'scene' is an autorelease object
+	Vect gravity(0, -0.5);
+	NewGame_scene->getPhysicsWorld()->setGravity(gravity);
+	NewGame_scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+	Size visibleSize = Director::getInstance()->getWinSize();
+
+
+	auto body = PhysicsBody::createEdgeBox(Size(visibleSize.width, visibleSize.height), PHYSICSBODY_MATERIAL_DEFAULT, 3);
+	auto node = Node::create();
+	node->setPosition(Point(visibleSize.width / 2, visibleSize.height / 2));
+
+	node->setPhysicsBody(body);
+
+	NewGame_scene->addChild(node);
+
+	auto backgroundLayer = BackgroundLayer::create();
+	NewGame_scene->addChild(backgroundLayer, 4);
+
+	// 'layer' is an autorelease object
+	auto layer = NewGame::create();
+	// add layer as a child to scene
+	NewGame_scene->addChild(layer);
+	layer->m_backgroundLayer = backgroundLayer;
+
+
 	
-    return scene;
+	return NewGame_scene;
 }
 
-
-bool HelloWorld::init()
+bool NewGame::init()
 {
+	if (!Layer::init()){
+		return false;
+	}
+	//this->schedule(schedule_selector(TollgateScene::logic));
+	Size visibleSize = Director::getInstance()->getWinSize();
 
-    if ( !Layer::init() )
-    {
-        return false;
-    }
-    
-    Size visibleSize = Director::getInstance()->getVisibleSize();
-	Size windowSize = Director::getInstance()->getWinSize();
-    Vec2 origin = Director::getInstance()->getVisibleOrigin();
-    
-    m_bg1 = Sprite::create("bg.png");
-    m_bg1->setTag(1);
-    m_bg1->setPosition(Point(windowSize.width/2, windowSize.height/2));
-    this->addChild(m_bg1);
-    
-    m_bg2 = Sprite::create("bg.png");
-    m_bg2->setTag(2);
-    m_bg2->setPosition(Point(m_bg1->getPositionX()-m_bg2->getContentSize().width, windowSize.height/2));
-    this->addChild(m_bg2);
-    
+	Vec2 origin = Director::getInstance()->getVisibleOrigin();
+	//set up the border
 
-	//close button
-    auto closeItem = MenuItemImage::create(
-                                           "CloseNormal.png",
-                                           "CloseSelected.png",
-                                           CC_CALLBACK_1(HelloWorld::menuCloseCallback, this));
-    
-	closeItem->setPosition(Vec2(origin.x + visibleSize.width - closeItem->getContentSize().width/2 ,
-                                origin.y + closeItem->getContentSize().height/2));
-    auto menu_1 = Menu::create(closeItem, NULL);
-    menu_1->setPosition(Vec2::ZERO);
-    this->addChild(menu_1, 2);
-
-	//title
-    auto label = Label::createWithTTF("Hello Ninja!", "fonts/Marker Felt.ttf", 24);
-    
-
-    label->setPosition(Vec2(origin.x + visibleSize.width/2,
-                            origin.y + visibleSize.height - label->getContentSize().height));
-    this->addChild(label, 2);
-
-	//add player logo
-	Sprite_1 = Sprite::create("clumsy_ninja.png");
-	Sprite_1->setScale(0.75);
-	Sprite_1->setPosition(Point(100, 100));
-	this->addChild(Sprite_1, 0);
-	auto Move_To = MoveTo::create(3, Point((visibleSize.width / 2) + 10 + origin.x, (visibleSize.height / 2) + 10 + origin.y));
-	auto Jump_By = JumpBy::create(3, Point(100, 0), 50, 3);
-	auto action = RepeatForever::create(Jump_By);
-	auto action1 = Repeat::create(Jump_By, 5);
-	auto seq = Sequence::create(Move_To, action1, nullptr);
-	Sprite_1->runAction(action);
-
-	//main menu
-	auto menu_item_1 = MenuItemImage::create("Menu/Ocean1.png"			, "Menu/Ocean2.png"			, CC_CALLBACK_1(HelloWorld::Play		, this));
 	
-	auto menu_item_2 = MenuItemImage::create("Menu/Nihon1.png"			, "Menu/Nihon2.png"			, CC_CALLBACK_1(HelloWorld::Nihon	, this));
 
-	auto menu_item_3 = MenuItemImage::create("Menu/Horror1.png"			, "Menu/Horror2.png"		, CC_CALLBACK_1(HelloWorld::Halloween, this));
 
-	auto menu_item_4 = MenuItemImage::create("Menu/Resume.png", "Menu/Resume_1.png", CC_CALLBACK_1(HelloWorld::Resume, this));
+	// position the label on the center of the screen
+	auto label = Label::createWithTTF("Hello Ninja!", "fonts/Marker Felt.ttf", 24);
 
-	auto menu_item_5 = MenuItemImage::create("Menu/Highscores.png", "Menu/Highscores_1.png", CC_CALLBACK_1(HelloWorld::Highscores, this));
-    auto menu_item_6 = MenuItemImage::create("Menu/Settings.png","Menu/Settings_1.png", CC_CALLBACK_1(HelloWorld::Settings, this));
+	label->setPosition(Vec2(origin.x + visibleSize.width / 2,
+		origin.y + visibleSize.height - label->getContentSize().height));
 
-    menu_item_1->setScale(0.8);
-    menu_item_2->setScale(0.8);
-    menu_item_3->setScale(0.8);
-    menu_item_4->setScale(0.8);
-    menu_item_5->setScale(0.8);
-    menu_item_6->setScale(0.8);
+	// add the label as a child to this layer
+	this->addChild(label, 1);
 
-	auto menu = Menu::create(menu_item_1, menu_item_2, menu_item_3, menu_item_4, menu_item_5,menu_item_6, NULL);
-	menu->alignItemsVertically();
-	this->addChild(menu,3);
 
-	//background music    
+    auto border = BackgroundLayer::create();
+    borderWidth = border->borderWidth;
 
-	CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("audio/Ninja.mp3");
-	CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("audio/Ninja.mp3", true);
-	CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(0.2);
-	//playonloop.com
+	auto menu_item_1 = MenuItemFont::create("Go Back", CC_CALLBACK_1(NewGame::GoBack, this));
+    menu_item_1->setScale(1.2);
+	menu_item_1->setPosition(Vec2(visibleSize.width - menu_item_1->getContentSize().width -borderWidth/2,
+                                  menu_item_1->getContentSize().height / 2));
 
-	//touch effects
-	auto listener_1 = EventListenerTouchAllAtOnce::create();
 
-	listener_1->onTouchesBegan = CC_CALLBACK_2(HelloWorld::onTouchesBegan, this);
-	listener_1->onTouchesMoved = CC_CALLBACK_2(HelloWorld::onTouchesMoved, this);
-	listener_1->onTouchesEnded = CC_CALLBACK_2(HelloWorld::onTouchesEnded, this);
-	
-	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener_1, this);
-	this->schedule(schedule_selector(HelloWorld::bgMv));
+	auto *menu = Menu::create(menu_item_1, NULL);
+
+	menu -> setPosition(Point(0, 0));
+
+	this->addChild(menu, 6);
+
+	auto bg_sprite_1 = Sprite::create("seaworld/s1.png");
+	bg_sprite_1->setPosition(Point(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
+	auto Move_Down_1 = MoveTo::create(100, Point(visibleSize.width / 2 + origin.x, -visibleSize.height / 2));
+	bg_sprite_1->runAction(Move_Down_1);
+	// add the sprite as a child to this layer
+	this->addChild(bg_sprite_1,3);
+
+	auto bg_sprite_2 = Sprite::create("seaworld/s2.png");
+
+	bg_sprite_2->setPosition(Point(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
+
+    bg_sprite_2->runAction(MoveTo::create(300, Point(visibleSize.width / 2 + origin.x, -visibleSize.height / 2)));
+
+	// add the sprite as a child to this layer
+	this->addChild(bg_sprite_2,2);
+	auto bg_sprite_3 = Sprite::create("seaworld/s3.png");
+
+	bg_sprite_3->setPosition(Point(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
+
+    bg_sprite_3->runAction(MoveTo::create(500, Point(visibleSize.width / 2 + origin.x, -visibleSize.height / 2)));
+
+	// add the sprite as a child to this layer
+	this->addChild(bg_sprite_3,1);
+	auto bg_sprite_4 = Sprite::create("seaworld/s4.png");
+	bg_sprite_4->setPosition(Point(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
+
+	// add the sprite as a child to this layer
+	this->addChild(bg_sprite_4, 0);
+
+	this->schedule(schedule_selector(NewGame::logic));
+
+	//player
+    auto m_player = Player::create();
+    m_player->setPosition(Point(borderWidth + m_player->playerWidth/2, visibleSize.height * 0.16f));
+	this->addChild(m_player, 5, 0);
+
+	//score
+	//auto size = bg_sprite_4->getContentSize();
+	auto labelScore = Label::createWithTTF("score:0", "fonts/Marker Felt.ttf", 35);
+	labelScore->setPosition(Point(visibleSize.width / 2, visibleSize.height - 100));
+	labelScore->setColor(Color3B::RED);
+	labelScore->setTag(120);
+
+
+
+	EventListenerTouchOneByOne * event = EventListenerTouchOneByOne::create();
+	event->setSwallowTouches(true);
+	event->onTouchBegan = CC_CALLBACK_2(NewGame::onTouchBegan, this);
+	event->onTouchMoved = CC_CALLBACK_2(NewGame::onTouchMoved, this);
+	event->onTouchEnded = CC_CALLBACK_2(NewGame::onTouchEnded, this);
+
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(event, this);
+
+	this->scheduleUpdate();
+
 	return true;
 }
 
-void HelloWorld::Play(cocos2d::Ref *pSender){
-	CCLOG("Play");
-	CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/click.wav");
-	CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/click.wav");
-	CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(0.2);
-	auto scene = NewGame::createScene();
-	Director::getInstance()->replaceScene(scene);
 
+void NewGame::onExit()
+{
+	Layer::onExit();
 
+	_eventDispatcher->removeEventListenersForTarget(this);
 }
-void HelloWorld::Resume(cocos2d::Ref *pSender){
-	CCLOG("Resume");
-	CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/click.wav");
-	CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/click.wav");
-	CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(0.2);
-}
-void HelloWorld::Highscores(cocos2d::Ref *pSender){
-	CCLOG("HS");
-	CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/click.wav");
-	CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/click.wav");
-	CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(0.2);
-}
-void HelloWorld::Nihon(cocos2d::Ref *pSender){
-	CCLOG("Nihon");
-	CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/click.wav");
-	CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/click.wav");
-	CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(0.2);
-	auto scene = NewGameScene_japan::createScene();
-	Director::getInstance()->replaceScene(scene);
-
+void NewGame::logic(float dt)
+{
+	m_backgroundLayer->logic(dt);
 }
 
-void HelloWorld::Halloween(cocos2d::Ref *pSender){
-	CCLOG("Nihon");
-	CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/click.wav");
-	CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/click.wav");
-	CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(0.2);
-	auto scene = Halloween::createScene();
-	Director::getInstance()->replaceScene(scene);
-
+void NewGame::GoBack(cocos2d::Ref *pSender){
+	CCLOG("go back");
+    Director::getInstance()->replaceScene(HelloWorld::createScene());
 }
 
-void HelloWorld::Settings(cocos2d::Ref *pSender){
-    CCLOG("Settings");
-    CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/click.wav");
-    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/click.wav");
-    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(0.2);
-    auto scene = MenuSettings::createScene();
-    Director::getInstance()->pushScene(scene);
+
+
+
+bool NewGame::onTouchBegan(Touch *touch, Event *unsured_event){
+
+    auto my_player = dynamic_cast<Player*>(this->getChildByTag(0));
     
-}
-
-
-void HelloWorld::onTouchesEnded(const std::vector<cocos2d::Touch *> &touches, cocos2d::Event *event6){
-	CCLOG("touches Eneded");
-}
-
-void HelloWorld::onTouchesMoved(const std::vector<cocos2d::Touch *> &touches, cocos2d::Event *event5){
-	CCLOG("touches moved");
-}
-
-
-void HelloWorld::onTouchesBegan(const std::vector<cocos2d::Touch *> &touches, cocos2d::Event *event4){
-
-	Size visibleSize = Director::getInstance()->getVisibleSize();
-	Vec2 origin = Director::getInstance()->getVisibleOrigin();
-
-	Sprite_1 = Sprite::create("clumsy_ninja.png");
-	Sprite_1->setScale(0.7);
-	Sprite_1->setPosition(Point(100, 100));
-	this->addChild(Sprite_1, 1);
-	auto Move_To = MoveTo::create(3, Point((visibleSize.width / 2) + 10 + origin.x, (visibleSize.height / 2) + 10 + origin.y));
-	auto Jump_By = JumpBy::create(3, Point(100, 0), 50, 3);
-
-
-	auto action = RepeatForever::create(Jump_By);
-	auto action1 = Repeat::create(Jump_By, 5);
-
-	//auto action = Repeat::create(RotateBy::create(2, 15), 5);
-	auto seq = Sequence::create(Move_To, action1, nullptr);
-	Sprite_1->runAction(action);
-
-}
-
-void HelloWorld::onTouchEnded(cocos2d::Touch * touch, cocos2d::Event *event3){
-
-	CCLOG("onTouchEnded x = %f, y = %f", touch->getLocation().x, touch->getLocation().y);
-
-}
-
-void HelloWorld::onTouchMoved(cocos2d::Touch * touch, cocos2d::Event *event2){
-
-	CCLOG("onTouchMoved x = %f, y = %f", touch->getLocation().x, touch->getLocation().y);
-	
-}
-
-bool HelloWorld::onTouchBegan(cocos2d::Touch * touch, cocos2d::Event *event1){
-	CCLOG("onTouchBegan x = %f, y = %f", touch->getLocation().x, touch->getLocation().y);
-	Size visibleSize = Director::getInstance()->getVisibleSize();
-	Vec2 origin = Director::getInstance()->getVisibleOrigin();
-
-	Sprite_1 = Sprite::create("clumsy_ninja.png");
-	Sprite_1->setScale(0.8);
-	Sprite_1->setPosition(Point(100, 100));
-	this->addChild(Sprite_1, 1);
-	auto Move_To = MoveTo::create(3, Point((visibleSize.width / 2) + 10 + origin.x, (visibleSize.height / 2) + 10 + origin.y));
-	auto Jump_By = JumpBy::create(3, Point(100, 0), 50, 3);
-
-
-	auto action = RepeatForever::create(Jump_By);
-	auto action1 = Repeat::create(Jump_By, 5);
-
-	//auto action = Repeat::create(RotateBy::create(2, 15), 5);
-	auto seq = Sequence::create(Move_To, action1, nullptr);
-	Sprite_1->runAction(action);
-
-	
-	return true;
-}
-	
-void HelloWorld::PauseMusic(float dt){
-	CocosDenshion::SimpleAudioEngine::getInstance()->pauseBackgroundMusic();
-}
-void HelloWorld::ResumeMusic(float dt){
-	CocosDenshion::SimpleAudioEngine::getInstance()->resumeBackgroundMusic();
-}
-
-void HelloWorld::StopMusic(float dt){
-	CocosDenshion::SimpleAudioEngine::getInstance()->stopBackgroundMusic();
-}
-
-void HelloWorld::menuCloseCallback(Ref* pSender)
-{
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WP8) || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
-	MessageBox("You pressed the close button. Windows Store Apps do not implement a close button.","Alert");
-    return;
-#endif
-
-    Director::getInstance()->end();
-
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-    exit(0);
-#endif
-}
-/*
-void HelloWorld::clickStart(Ref* pSender)
-{
-     //do nothing right now
-	CCLOG("play");
-	auto new_game_scene = Scene::create();
-	//Director::getInstance()->pushScene(new_game_scene);
-	//new_game_scene->addChild(label1);
-	Director::getInstance()->replaceScene(new_game_scene);
-
-	//https://www.youtube.com/watch?v=qXqgSNUf9Cc&list=PLRtjMdoYXLf4od_bOKN3WjAPr7snPXzoe
-	//https://www.youtube.com/watch?v=Vgtu5SJUnrU&index=37&list=PLRtjMdoYXLf4od_bOKN3WjAPr7snPXzoe
-
-}
-
-void HelloWorld::clickResume(Ref* pSender)
-{
-	//do nothing right now
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WP8) || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
-	MessageBox("You pressed the close button. Windows Store Apps do not implement a close button.", "Alert");
-	return;
-#endif
-
-	Director::getInstance()->end();
-
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-	exit(0);
-#endif
-}
-//http://dabuttonfactory.com/   create the button
-//http://www.2cto.com/kf/201501/368610.html
-//http://edu.51cto.com/lesson/id-24803.html class
-
-void HelloWorld::clickOptions(Ref* pSender)
-{
-	//do nothing right now
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WP8) || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
-	MessageBox("You pressed the close button. Windows Store Apps do not implement a close button.", "Alert");
-	return;
-#endif
-
-	Director::getInstance()->end();
-
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-	exit(0);
-#endif
-}
-
-void HelloWorld::clickLevel(Ref* pSender)
-{
-	//do nothing right now
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WP8) || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
-	MessageBox("You pressed the close button. Windows Store Apps do not implement a close button.", "Alert");
-	return;
-#endif
-
-	Director::getInstance()->end();
-
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-	exit(0);
-#endif
-}
-
-*/
-
-//http://blog.csdn.net/musicvs/article/details/24928929
-void HelloWorld::bgMv(float t) {
-    auto size = Director::getInstance()->getWinSize();
-    auto bk1 = this->getChildByTag(1);
-    auto bk2 = this->getChildByTag(2);
-    bk1->setPositionX(bk1->getPositionX() - 10);
-    bk2->setPositionX(bk2->getPositionX() - 10);
-    if (bk1->getPositionX() < -bk1->getContentSize().width/2) {
-        bk1->setPositionX(bk2->getPositionX()+bk2->getContentSize().width);
+    Size size = Director::getInstance()->getWinSize();
+    
+    // add the label as a child to this layer
+    
+    
+    
+    int player_x = my_player->getPosition().x;
+    
+    
+    int x_right = size.width - borderWidth - my_player->playerWidth/2;
+    int x_left = borderWidth + my_player->playerWidth/2;
+    
+    if (player_x == x_right){
+        
+        my_player->isLeft = true;
+        
+        my_player-> runAction(MoveTo::create(0.5, Point(x_left, size.height * 0.16f)));
     }
-    else if(bk2->getPositionX() < -bk2->getContentSize().width/2 ) {
-        bk2->setPositionX(bk1->getPositionX()+bk1->getContentSize().width);
+    else if (player_x == x_left){
+        my_player-> runAction(MoveTo::create(0.5, Point(x_right, size.height * 0.16f)));
+        my_player->isLeft = false;
     }
+    return true;
+}
+
+void NewGame::onTouchMoved(Touch * touch, Event *unsured_event){
+
+	
+}
+
+void NewGame::onTouchEnded(Touch *touch, Event *unused_event){
+
 }
