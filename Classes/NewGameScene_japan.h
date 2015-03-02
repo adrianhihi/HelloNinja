@@ -36,6 +36,7 @@ public:
 	//__________________________________________________
 private:
     
+    int enemyNum;
     int enemyLeftRightDis;
     void logic(float t);
 	Player* m_player;

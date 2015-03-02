@@ -146,6 +146,7 @@ bool NewGameScene_japan::init()
     
     //
     enemyLeftRightDis = -1;
+    enemyNum = -1;
     
 	//Enemy
     this->schedule(schedule_selector(NewGameScene_japan::logic)); // borderSpeed;
@@ -177,7 +178,6 @@ void NewGameScene_japan::onExit()
 
 
 void NewGameScene_japan::GoBack(cocos2d::Ref *pSender){
-	CCLOG("go back");
     Director::getInstance()->replaceScene(HelloWorld::createScene());
 }
 
@@ -319,95 +319,311 @@ void NewGameScene_japan::newEnemy(float t) {
 	auto size = Director::getInstance()->getWinSize();
 	auto border = Sprite::create("border/border_j.png");
 	auto border_width = border->getContentSize().width;
+    auto roof = Sprite::create("japan/roof_r.png");
+    int roofWidth = roof->getContentSize().width;
+
 
 	Sprite * enemy;
     Sprite * star;
     Sprite * crow;
+    Vector<SpriteFrame *> crowFram;
     
-    int RandNum = random(0, 13);
+    enemyNum ++;
     
-    if (enemyLeftRightDis < 12 && enemyLeftRightDis > 9) {
-        while (enemyLeftRightDis == RandNum) {
-            RandNum = random(0, 13);
+    switch (enemyNum) {
+            
+        case 0: {
+            enemy = Sprite::create("aaa.png");
+            int x = random(border_width + enemy->getContentSize().width/2 + roofWidth, size.width- border_width -roofWidth - enemy->getContentSize().width/2);
+            enemy->setPosition(Point(x, size.height+100));
+            allEnemyFallen.pushBack(enemy);
+            this->addChild(enemy, 7);
         }
-        
-        if (enemyLeftRightDis < 12 && enemyLeftRightDis > 9){
-            enemyLeftRightDis = RandNum;
+            break;
+        case 1: {
+            enemy = Sprite::create("japan/roof_r.png");
+            enemy->setPosition(Point(size.width - border_width - enemy->getContentSize().width/2, size.height + 100));
+            this -> addChild(enemy, 7);
+            allEnemyRoof.pushBack(enemy);
         }
-    }
-    
-    auto roof = Sprite::create("japan/roof_r.png");
-    int roofWidth = roof->getContentSize().width;
-    
-    if (RandNum < 3) {
-        enemy = Sprite::create("japan/roof_r.png");
-        enemy->setPosition(Point(size.width - border_width - enemy->getContentSize().width/2, size.height + 100));
-    }
-    else if (RandNum < 6) {
-        enemy = Sprite::create("japan/roof_l.png");
-        enemy->setPosition(Point(border_width + enemy->getContentSize().width/2, size.height + 100));
-    }
-    else if (RandNum < 9) {
-        if (RandNum < 8) {
-           enemy = Sprite::create("aaa.png");
+            break;
+        case 2: {
+            enemy = Sprite::create("japan/roof_l.png");
+            enemy->setPosition(Point(border_width + enemy->getContentSize().width/2, size.height + 100));
+            this -> addChild(enemy, 7);
+            allEnemyRoof.pushBack(enemy);
         }
-        else{
-           enemy = Sprite::create("ccc.png");
-        }
-        int x = random(border_width + enemy->getContentSize().width/2 + roofWidth, size.width- border_width - roofWidth - enemy->getContentSize().width/2);
-        enemy->setPosition(Point(x, size.height+100));
-    }
-    else if (RandNum == 9) {
-        star = Sprite::create("star.png");
-        int x = random(border_width + star->getContentSize().width/2 + roofWidth, size.width- border_width - roofWidth - star->getContentSize().width/2);
-        star->setPosition(Point(x, size.height+100));
-    }
-    else if (RandNum < 12) {
-        Vector<SpriteFrame *> crowFram;
-        if (RandNum == 10) {
-            for (int i = 0; i < 4; i++) {
-                auto sf = SpriteFrame::create("japan/crow_left.png", Rect(i*300/4, 0, 300/4, 63));
-                crowFram.pushBack(sf);
-            }
-
-        }
-        else {
+            break;
+        case 3: {
             for (int i = 0; i < 4; i++) {
                 auto sf = SpriteFrame::create("japan/crow_right.png", Rect(i*300/4, 0, 300/4, 63));
                 crowFram.pushBack(sf);
             }
-        }
-        auto ani = Animation::createWithSpriteFrames(crowFram, 0.03);
-        crow = Sprite::create();
-        crow->runAction(RepeatForever::create(Animate::create(ani)));
-    }
-		
-    
-    if (RandNum < 6 && allEnemyRightCrow.size() == 0 && allEnemyLeftCrow.size() == 0) {
-        this->addChild(enemy, 7);
-        allEnemyRoof.pushBack(enemy);
-    }
-    else if (RandNum < 9 && allEnemyRightCrow.size() == 0 && allEnemyLeftCrow.size() == 0) {
-        this->addChild(enemy, 7);
-        allEnemyFallen.pushBack(enemy);
-    }
-    else if (RandNum == 9) {
-        this->addChild(star, 7);
-        allStar.pushBack(star);
-    }
-    else if (RandNum < 12) {
-        if (RandNum == 10 && allEnemyLeftCrow.size() == 0) {
-            crow->setPosition(size.width - borderWidth - crow->getContentSize().width/2, size.height + 100);
-            allEnemyRightCrow.pushBack(crow);
+            auto ani = Animation::createWithSpriteFrames(crowFram, 0.03);
+            crow = Sprite::create();
+            crow->runAction(RepeatForever::create(Animate::create(ani)));
+            crow->setPosition(borderWidth + crow->getContentSize().width/2 + 30, size.height + 100);
             this->addChild(crow, 7);
-        }
-        else if (RandNum == 11 && allEnemyRightCrow.size() == 0){
-            crow->setPosition(borderWidth + crow->getContentSize().width/2, size.height + 100);
             allEnemyLeftCrow.pushBack(crow);
-            this->addChild(crow, 7);
         }
+            break;
+        case 4: {
+            for (int i = 0; i < 4; i++) {
+                auto sf = SpriteFrame::create("japan/crow_left.png", Rect(i*300/4, 0, 300/4, 63));
+                crowFram.pushBack(sf);
+            }
+            crow = Sprite::create();
+            crow->runAction(RepeatForever::create(Animate::create(Animation::createWithSpriteFrames(crowFram, 0.03))));
+            crow->setPosition(size.width - borderWidth - crow->getContentSize().width/2 - 30, size.height + 100);
+            this->addChild(crow, 7);
+            allEnemyRightCrow.pushBack(crow);
+            
+            int RandNum = random(0, 2);
+            CCLOG("RandNum %d", RandNum);
+            switch (RandNum) {
+                case 0:
+                    enemyNum = -1;
+                    break;
+                
+                case 1:
+                    enemyNum = 4;
+                    break;
+                
+                case 2:
+                    enemyNum = 9;
+                    break;
+                    
+                default:
+                    break;
+            }
+        }
+            break;
+    
+        case 5: {
+            star = Sprite::create("star.png");
+            int x = random(border_width + star->getContentSize().width/2 + roofWidth, size.width- border_width - roofWidth - star->getContentSize().width/2);
+            star->setPosition(Point(x, size.height+100));
+            this->addChild(star, 7);
+            allStar.pushBack(star);
+        }
+            break;
+        case 6: {
+            enemy = Sprite::create("japan/roof_l.png");
+            enemy->setPosition(Point(border_width + enemy->getContentSize().width/2, size.height + 100));
+            this -> addChild(enemy, 7);
+            allEnemyRoof.pushBack(enemy);
+        }
+            break;
+        case 7: {
+            for (int i = 0; i < 4; i++) {
+                auto sf = SpriteFrame::create("japan/crow_right.png", Rect(i*300/4, 0, 300/4, 63));
+                crowFram.pushBack(sf);
+            }
+            auto ani = Animation::createWithSpriteFrames(crowFram, 0.03);
+            crow = Sprite::create();
+            crow->runAction(RepeatForever::create(Animate::create(ani)));
+            crow->setPosition(borderWidth + crow->getContentSize().width/2 + 30, size.height + 100);
+            this->addChild(crow, 7);
+            allEnemyLeftCrow.pushBack(crow);
+        }
+            break;
+        case 8: {
+            enemy = Sprite::create("japan/roof_r.png");
+            enemy->setPosition(Point(size.width - border_width - enemy->getContentSize().width/2, size.height + 100));
+            this -> addChild(enemy, 7);
+            allEnemyRoof.pushBack(enemy);
+        }
+            break;
+        case 9: {
+            for (int i = 0; i < 4; i++) {
+                auto sf = SpriteFrame::create("japan/crow_left.png", Rect(i*300/4, 0, 300/4, 63));
+                crowFram.pushBack(sf);
+            }
+            crow = Sprite::create();
+            crow->runAction(RepeatForever::create(Animate::create(Animation::createWithSpriteFrames(crowFram, 0.03))));
+            crow->setPosition(size.width - borderWidth - crow->getContentSize().width/2 - 30, size.height + 100);
+            this->addChild(crow, 7);
+            allEnemyRightCrow.pushBack(crow);
+            int RandNum = random(0, 2);
+            CCLOG("RandNum %d", RandNum);
+            switch (RandNum) {
+                case 0:
+                    enemyNum = -1;
+                    break;
+                    
+                case 1:
+                    enemyNum = 4;
+                    break;
+                    
+                case 2:
+                    enemyNum = 9;
+                    break;
+                    
+                default:
+                    break;
+            }
+        }
+            break;
         
+        case 10: {
+            enemy = Sprite::create("ccc.png");
+            int x = random(border_width + enemy->getContentSize().width/2 + roofWidth, size.width- border_width -roofWidth - enemy->getContentSize().width/2);
+            enemy->setPosition(Point(x, size.height+100));
+            allEnemyFallen.pushBack(enemy);
+            this->addChild(enemy);
+        }
+            break;
+        case 11: {
+            enemy = Sprite::create("japan/roof_l.png");
+            enemy->setPosition(Point(border_width + enemy->getContentSize().width/2, size.height + 100));
+            this -> addChild(enemy, 7);
+            allEnemyRoof.pushBack(enemy);
+        }
+            break;
+        case 12: {
+            enemy = Sprite::create("japan/roof_r.png");
+            enemy->setPosition(Point(size.width - border_width - enemy->getContentSize().width/2, size.height + 100));
+            this -> addChild(enemy, 7);
+            allEnemyRoof.pushBack(enemy);
+        }
+            break;
+        case 13: {
+            for (int i = 0; i < 4; i++) {
+                auto sf = SpriteFrame::create("japan/crow_left.png", Rect(i*300/4, 0, 300/4, 63));
+                crowFram.pushBack(sf);
+            }
+            crow = Sprite::create();
+            crow->runAction(RepeatForever::create(Animate::create(Animation::createWithSpriteFrames(crowFram, 0.03))));
+            crow->setPosition(size.width - borderWidth - crow->getContentSize().width/2 - 30, size.height + 100);
+            this->addChild(crow, 7);
+            allEnemyRightCrow.pushBack(crow);
+        }
+            break;
+        case 14: {
+            for (int i = 0; i < 4; i++) {
+                auto sf = SpriteFrame::create("japan/crow_right.png", Rect(i*300/4, 0, 300/4, 63));
+                crowFram.pushBack(sf);
+            }
+            auto ani = Animation::createWithSpriteFrames(crowFram, 0.03);
+            crow = Sprite::create();
+            crow->runAction(RepeatForever::create(Animate::create(ani)));
+            crow->setPosition(borderWidth + crow->getContentSize().width/2 + 30, size.height + 100);
+            this->addChild(crow, 7);
+            allEnemyLeftCrow.pushBack(crow);
+            int RandNum = random(0, 2);
+            CCLOG("RandNum %d", RandNum);
+            switch (RandNum) {
+                case 0:
+                    enemyNum = -1;
+                    break;
+                    
+                case 1:
+                    enemyNum = 4;
+                    break;
+                    
+                case 2:
+                    enemyNum = 9;
+                    break;
+                    
+                default:
+                    break;
+            }
+        }
+            break;
+
+        
+        default:
+            break;
     }
+    
+    
+    
+    
+//    all random enemy
+//    int RandNum = random(0, 13);
+//    
+//    if (enemyLeftRightDis < 12 && enemyLeftRightDis > 9) {
+//        while (enemyLeftRightDis == RandNum) {
+//            RandNum = random(0, 13);
+//        }
+//        
+//        if (enemyLeftRightDis < 12 && enemyLeftRightDis > 9){
+//            enemyLeftRightDis = RandNum;
+//        }
+//    }
+//    
+//    auto roof = Sprite::create("japan/roof_r.png");
+//    int roofWidth = roof->getContentSize().width;
+//
+//    if (RandNum < 3) {
+//        enemy = Sprite::create("japan/roof_r.png");
+//        enemy->setPosition(Point(size.width - border_width - enemy->getContentSize().width/2, size.height + 100));
+//    }
+//    else if (RandNum < 6) {
+//        enemy = Sprite::create("japan/roof_l.png");
+//        enemy->setPosition(Point(border_width + enemy->getContentSize().width/2, size.height + 100));
+//    }
+//    else if (RandNum < 9) {
+//        if (RandNum < 8) {
+//           enemy = Sprite::create("aaa.png");
+//        }
+//        else{
+//           enemy = Sprite::create("ccc.png");
+//        }
+//        int x = random(border_width + enemy->getContentSize().width/2 + roofWidth, size.width- border_width - roofWidth - enemy->getContentSize().width/2);
+//        enemy->setPosition(Point(x, size.height+100));
+//    }
+//    else if (RandNum == 9) {
+//        star = Sprite::create("star.png");
+//        int x = random(border_width + star->getContentSize().width/2 + roofWidth, size.width- border_width - roofWidth - star->getContentSize().width/2);
+//        star->setPosition(Point(x, size.height+100));
+//    }
+//    else if (RandNum < 12) {
+//        Vector<SpriteFrame *> crowFram;
+//        if (RandNum == 10) {
+//            for (int i = 0; i < 4; i++) {
+//                auto sf = SpriteFrame::create("japan/crow_left.png", Rect(i*300/4, 0, 300/4, 63));
+//                crowFram.pushBack(sf);
+//            }
+//
+//        }
+//        else {
+//            for (int i = 0; i < 4; i++) {
+//                auto sf = SpriteFrame::create("japan/crow_right.png", Rect(i*300/4, 0, 300/4, 63));
+//                crowFram.pushBack(sf);
+//            }
+//        }
+//        auto ani = Animation::createWithSpriteFrames(crowFram, 0.03);
+//        crow = Sprite::create();
+//        crow->runAction(RepeatForever::create(Animate::create(ani)));
+//    }
+//		
+//    
+//    if (RandNum < 6 && allEnemyRightCrow.size() == 0 && allEnemyLeftCrow.size() == 0) {
+//        this->addChild(enemy, 7);
+//        allEnemyRoof.pushBack(enemy);
+//    }
+//    else if (RandNum < 9 && allEnemyRightCrow.size() == 0 && allEnemyLeftCrow.size() == 0) {
+//        this->addChild(enemy, 7);
+//        allEnemyFallen.pushBack(enemy);
+//    }
+//    else if (RandNum == 9) {
+//        this->addChild(star, 7);
+//        allStar.pushBack(star);
+//    }
+//    else if (RandNum < 12) {
+//        if (RandNum == 10 && allEnemyLeftCrow.size() == 0) {
+//            crow->setPosition(size.width - borderWidth - crow->getContentSize().width/2 - 30, size.height + 100);
+//            allEnemyRightCrow.pushBack(crow);
+//            this->addChild(crow, 7);
+//        }
+//        else if (RandNum == 11 && allEnemyRightCrow.size() == 0){
+//            crow->setPosition(borderWidth + crow->getContentSize().width/2 + 30, size.height + 100);
+//            allEnemyLeftCrow.pushBack(crow);
+//            this->addChild(crow, 7);
+//        }
+//        
+//    }
 	
 }
 
