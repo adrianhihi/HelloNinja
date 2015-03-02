@@ -1,4 +1,5 @@
 #include "BackgroundLayer_japan.h"
+#include "NewGameScene_japan.h"
 #include "ObjectTag.h"
 //#include "ObjectTag.h"
 
@@ -16,25 +17,26 @@ bool BackgroundLayer_japan::init()
 	{
 		return false;
 	}
-
-	Size visibleSize = Director::getInstance()->getWinSize();
-	Vec2 origin = Director::getInstance()->getVisibleOrigin();
+	auto parent = (NewGameScene_japan*)this->getParent();
+	Size visibleSize = parent->bg_size;
+	Vec2 origin = parent->bg_origin;
 
 	auto border = Sprite::create("border/border_j.png");
+	border->setScale(parent->bg_scale);
 	
-	borderWidth = border->getContentSize().width;
+	borderWidth = border->getBoundingBox().size.width;
 
-    border1 = createBorder_left(Point(border->getContentSize().width/2, visibleSize.height/2));
+	border1 = createBorder_left(Point(origin.x + borderWidth / 2, origin.y + visibleSize.height / 2));
     this->addChild(border1);
     
-    border3 = createBorder_left(Point(border->getContentSize().width/2, visibleSize.height/2 + border->getContentSize().height));
+	border3 = createBorder_left(Point(origin.x + borderWidth / 2, origin.y + visibleSize.height * 3 / 2 ));
     this->addChild(border3);
     
-    border2 = createBorder_right(Point(visibleSize.width - border->getContentSize().width/2, visibleSize.height/2));
+	border2 = createBorder_right(Point(origin.x + visibleSize.width - borderWidth / 2, visibleSize.height / 2));
     
     this->addChild(border2);
     
-    border4 = createBorder_right(Point(visibleSize.width - border->getContentSize().width/2, visibleSize.height/2 + border->getContentSize().height));
+	border4 = createBorder_right(Point(origin.x + visibleSize.width - borderWidth / 2, visibleSize.height * 3 / 2));
     
     this->addChild(border4);
 
@@ -44,10 +46,9 @@ bool BackgroundLayer_japan::init()
 
 Sprite* BackgroundLayer_japan::createBorder_left(Point pos)
 {
+	auto parent = (NewGameScene_japan*)getParent();
 	auto border = Sprite::create("border/border_j.png");
-	Size borderSize = border->getContentSize();
-	Size visibleSize = Director::getInstance()->getWinSize();
-
+	border->setScale(parent->bg_scale);
 
 	border->setPosition(pos);
 
@@ -56,8 +57,9 @@ Sprite* BackgroundLayer_japan::createBorder_left(Point pos)
 
 Sprite* BackgroundLayer_japan::createBorder_right(Point pos)
 {
+	auto parent = (NewGameScene_japan*)getParent();
 	auto border = Sprite::create("border/border_j_2.png");
-	Size borderSize = border->getContentSize();
+	border->setScale(parent->bg_scale);
 
 	border->setPosition(pos);
 

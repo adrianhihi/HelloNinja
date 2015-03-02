@@ -31,15 +31,19 @@ public:
 
 	void logic();
 	void beAtked(int iValue);
-    int playerWidth;
+    float playerWidth;
     direction m_dir;
+
+	Sprite * spPlayer;
+	Vector<SpriteFrame *> allframe;
+	Animate * ani;
+
 private:
     
     
-    Vector<SpriteFrame *> allframe;
-    Animate * ani;
     
-    Sprite * spPlayer;
+    
+   
     
 	void playerInit(float spriteScale);
 

@@ -33,10 +33,29 @@ public:
 	CREATE_FUNC(NewGameScene_japan);
 	void GoBack(cocos2d::Ref* pSender);
     int borderWidth;
+
+	float bg_scale;
+	Size bg_size;
+	Point bg_origin;
+
+	enum Scene_Tag :int
+	{
+		border1 = 1000,
+		border2 = 1001,
+		border3 = 1002,
+		border4 = 1003,
+		player = 0,
+	};
+
+	const int iSpeed = -10;
+	int score;
+
+	void playerAbility_Teleportation(cocos2d::Ref* pSender);
+
 	//__________________________________________________
 private:
-    
     int enemyNum;
+    
     int enemyLeftRightDis;
     void logic(float t);
 	Player* m_player;
@@ -63,6 +82,8 @@ private:
 	int HP = 3;
 	MonsterLayer* m_monsterLayer;
 	cocos2d::Vec2 testTouchBegin;
+
+	
 };
 
 #endif // __NEWGAMESCENE_JHAPAN_SCENE_H__
