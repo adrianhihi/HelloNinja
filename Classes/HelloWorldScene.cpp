@@ -3,8 +3,8 @@
 #include "NewGameScene.h"
 #include "NewGameScene_japan.h"
 #include "Setting.h"
-#include "BgLayer.h"
 #include "halloween.h"
+#include "MenuSettings.h"
 
 USING_NS_CC;
 HelloWorld::~HelloWorld(){}
@@ -12,12 +12,8 @@ Scene* HelloWorld::createScene()
 {
     auto scene = Scene::create();
     auto layer = HelloWorld::create();
-
-    scene->addChild(layer, 1);
-	auto bgLayer = BgLayer::create();
-	scene->addChild(bgLayer, 0);
-	layer->m_backgroundLayer = bgLayer;
-
+    scene->addChild(layer);
+	
     return scene;
 }
 
@@ -33,6 +29,17 @@ bool HelloWorld::init()
     Size visibleSize = Director::getInstance()->getVisibleSize();
 	Size windowSize = Director::getInstance()->getWinSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
+    
+    m_bg1 = Sprite::create("bg.png");
+    m_bg1->setTag(1);
+    m_bg1->setPosition(Point(windowSize.width/2, windowSize.height/2));
+    this->addChild(m_bg1);
+    
+    m_bg2 = Sprite::create("bg.png");
+    m_bg2->setTag(2);
+    m_bg2->setPosition(Point(m_bg1->getPositionX()-m_bg2->getContentSize().width, windowSize.height/2));
+    this->addChild(m_bg2);
+    
 
 	//close button
     auto closeItem = MenuItemImage::create(
@@ -77,16 +84,15 @@ bool HelloWorld::init()
 
 	auto menu_item_5 = MenuItemImage::create("Menu/Highscores.png", "Menu/Highscores_1.png", CC_CALLBACK_1(HelloWorld::Highscores, this));
 
-	//menu_item_1->setPosition(Vec2(origin.x + visibleSize.width *0.5f, (visibleSize.height *0.2f) * 4));
-	//menu_item_2->setPosition(Vec2(origin.x + visibleSize.width *0.5f, (visibleSize.height *0.2f) * 3));
-	//menu_item_3->setPosition(Vec2(origin.x + visibleSize.width *0.5f, (visibleSize.height *0.2f) * 2));
-	//menu_item_4->setPosition(Vec2(origin.x + visibleSize.width *0.5f, (visibleSize.height *0.2f) * 1));
+	auto menu_item_6 = MenuItemImage::create("Menu/Settings.png", "Menu/Highscores_1.png", CC_CALLBACK_1(HelloWorld::Settings, this));
 
-	auto *menu = Menu::create(menu_item_1, menu_item_2, menu_item_3, menu_item_4, menu_item_5, NULL);
-	menu->setScale(0.5);
-	menu->setPosition(Vec2(visibleSize.width / 4 + origin.x, visibleSize.height / 4 + origin.y));
-	//auto *menu = Menu::create(menu_item_1, NULL);
-	//menu -> setPosition(Point(0, 0));
+    menu_item_1->setScale(0.8);
+    menu_item_2->setScale(0.8);
+    menu_item_3->setScale(0.8);
+    menu_item_4->setScale(0.8);
+    menu_item_5->setScale(0.8);
+	menu_item_6->setScale(0.8);
+	auto menu = Menu::create(menu_item_1, menu_item_2, menu_item_3, menu_item_4, menu_item_5, menu_item_6, NULL);
 	menu->alignItemsVertically();
 	this->addChild(menu,3);
 
@@ -95,6 +101,7 @@ bool HelloWorld::init()
 	CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("audio/Ninja.mp3");
 	CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("audio/Ninja.mp3", true);
 	CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(0.2);
+	isPause = false;
 	//playonloop.com
 
 	//touch effects
@@ -105,7 +112,7 @@ bool HelloWorld::init()
 	listener_1->onTouchesEnded = CC_CALLBACK_2(HelloWorld::onTouchesEnded, this);
 	
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener_1, this);
-	this->schedule(schedule_selector(HelloWorld::logic));
+	this->schedule(schedule_selector(HelloWorld::bgMv));
 	return true;
 }
 
@@ -115,7 +122,7 @@ void HelloWorld::Play(cocos2d::Ref *pSender){
 	CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/click.wav");
 	CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(0.2);
 	auto scene = NewGame::createScene();
-	Director::getInstance()->pushScene(scene);
+	Director::getInstance()->replaceScene(scene);
 
 
 }
@@ -137,16 +144,26 @@ void HelloWorld::Nihon(cocos2d::Ref *pSender){
 	CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/click.wav");
 	CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(0.2);
 	auto scene = NewGameScene_japan::createScene();
-	Director::getInstance()->pushScene(scene);
+	Director::getInstance()->replaceScene(scene);
 
 }
 
 void HelloWorld::Halloween(cocos2d::Ref *pSender){
-	CCLOG("Nihon");
+	CCLOG("HalloWeen");
 	CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/click.wav");
 	CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/click.wav");
 	CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(0.2);
 	auto scene = Halloween::createScene();
+	Director::getInstance()->replaceScene(scene);
+
+}
+
+void HelloWorld::Settings(cocos2d::Ref *pSender){
+	CCLOG("Settings");
+	CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/click.wav");
+	CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/click.wav");
+	CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(0.2);
+	auto scene = MenuSettings::createScene();
 	Director::getInstance()->pushScene(scene);
 
 }
@@ -311,7 +328,16 @@ void HelloWorld::clickLevel(Ref* pSender)
 */
 
 //http://blog.csdn.net/musicvs/article/details/24928929
-void HelloWorld::logic(float dt)
-{
-	m_backgroundLayer->logic(dt);
+void HelloWorld::bgMv(float t) {
+    auto size = Director::getInstance()->getWinSize();
+    auto bk1 = this->getChildByTag(1);
+    auto bk2 = this->getChildByTag(2);
+    bk1->setPositionX(bk1->getPositionX() - 10);
+    bk2->setPositionX(bk2->getPositionX() - 10);
+    if (bk1->getPositionX() < -bk1->getContentSize().width/2) {
+        bk1->setPositionX(bk2->getPositionX()+bk2->getContentSize().width);
+    }
+    else if(bk2->getPositionX() < -bk2->getContentSize().width/2 ) {
+        bk2->setPositionX(bk1->getPositionX()+bk1->getContentSize().width);
+    }
 }

@@ -13,6 +13,7 @@ public:
 	virtual bool init();
 
 	void logic(float dt);
+    int borderWidth;
 private:
 	Sprite* m_bg1;
 	Sprite* m_bg2;
