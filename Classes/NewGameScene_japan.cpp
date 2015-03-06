@@ -18,7 +18,7 @@ Scene* NewGameScene_japan::createScene()
 	// 'scene' is an autorelease object
 	Vect gravity(0, -0.5f);
 	NewGameScene_japan->getPhysicsWorld()->setGravity(gravity);
-	NewGameScene_japan->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+	//NewGameScene_japan->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 
 

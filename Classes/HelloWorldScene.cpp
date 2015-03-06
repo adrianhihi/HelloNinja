@@ -30,31 +30,35 @@ bool HelloWorld::init()
 	Size windowSize = Director::getInstance()->getWinSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
     
+    
     m_bg1 = Sprite::create("bg.png");
     m_bg1->setTag(1);
     m_bg1->setPosition(Point(windowSize.width/2, windowSize.height/2));
+    bg_scale = visibleSize.height / m_bg1->getContentSize().height;
+    m_bg1->setScaleY(bg_scale);
     this->addChild(m_bg1);
     
     m_bg2 = Sprite::create("bg.png");
     m_bg2->setTag(2);
     m_bg2->setPosition(Point(m_bg1->getPositionX()-m_bg2->getContentSize().width, windowSize.height/2));
+    m_bg2->setScaleY(bg_scale);
     this->addChild(m_bg2);
     
 
 	//close button
-    auto closeItem = MenuItemImage::create(
-                                           "CloseNormal.png",
+    auto closeItem = MenuItemImage::create("CloseNormal.png",
                                            "CloseSelected.png",
                                            CC_CALLBACK_1(HelloWorld::menuCloseCallback, this));
     
-	closeItem->setPosition(Vec2(origin.x + visibleSize.width - closeItem->getContentSize().width/2 ,
-                                origin.y + closeItem->getContentSize().height/2));
+	closeItem->setPosition(Vec2(origin.x + visibleSize.width - closeItem->getContentSize().width/2*1.3 ,
+                                origin.y + closeItem->getContentSize().height/2*1.3));
+    closeItem->setScale(1.3);
     auto menu_1 = Menu::create(closeItem, NULL);
     menu_1->setPosition(Vec2::ZERO);
     this->addChild(menu_1, 2);
 
 	//title
-    auto label = Label::createWithTTF("Hello Ninja!", "fonts/Marker Felt.ttf", 24);
+    auto label = Label::createWithTTF("Hello Ninja!", "fonts/Marker Felt.ttf", 40);
     
 
     label->setPosition(Vec2(origin.x + visibleSize.width/2,
@@ -66,11 +70,11 @@ bool HelloWorld::init()
 	Sprite_1->setScale(0.75);
 	Sprite_1->setPosition(Point(100, 100));
 	this->addChild(Sprite_1, 0);
-	auto Move_To = MoveTo::create(3, Point((visibleSize.width / 2) + 10 + origin.x, (visibleSize.height / 2) + 10 + origin.y));
+	//auto Move_To = MoveTo::create(3, Point((visibleSize.width / 2) + 10 + origin.x, (visibleSize.height / 2) + 10 + origin.y));
 	auto Jump_By = JumpBy::create(3, Point(100, 0), 50, 3);
 	auto action = RepeatForever::create(Jump_By);
-	auto action1 = Repeat::create(Jump_By, 5);
-	auto seq = Sequence::create(Move_To, action1, nullptr);
+	//auto action1 = Repeat::create(Jump_By, 5);
+	//auto seq = Sequence::create(Move_To, action1, nullptr);
 	Sprite_1->runAction(action);
 
 	//main menu
@@ -182,22 +186,22 @@ void HelloWorld::onTouchesMoved(const std::vector<cocos2d::Touch *> &touches, co
 
 void HelloWorld::onTouchesBegan(const std::vector<cocos2d::Touch *> &touches, cocos2d::Event *event4){
 
-	Size visibleSize = Director::getInstance()->getVisibleSize();
+	//Size visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
 	Sprite_1 = Sprite::create("clumsy_ninja.png");
 	Sprite_1->setScale(0.7);
 	Sprite_1->setPosition(Point(100, 100));
 	this->addChild(Sprite_1, 1);
-	auto Move_To = MoveTo::create(3, Point((visibleSize.width / 2) + 10 + origin.x, (visibleSize.height / 2) + 10 + origin.y));
+	//auto Move_To = MoveTo::create(3, Point((visibleSize.width / 2) + 10 + origin.x, (visibleSize.height / 2) + 10 + origin.y));
 	auto Jump_By = JumpBy::create(3, Point(100, 0), 50, 3);
 
 
 	auto action = RepeatForever::create(Jump_By);
-	auto action1 = Repeat::create(Jump_By, 5);
+	//auto action1 = Repeat::create(Jump_By, 5);
 
 	//auto action = Repeat::create(RotateBy::create(2, 15), 5);
-	auto seq = Sequence::create(Move_To, action1, nullptr);
+	//auto seq = Sequence::create(Move_To, action1, nullptr);
 	Sprite_1->runAction(action);
 
 }
@@ -216,22 +220,22 @@ void HelloWorld::onTouchMoved(cocos2d::Touch * touch, cocos2d::Event *event2){
 
 bool HelloWorld::onTouchBegan(cocos2d::Touch * touch, cocos2d::Event *event1){
 	CCLOG("onTouchBegan x = %f, y = %f", touch->getLocation().x, touch->getLocation().y);
-	Size visibleSize = Director::getInstance()->getVisibleSize();
+	//Size visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
 	Sprite_1 = Sprite::create("clumsy_ninja.png");
 	Sprite_1->setScale(0.8);
 	Sprite_1->setPosition(Point(100, 100));
 	this->addChild(Sprite_1, 1);
-	auto Move_To = MoveTo::create(3, Point((visibleSize.width / 2) + 10 + origin.x, (visibleSize.height / 2) + 10 + origin.y));
+	//auto Move_To = MoveTo::create(3, Point((visibleSize.width / 2) + 10 + origin.x, (visibleSize.height / 2) + 10 + origin.y));
 	auto Jump_By = JumpBy::create(3, Point(100, 0), 50, 3);
 
 
 	auto action = RepeatForever::create(Jump_By);
-	auto action1 = Repeat::create(Jump_By, 5);
+	//auto action1 = Repeat::create(Jump_By, 5);
 
 	//auto action = Repeat::create(RotateBy::create(2, 15), 5);
-	auto seq = Sequence::create(Move_To, action1, nullptr);
+//	auto seq = Sequence::create(Move_To, action1, nullptr);
 	Sprite_1->runAction(action);
 
 	

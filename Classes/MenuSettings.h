@@ -14,10 +14,10 @@ public:
     ~MenuSettings();
     static cocos2d::Scene* createScene();
     bool init();
-    void goback(CCObject*);
+    void goback(cocos2d::Ref *pSender);
     CREATE_FUNC(MenuSettings);
-    void pauseMusicCallback(CCObject* pSender);
-    void recoverMusicCallback(CCObject* pSender);
+    void pauseMusicCallback(cocos2d::Ref *pSender);
+    void recoverMusicCallback(cocos2d::Ref *pSender);
 	bool isPause = false;
 };
 

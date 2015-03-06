@@ -28,11 +28,11 @@ bool MenuSettings::init()
 {
     CCLayer::init();
 	
-    Size visibleSize = Director::getInstance()->getVisibleSize();
+    //Size visibleSize = Director::getInstance()->getVisibleSize();
     Size windowSize = Director::getInstance()->getWinSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 	auto closeItem = MenuItemImage::create("Menu/menu.png", "Menu/menu_1.png", CC_CALLBACK_1(MenuSettings::goback, this));
-	closeItem->setScale(0.8f);
+	//closeItem->setScale(0.8f);
     
     //closeItem->setPosition(Vec2(origin.x + visibleSize.width - closeItem->getContentSize().width/2 ,
     //                            origin.y + closeItem->getContentSize().height/2));
@@ -66,7 +66,7 @@ bool MenuSettings::init()
 		"Menu/sound_off_1.png");
 	MenuItemToggle *toggleItem = MenuItemToggle::createWithCallback(CC_CALLBACK_1(MenuSettings::pauseMusicCallback, this), _turnOn, _turnOff, NULL);
 
-	toggleItem->setScale(0.8f);
+	//toggleItem->setScale(0.8f);
 	//toggleItem->setPosition(Point(visibleSize.width / 2, visibleSize.height / 2));
 
 	//MenuItemImage *_musicOn, *_musicOff;
@@ -94,13 +94,13 @@ bool MenuSettings::init()
     return true;
 }
 
-void MenuSettings:: goback(CCObject*)
+void MenuSettings:: goback(cocos2d::Ref *pSender)
 {
 	CCLOG("go back");
 	Director::getInstance()->replaceScene(HelloWorld::createScene());
 }
 
-void MenuSettings::pauseMusicCallback(CCObject*)
+void MenuSettings::pauseMusicCallback(cocos2d::Ref *pSender)
 {
 	if (isPause == true)
 	{
@@ -114,7 +114,7 @@ void MenuSettings::pauseMusicCallback(CCObject*)
 	}
 }
 
-void MenuSettings::recoverMusicCallback(CCObject*)
+void MenuSettings::recoverMusicCallback(cocos2d::Ref *pSender)
 {
     CocosDenshion::SimpleAudioEngine::getInstance()->resumeBackgroundMusic();
 	isPause = true;
