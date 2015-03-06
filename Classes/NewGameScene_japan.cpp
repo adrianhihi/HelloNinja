@@ -6,7 +6,8 @@
 
 #include "BackgroundLayer_japan.h"
 #include "GameOver.h"
-
+#include "MenuSettings.h"
+#include "GamePause.h"
 
 NewGameScene_japan::~NewGameScene_japan(){}
 
@@ -18,7 +19,7 @@ Scene* NewGameScene_japan::createScene()
 	// 'scene' is an autorelease object
 	Vect gravity(0, -0.5f);
 	NewGameScene_japan->getPhysicsWorld()->setGravity(gravity);
-	//NewGameScene_japan->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+	NewGameScene_japan->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 
 
@@ -245,24 +246,18 @@ bool NewGameScene_japan::init()
 	//http://www.hawstein.com/posts/ctci-solutions-contents.html
 
 	this->scheduleUpdate();
-
-
+   
 
 	return true;
 }
 
 
-void NewGameScene_japan::onExit()
-{
-	Layer::onExit();
 
-	_eventDispatcher->removeEventListenersForTarget(this);
-}
 
 
 void NewGameScene_japan::GoBack(cocos2d::Ref *pSender){
 	CCLOG("go back");
-    Director::getInstance()->replaceScene(HelloWorld::createScene());
+    Director::getInstance()->pushScene(GamePause::createScene());
 }
 
 void NewGameScene_japan::logic(float t) {
@@ -309,32 +304,32 @@ void NewGameScene_japan::logic(float t) {
 
 bool NewGameScene_japan::onTouchBegan(Touch *touch, Event *unsured_event){
 	
-	auto my_player = (Player *) this->getChildByTag(0);
-
-	if (touch->getLocation().x >= bg_origin.x + borderWidth&&touch->getLocation().x <= bg_origin.x + bg_size.width - borderWidth)
-	{
-		if (!my_player->isInAir && my_player->isLeft == false){
-
-			my_player->isInAir = true;
-			my_player->isMovingLeft = true;
-
-			//my_player-> runAction(MoveTo::create(0.5, Point(x_left, size.height * 0.16f)));
-			my_player->m_dir = DIR_LEFT;
-			my_player->isLeft = true;
-			my_player->logic();
-		}
-		else if (!my_player->isInAir && my_player->isLeft == true){
-			//my_player-> runAction(MoveTo::create(0.5, Point(x_right, size.height * 0.16f)));
-			my_player->isInAir = true;
-			my_player->isMovingLeft = false;
-
-
-			my_player->m_dir = DIR_RIGHT;
-			my_player->isLeft = false;
-			my_player->logic();
-		}
-	
-	}
+    auto my_player = (Player *) this->getChildByTag(0);
+    
+    if (touch->getLocation().x >= bg_origin.x + borderWidth&&touch->getLocation().x <= bg_origin.x + bg_size.width - borderWidth)
+    {
+        if (!my_player->isInAir && my_player->isLeft == false){
+            
+            my_player->isInAir = true;
+            my_player->isMovingLeft = true;
+            
+            //my_player-> runAction(MoveTo::create(0.5, Point(x_left, size.height * 0.16f)));
+            my_player->m_dir = DIR_LEFT;
+            my_player->isLeft = true;
+            my_player->logic();
+        }
+        else if (!my_player->isInAir && my_player->isLeft == true){
+            //my_player-> runAction(MoveTo::create(0.5, Point(x_right, size.height * 0.16f)));
+            my_player->isInAir = true;
+            my_player->isMovingLeft = false;
+            
+            
+            my_player->m_dir = DIR_RIGHT;
+            my_player->isLeft = false;
+            my_player->logic();
+        }
+        
+    }
 
 	
 	return true;
@@ -342,6 +337,8 @@ bool NewGameScene_japan::onTouchBegan(Touch *touch, Event *unsured_event){
 
 void NewGameScene_japan::onTouchMoved(Touch * touch, Event *unsured_event){
 
+    
+    
 }
 
 void NewGameScene_japan::onTouchEnded(Touch *touch, Event *unused_event){

@@ -6,6 +6,7 @@
 #include "HelloWorldScene.h"
 #include "cocos2d.h"
 
+
 USING_NS_CC;
 class MenuSettings : public cocos2d::Layer
 {
@@ -14,10 +15,11 @@ public:
     ~MenuSettings();
     static cocos2d::Scene* createScene();
     bool init();
-    void goback(cocos2d::Ref *pSender);
+    void goback(CCObject*);
+    void credits(CCObject*);
     CREATE_FUNC(MenuSettings);
-    void pauseMusicCallback(cocos2d::Ref *pSender);
-    void recoverMusicCallback(cocos2d::Ref *pSender);
+    void pauseMusicCallback(CCObject* pSender);
+    void recoverMusicCallback(CCObject* pSender);
 	bool isPause = false;
 };
 

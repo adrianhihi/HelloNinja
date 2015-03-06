@@ -99,8 +99,8 @@ bool Setting::init()
 	// position the label on the center of the screen
 
 	//menu
-	auto menu_item_1 = MenuItemFont::create("Go Back ?", CC_CALLBACK_1(Setting::GoBack, this));
-	menu_item_1->setPosition(Vec2(origin.x + visibleSize.width - menu_item_1->getContentSize().width / 2,
+	auto menu_item_1 = MenuItemFont::create("Go Back", CC_CALLBACK_1(Setting::GoBack, this));
+	menu_item_1->setPosition(Vec2(origin.x + visibleSize.width - menu_item_1->getContentSize().width / 2 - 180,
 		origin.y + menu_item_1->getContentSize().height / 2 - 280));
 	auto *menu = Menu::create(menu_item_1, NULL);
 	menu->setScale(0.5);
