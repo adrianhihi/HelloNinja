@@ -21,7 +21,7 @@ public:
     void credits(cocos2d::Ref *pSender);
     
     CREATE_FUNC(MenuSettings);
-	bool isPause = false;
+	bool isPause;
     MenuItemImage *_turnOn, *_turnOff, *menuItem;
     MenuItemFont *creditItem;
 };

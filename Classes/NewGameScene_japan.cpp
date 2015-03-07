@@ -143,8 +143,8 @@ bool NewGameScene_japan::init()
 	
 	//height label
 	score = 0;
-	auto labelHeight = Label::createWithSystemFont(StringUtils::format("%d", score), "fonts/Marker Felt.ttf", 20);
-	labelHeight->setColor(Color3B::WHITE);
+	auto labelHeight = Label::createWithSystemFont(StringUtils::format("%d", score), "fonts/Marker Felt.ttf", 40);
+	labelHeight->setColor(Color3B::RED);
 	labelHeight->setPosition(Vec2(bg_origin.x + bg_size.width / 2,
 		bg_origin.y + bg_size.height - labelHp->getContentSize().height - labelHeight->getContentSize().height));
 	labelHeight->setTag(111);
@@ -211,10 +211,10 @@ bool NewGameScene_japan::init()
 	abilityButtonItem->setScale(bg_scale);
 
 	abilityButtonItem->setPosition(bg_origin + abilityButtonItem->getBoundingBox().size/2);
-
+    //abilityButtonItem->setTag(112);
 	// create menu, it's an autorelease object
 	auto *menu = Menu::create(menu_item_1, abilityButtonItem, NULL);
-
+    
 	menu->setPosition(Point(0, 0));
 	//menu->setColor(Color3B::BLUE);
 	this->addChild(menu, 20);
@@ -413,7 +413,7 @@ void NewGameScene_japan::moveEnemyLeft(float t) {
 			enemyLeftCrow->setPositionY(enemyLeftCrow->getPositionY() + iSpeed);
         }
         else {
-            enemyLeftCrow->runAction(Sequence::create(MoveBy::create(1, Point(0,0)) , MoveBy::create(15, Point(640, -850)), NULL));
+            enemyLeftCrow->runAction(Sequence::create(MoveBy::create(1.5, Point(0,0)) , MoveBy::create(15, Point(size.width, size.height * -0.78 )), NULL));
         }
         
         if (enemyLeftCrow->getPositionY() < 0 || enemyLeftCrow->getPositionX() > size.width) {
@@ -432,7 +432,7 @@ void NewGameScene_japan::moveEnemyRight(float t) {
 			enemyRightCrow->setPositionY(enemyRightCrow->getPositionY() + iSpeed);
         }
         else {
-            enemyRightCrow->runAction(Sequence::create(MoveBy::create(1, Point(0,0)) , MoveBy::create(15, Point(-640, -850)), NULL));
+            enemyRightCrow->runAction(Sequence::create(MoveBy::create(1.5, Point(0,0)) , MoveBy::create(15, Point(-size.width, -0.78*size.height)), NULL));
         }
         
         if (enemyRightCrow->getPositionY() < 0 || enemyRightCrow->getPositionX() < 0) {
@@ -460,7 +460,8 @@ void NewGameScene_japan::newEnemy(float t) {
     auto border = Sprite::create("japan/border_j.png");
     auto border_width = border->getContentSize().width;
     auto roof = Sprite::create("japan/roof_r.png");
-    int roofWidth = roof->getContentSize().width;
+  
+    int roofWidth = roof->getContentSize().width * 0.8f;
     
     
     Sprite * enemy;
@@ -476,20 +477,23 @@ void NewGameScene_japan::newEnemy(float t) {
             enemy = Sprite::create("aaa.png");
             int x = random(border_width + enemy->getContentSize().width/2 + roofWidth, size.width- border_width -roofWidth - enemy->getContentSize().width/2);
             enemy->setPosition(Point(x, size.height+100));
+            enemy->setScale(3);
             allEnemyFallen.pushBack(enemy);
             this->addChild(enemy, 7);
         }
             break;
         case 1: {
             enemy = Sprite::create("japan/roof_r.png");
-            enemy->setPosition(Point(size.width - border_width - enemy->getContentSize().width/2, size.height + 100));
+            enemy->setPosition(Point(size.width - border_width - enemy->getContentSize().width/2 * 0.8, size.height + 100));
+            enemy->setScale(0.8);
             this -> addChild(enemy, 7);
             allEnemyRoof.pushBack(enemy);
         }
             break;
         case 2: {
             enemy = Sprite::create("japan/roof_l.png");
-            enemy->setPosition(Point(border_width + enemy->getContentSize().width/2, size.height + 100));
+            enemy->setPosition(Point(border_width + enemy->getContentSize().width/2 * 0.8, size.height + 100));
+            enemy->setScale(0.8);
             this -> addChild(enemy, 7);
             allEnemyRoof.pushBack(enemy);
         }
@@ -549,7 +553,8 @@ void NewGameScene_japan::newEnemy(float t) {
             break;
         case 6: {
             enemy = Sprite::create("japan/roof_l.png");
-            enemy->setPosition(Point(border_width + enemy->getContentSize().width/2, size.height + 100));
+            enemy->setPosition(Point(border_width + enemy->getContentSize().width/2 * 0.8, size.height + 100));
+            enemy->setScale(0.8);
             this -> addChild(enemy, 7);
             allEnemyRoof.pushBack(enemy);
         }
@@ -569,7 +574,8 @@ void NewGameScene_japan::newEnemy(float t) {
             break;
         case 8: {
             enemy = Sprite::create("japan/roof_r.png");
-            enemy->setPosition(Point(size.width - border_width - enemy->getContentSize().width/2, size.height + 100));
+            enemy->setPosition(Point(size.width - border_width - enemy->getContentSize().width/2 * 0.8, size.height + 100));
+            enemy->setScale(0.8);
             this -> addChild(enemy, 7);
             allEnemyRoof.pushBack(enemy);
         }
@@ -609,6 +615,7 @@ void NewGameScene_japan::newEnemy(float t) {
             enemy = Sprite::create("ccc.png");
             int x = random(border_width + enemy->getContentSize().width/2 + roofWidth, size.width- border_width -roofWidth - enemy->getContentSize().width/2);
             enemy->setPosition(Point(x, size.height+100));
+            enemy->setScale(3);
             allEnemyFallen.pushBack(enemy);
             this->addChild(enemy, 7);
         }
@@ -788,8 +795,8 @@ void NewGameScene_japan::update(float t) {
 	for (int i = 0; i < allEnemyRoof.size(); i++) {
 		auto enemy = allEnemyRoof.at(i);
 		Rect er(enemy->getPositionX(), enemy->getPositionY(), 115, 103);
-		auto shake1 = MoveTo::create(0.01, Point(p_x, p_y - 8.0f));
-		auto shake2 = MoveTo::create(0.01, Point(p_x, p_y + 8.0f));
+		auto shake1 = MoveTo::create(0.01, Point(p_x, p_y - 15.0f));
+		auto shake2 = MoveTo::create(0.01, Point(p_x, p_y + 15.0f));
 
 		auto shake3 = MoveTo::create(0.01, Point(p_x, p_y));
 
@@ -826,7 +833,7 @@ void NewGameScene_japan::update(float t) {
             this->addChild(label, 8);
             
 			this->pause();
-			Director::getInstance()->replaceScene(TransitionJumpZoom::create(2, GameOver::createScene()));
+			Director::getInstance()->replaceScene(TransitionMoveInB::create(2, GameOver::createScene()));
 
 
 		}
@@ -836,55 +843,76 @@ void NewGameScene_japan::update(float t) {
     for (int i = 0; i < allEnemyFallen.size(); i++) {
         auto enemy = allEnemyFallen.at(i);
         Rect er(enemy->getPositionX(), enemy->getPositionY(), 40, 50);
-        auto shake1 = MoveTo::create(0.01, Point(p_x, p_y - 8.0f));
-        auto shake2 = MoveTo::create(0.01, Point(p_x, p_y + 8.0f));
+        auto shake1 = MoveTo::create(0.01, Point(p_x, p_y - 50.0f));
+        auto shake2 = MoveTo::create(0.01, Point(p_x, p_y + 50.0f));
         
         auto shake3 = MoveTo::create(0.01, Point(p_x, p_y));
         
-        if (pp.intersectsRect(er) && HP > 1) {
+       if (pp.intersectsRect(er)) {
+                //HP--;
+                enemy->removeFromParent();
+                allEnemyFallen.eraseObject(enemy);
+                i--;
+                this->runAction(Sequence::create(shake1, shake2, shake3, shake1, shake2, shake3, shake1, shake2, shake3, shake1, shake2, shake3, NULL));
+                enemy_killed ++;
+            if (enemy_killed == 1) {
+                auto label = Label::createWithTTF("First Blood! \n +1000!", "fonts/Marker Felt.ttf", 60);
+                label->setPosition(Point(origin.x + visibleSize.width / 2, 0));
+                auto Move_Down_3 = MoveBy::create(1, Vec2(0, visibleSize.height / 2));
+                auto action_3 = RepeatForever::create(Move_Down_3);
+                label->setColor(Color3B::BLACK);
+                label->runAction(action_3);
+                this->addChild(label, 8);
+                score += 1000;
+            }else if(enemy_killed == 2){
+                auto label = Label::createWithTTF("Double Kill! \n +2000", "fonts/Marker Felt.ttf", 60);
+                label->setPosition(Point(origin.x + visibleSize.width / 2, 0));
+                auto Move_Down_3 = MoveBy::create(1, Vec2(0, visibleSize.height / 2));
+                auto action_3 = RepeatForever::create(Move_Down_3);
+                label->setColor(Color3B::BLACK);
+                label->runAction(action_3);
+                this->addChild(label, 8);
+                score += 2000;
+            }else{
+                auto label = Label::createWithTTF("Ninja Kill! \n +3000", "fonts/Marker Felt.ttf", 60);
+                label->setPosition(Point(origin.x + visibleSize.width / 2, 0));
+                auto Move_Down_3 = MoveBy::create(1, Vec2(0, visibleSize.height / 2));
+                auto action_3 = RepeatForever::create(Move_Down_3);
+                label->setColor(Color3B::BLACK);
+                label->runAction(action_3);
+                this->addChild(label, 8);
+                score == 3000;
+            }
+       }
 
-
-            HP--;
-            enemy->removeFromParent();
-            allEnemyFallen.eraseObject(enemy);
-            i--;
-            this->runAction(Sequence::create(shake1, shake2, shake3, shake1, shake2, shake3, shake1, shake2, shake3, shake1, shake2, shake3, NULL));
-            
-            auto label = Label::createWithTTF("HP -1", "fonts/Marker Felt.ttf", 24);
-            label->setPosition(Point(origin.x + visibleSize.width / 2, 0));
-            auto Move_Down_3 = MoveBy::create(1, Vec2(0, visibleSize.height / 2));
-            auto action_3 = RepeatForever::create(Move_Down_3);
-            label->setColor(Color3B::RED);
-            label->runAction(action_3);
-            this->addChild(label, 8);
-            
-        }
-        else if (pp.intersectsRect(er) && HP == 1){
-            
-            enemy->removeFromParent();
-            allEnemyFallen.eraseObject(enemy);
-            i--;
-            this->runAction(Sequence::create(shake1, shake2, shake3, shake1, shake2, shake3, shake1, shake2, shake3, shake1, shake2, shake3, NULL));
-            
-            auto label = Label::createWithTTF("HP -1", "fonts/Marker Felt.ttf", 24);
-            label->setPosition(Point(origin.x + visibleSize.width / 2, 0));
-            auto Move_Down_3 = MoveBy::create(1, Vec2(0, visibleSize.height / 2));
-            auto action_3 = RepeatForever::create(Move_Down_3);
-            label->setColor(Color3B::RED);
-            label->runAction(action_3);
-            this->addChild(label, 8);
-
-            this->pause();
-            Director::getInstance()->replaceScene(TransitionJumpZoom::create(2, GameOver::createScene()));
-        }
+        
+       // }
+//       else if (pp.intersectsRect(er) && HP == 1){
+//            
+//            enemy->removeFromParent();
+//            allEnemyFallen.eraseObject(enemy);
+//            i--;
+//            this->runAction(Sequence::create(shake1, shake2, shake3, shake1, shake2, shake3, shake1, shake2, shake3, shake1, shake2, shake3, NULL));
+//            
+//            auto label = Label::createWithTTF("HP -1", "fonts/Marker Felt.ttf", 24);
+//            label->setPosition(Point(origin.x + visibleSize.width / 2, 0));
+//            auto Move_Down_3 = MoveBy::create(1, Vec2(0, visibleSize.height / 2));
+//            auto action_3 = RepeatForever::create(Move_Down_3);
+//            label->setColor(Color3B::RED);
+//            label->runAction(action_3);
+//            this->addChild(label, 8);
+//
+//            this->pause();
+//            Director::getInstance()->replaceScene(TransitionMoveInB::create(2, GameOver::createScene()));
+//        }
     }
     
     //enemy left crow
     for (int i = 0; i < allEnemyLeftCrow.size(); i++) {
         auto enemy = allEnemyLeftCrow.at(i);
         Rect er(enemy->getPositionX(), enemy->getPositionY(), 75, 63);
-        auto shake1 = MoveTo::create(0.01, Point(p_x, p_y - 8.0f));
-        auto shake2 = MoveTo::create(0.01, Point(p_x, p_y + 8.0f));
+        auto shake1 = MoveTo::create(0.01, Point(p_x, p_y - 50.0f));
+        auto shake2 = MoveTo::create(0.01, Point(p_x, p_y + 50.0f));
         
         auto shake3 = MoveTo::create(0.01, Point(p_x, p_y));
         
@@ -922,7 +950,7 @@ void NewGameScene_japan::update(float t) {
             this->addChild(label, 8);
             
             this->pause();
-            Director::getInstance()->replaceScene(TransitionJumpZoom::create(2, GameOver::createScene()));
+            Director::getInstance()->replaceScene(TransitionMoveInB::create(2, GameOver::createScene()));
         }
     }
     
@@ -930,8 +958,8 @@ void NewGameScene_japan::update(float t) {
     for (int i = 0; i < allEnemyRightCrow.size(); i++) {
         auto enemy = allEnemyRightCrow.at(i);
         Rect er(enemy->getPositionX(), enemy->getPositionY(), 75, 63);
-        auto shake1 = MoveTo::create(0.01, Point(p_x, p_y - 8.0f));
-        auto shake2 = MoveTo::create(0.01, Point(p_x, p_y + 8.0f));
+        auto shake1 = MoveTo::create(0.01, Point(p_x, p_y - 50.0f));
+        auto shake2 = MoveTo::create(0.01, Point(p_x, p_y + 50.0f));
         
         auto shake3 = MoveTo::create(0.01, Point(p_x, p_y));
         
@@ -969,7 +997,7 @@ void NewGameScene_japan::update(float t) {
             this->addChild(label, 8);
             
             this->pause();
-            Director::getInstance()->replaceScene(TransitionJumpZoom::create(2, GameOver::createScene()));
+            Director::getInstance()->replaceScene(TransitionMoveInB::create(2, GameOver::createScene()));
         }
     }
     
@@ -988,7 +1016,23 @@ void NewGameScene_japan::update(float t) {
         Rect er(star->getPositionX(), star->getPositionY(), 40, 50);
         
         if (pp.intersectsRect(er)) {
-            HP++;
+            //MenuItemImage *specialSkill= (MenuItemImage*)this->getChildByTag(112);
+            
+            //this->addChild(specialSkill);
+            //skill button
+//            
+//            auto abilityButtonItem = MenuItemImage::create(
+//                                                           "bang.png",
+//                                                           "bang.png",
+//                                                           CC_CALLBACK_1(NewGameScene_japan::playerAbility_Teleportation, this)
+//                                                           );
+//            
+//            abilityButtonItem->setScale(bg_scale);
+//            
+//            abilityButtonItem->setPosition(bg_origin + abilityButtonItem->getBoundingBox().size/2);
+//            this->addChild(abilityButtonItem);
+            //abilityButtonTouched = true;
+            HP ++;
             star->removeFromParent();
             allStar.eraseObject(star);
             i--;
@@ -1014,7 +1058,7 @@ void NewGameScene_japan::update(float t) {
 		{
 
 
-			my_player->setPositionX(my_player->getPositionX() + 10);
+			my_player->setPositionX(my_player->getPositionX() + 20);
 			float y = a * (my_player->getPositionX() - bg_origin.x - borderWidth - 0.5 * my_player->playerWidth)*(my_player->getPositionX() - bg_origin.x + borderWidth - bg_size.width + 0.5 * my_player->playerWidth);
 			my_player->setPositionY(y + bg_size.height*0.16);
 
@@ -1036,7 +1080,7 @@ void NewGameScene_japan::update(float t) {
 		else if (my_player->isInAir&&my_player->isMovingLeft)
 		{
 
-			my_player->setPosition(my_player->getPositionX() - 10, bg_origin.y + bg_size.height*0.16);
+			my_player->setPosition(my_player->getPositionX() - 20, bg_origin.y + bg_size.height*0.16);
 			float y = a * (my_player->getPositionX() - bg_origin.x - borderWidth - 0.5 * my_player->playerWidth)*(my_player->getPositionX() - bg_origin.x + borderWidth - bg_size.width + 0.5 * my_player->playerWidth);
 			my_player->setPositionY(y + bg_size.height*0.16);
 
@@ -1070,6 +1114,7 @@ void NewGameScene_japan::playerAbility_Teleportation(cocos2d::Ref *pSender)
 		my_player->m_dir = DIR_RIGHT;
 		my_player->logic();
 		my_player->setPositionX(bg_origin.x + bg_size.width - borderWidth - my_player->playerWidth/2);
+        abilityButtonTouched = true;
 	}
 	else if (!my_player->isInAir&&!my_player->isLeft)
 	{
@@ -1077,6 +1122,7 @@ void NewGameScene_japan::playerAbility_Teleportation(cocos2d::Ref *pSender)
 		my_player->m_dir = DIR_LEFT;
 		my_player->logic();
 		my_player->setPositionX(bg_origin.x + borderWidth + my_player->playerWidth / 2);
+        abilityButtonTouched = true;
 	}
 }
 

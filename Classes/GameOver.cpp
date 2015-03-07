@@ -46,6 +46,6 @@ bool GameOver::init() {
 };
 
 void GameOver::menuCallBack(cocos2d::Ref * pSender) {
-	Director::getInstance()->replaceScene(TransitionJumpZoom::create(2, HelloWorld::createScene()));
+	Director::getInstance()->replaceScene(TransitionCrossFade::create(2, HelloWorld::createScene()));
 };
 

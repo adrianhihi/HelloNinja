@@ -80,8 +80,11 @@ private:
 	void jumpToMenu();
 	float start_point;
 	int HP = 3;
+    
+    int enemy_killed = 0;
 	MonsterLayer* m_monsterLayer;
 	cocos2d::Vec2 testTouchBegin;
+    bool abilityButtonTouched = false;
 
 	
 };
