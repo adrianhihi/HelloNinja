@@ -25,6 +25,7 @@ public:
     CREATE_FUNC(GamePause);
     void pauseMusicCallback(CCObject* pSender);
     void recoverMusicCallback(CCObject* pSender);
+    void restart(CCObject* pSender);
     bool isPause = false;
 };
 

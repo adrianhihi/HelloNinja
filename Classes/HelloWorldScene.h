@@ -43,6 +43,7 @@ public:
 	void ResumeMusic(float dt);
 
 	bool isPause;
+    float bg_scale;
 
 	bool onTouchBegan(cocos2d::Touch *touch, cocos2d::Event * event1);
 	void onTouchMoved(cocos2d::Touch *touch, cocos2d::Event * event2);

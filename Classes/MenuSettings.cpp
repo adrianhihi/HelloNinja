@@ -29,11 +29,11 @@ bool MenuSettings::init()
 {
     CCLayer::init();
 	
-    Size visibleSize = Director::getInstance()->getVisibleSize();
+    //Size visibleSize = Director::getInstance()->getVisibleSize();
     Size windowSize = Director::getInstance()->getWinSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
-	auto closeItem = MenuItemImage::create("Menu/menu.png", "Menu/menu_1.png", CC_CALLBACK_1(MenuSettings::goback, this));
-	closeItem->setScale(0.8f);
+	menuItem = MenuItemImage::create("Menu/menu.png", "Menu/menu_1.png", CC_CALLBACK_1(MenuSettings::goback, this));
+	//closeItem->setScale(0.8f);
     
     //closeItem->setPosition(Vec2(origin.x + visibleSize.width - closeItem->getContentSize().width/2 ,
     //                            origin.y + closeItem->getContentSize().height/2));
@@ -58,7 +58,7 @@ bool MenuSettings::init()
 	
 
 
-	MenuItemImage *_turnOn, *_turnOff;
+	
 	_turnOn = MenuItemImage::create(
 		"Menu/sound_on.png",
 		"Menu/sound_on_1.png");
@@ -66,11 +66,11 @@ bool MenuSettings::init()
 		"Menu/sound_off.png",
 		"Menu/sound_off_1.png");
 	MenuItemToggle *toggleItem = MenuItemToggle::createWithCallback(CC_CALLBACK_1(MenuSettings::pauseMusicCallback, this), _turnOn, _turnOff, NULL);
+    toggleItem->setTag(110);
+    
+     creditItem = MenuItemFont::create("Credits", CC_CALLBACK_1(MenuSettings::credits, this));
 
-	toggleItem->setScale(0.8f);
-    
-    auto creditItem=MenuItemFont::create("Credits",CC_CALLBACK_1(MenuSettings::credits, this));
-    
+	//toggleItem->setScale(0.8f);
 	//toggleItem->setPosition(Point(visibleSize.width / 2, visibleSize.height / 2));
 
 	//MenuItemImage *_musicOn, *_musicOff;
@@ -85,7 +85,7 @@ bool MenuSettings::init()
 	//musicItem->setScale(0.8f);
 	//auto musicItem = MenuItemImage::create("Menu/music_on.png", "Menu/music_on_1.png", CC_CALLBACK_1(MenuSettings::recoverMusicCallback, this));
 
-	auto menu_2 = Menu::create(toggleItem, closeItem,creditItem, NULL);
+	auto menu_2 = Menu::create(toggleItem, menuItem, creditItem, NULL);
 	menu_2->alignItemsVertically();
 	addChild(menu_2);
 	//auto pauseBG = MenuItemImage::create("Menu/MusicIsOff.png", "Menu/MusicIsOn.png", CC_CALLBACK_1(MenuSettings::pauseMusicCallback, this));
@@ -98,34 +98,44 @@ bool MenuSettings::init()
     return true;
 }
 
-void MenuSettings:: goback(CCObject*)
+void MenuSettings:: goback(cocos2d::Ref *pSender)
 {
 	CCLOG("go back");
 	Director::getInstance()->popScene();
 }
 
-void MenuSettings::pauseMusicCallback(CCObject*)
+void MenuSettings::pauseMusicCallback(cocos2d::Ref *pSender)
 {
 	if (isPause == true)
 	{
 		CocosDenshion::SimpleAudioEngine::getInstance()->resumeBackgroundMusic();
+//        MenuItemToggle * toggleItem = (MenuItemToggle *)this->getChildByTag(110);
+//        toggleItem = MenuItemToggle::createWithCallback(CC_CALLBACK_1(MenuSettings::pauseMusicCallback, this), _turnOff, _turnOn, NULL);
+//        auto menu_2 = Menu::create(toggleItem, menuItem, creditItem, NULL);
+//        menu_2->alignItemsVertically();
+//        addChild(menu_2);
 		isPause = false;
 	}
 	else{
 	
 		CocosDenshion::SimpleAudioEngine::getInstance()->pauseBackgroundMusic();
 		isPause = true;
+//        MenuItemToggle * toggleItem = (MenuItemToggle *)this->getChildByTag(110);
+//        toggleItem = MenuItemToggle::createWithCallback(CC_CALLBACK_1(MenuSettings::pauseMusicCallback, this), _turnOn, _turnOff, NULL);
+//        auto menu_2 = Menu::create(toggleItem, menuItem, creditItem, NULL);
+//        menu_2->alignItemsVertically();
+//        addChild(menu_2);
 	}
 }
 
-void MenuSettings::recoverMusicCallback(CCObject*)
+void MenuSettings::recoverMusicCallback(cocos2d::Ref *pSender)
 {
     CocosDenshion::SimpleAudioEngine::getInstance()->resumeBackgroundMusic();
 	isPause = true;
 }
-
-void MenuSettings::credits(CCObject*)
-{
-    Director::getInstance()->pushScene(Credits::createScene());
+void MenuSettings::credits(cocos2d::Ref *pSender){
+    Director::getInstance()->replaceScene(Credits::createScene());
 }
+
+
 

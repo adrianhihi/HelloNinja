@@ -90,3 +90,7 @@ void GamePause::recoverMusicCallback(CCObject*)
     CocosDenshion::SimpleAudioEngine::getInstance()->resumeBackgroundMusic();
     isPause = true;
 }
+void GamePause::restart(CCObject*){
+
+    Director::getInstance()->replaceScene(NewGameScene_japan::createScene());
+}
