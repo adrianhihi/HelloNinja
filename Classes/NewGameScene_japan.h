@@ -47,7 +47,7 @@ public:
 		player = 0,
 	};
 
-	const int iSpeed = -5;
+	const int iSpeed = -10;
 	int score;
 
 	void playerAbility_Teleportation(cocos2d::Ref* pSender);

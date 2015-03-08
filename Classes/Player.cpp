@@ -30,7 +30,7 @@ bool Player::init()
 
 	auto size = Director::getInstance()->getWinSize();
 
-	playerWidth = 100;
+	playerWidth = 150;
 
     m_dir = DIR_LEFT;
     
@@ -40,7 +40,7 @@ bool Player::init()
     }
     
     Animation * animation = Animation::createWithSpriteFrames(allframe);
-    animation->setDelayPerUnit(0.03);
+    animation->setDelayPerUnit(0.08);
     ani = Animate::create(animation);
     spPlayer = Sprite::create();
 
@@ -73,14 +73,14 @@ void Player::logic()
     switch (m_dir) {
         case DIR_LEFT:
             for (int i = 1; i < 6; i++){
-				auto sf = SpriteFrame::create(StringUtils::format("run/run_left%d.png", i), Rect(0, 0, 100, 100));
+				auto sf = SpriteFrame::create(StringUtils::format("run/run_left%d.png", i), Rect(0, 0, 150, 150));
                 allframe.pushBack(sf);
             }
             break;
         
         case DIR_RIGHT:
             for (int i = 1; i < 6; i++){
-				auto sf = SpriteFrame::create(StringUtils::format("run/run_right%d.png", i), Rect(0, 0, 100, 100));
+				auto sf = SpriteFrame::create(StringUtils::format("run/run_right%d.png", i), Rect(0, 0, 150, 150));
                 allframe.pushBack(sf);
             }
             break;
@@ -90,7 +90,7 @@ void Player::logic()
     }
     
     Animation * animation = Animation::createWithSpriteFrames(allframe);
-    animation->setDelayPerUnit(0.03);
+    animation->setDelayPerUnit(0.08);
     ani = Animate::create(animation);
     spPlayer->runAction(RepeatForever::create(ani));
 

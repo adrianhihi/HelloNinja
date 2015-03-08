@@ -197,7 +197,7 @@ bool NewGameScene_japan::init()
 
 	//m_player->spPlayer->setPosition(Point(bg_origin.x + borderWidth + m_player->playerWidth / 2, bg_origin.y + bg_size.height * 0.16f));
 	//m_player->setTag(0);
-	m_player->setPosition(Point(bg_origin.x + borderWidth + m_player->playerWidth / 2, bg_origin.y + bg_size.height * 0.16f));
+	m_player->setPosition(Point(bg_origin.x + borderWidth + m_player->playerWidth / 2, bg_origin.y + bg_size.height * 0.2f));
     this->addChild(m_player, 11, 0);
 
 	//skill button
@@ -242,7 +242,7 @@ bool NewGameScene_japan::init()
     this->schedule(schedule_selector(NewGameScene_japan::moveEnemyRight));
     
     
-    this->schedule(schedule_selector(NewGameScene_japan::newEnemy),1.5);
+    this->schedule(schedule_selector(NewGameScene_japan::newEnemy),1.325);
 
 	//http://www.hawstein.com/posts/ctci-solutions-contents.html
 
@@ -377,7 +377,7 @@ void NewGameScene_japan::moveEnemyFallen(float t)
 	for (int i = 0; i < allEnemyFallen.size(); i++)
 	{
 		auto enemy = allEnemyFallen.at(i);
-		enemy->setPositionY(enemy->getPositionY() + iSpeed);
+		enemy->setPositionY(enemy->getPositionY() + iSpeed - 14);
 		if (enemy->getPositionY() < 0)
 		{
 			enemy->removeFromParent();
@@ -477,7 +477,7 @@ void NewGameScene_japan::newEnemy(float t) {
             enemy = Sprite::create("aaa.png");
             int x = random(border_width + enemy->getContentSize().width/2 + roofWidth, size.width- border_width -roofWidth - enemy->getContentSize().width/2);
             enemy->setPosition(Point(x, size.height+100));
-            enemy->setScale(3);
+            enemy->setScale(1.2);
             allEnemyFallen.pushBack(enemy);
             this->addChild(enemy, 7);
         }
@@ -503,9 +503,11 @@ void NewGameScene_japan::newEnemy(float t) {
                 auto sf = SpriteFrame::create("japan/crow_right.png", Rect(i*300/4, 0, 300/4, 63));
                 crowFram.pushBack(sf);
             }
-            auto ani = Animation::createWithSpriteFrames(crowFram, 0.03);
+            auto ani = Animation::createWithSpriteFrames(crowFram, 0.16);
             crow = Sprite::create();
+            
             crow->runAction(RepeatForever::create(Animate::create(ani)));
+            crow->setScale(1.2);
             crow->setPosition(borderWidth + crow->getContentSize().width/2 + 30, size.height + 100);
             this->addChild(crow, 7);
             allEnemyLeftCrow.pushBack(crow);
@@ -517,7 +519,8 @@ void NewGameScene_japan::newEnemy(float t) {
                 crowFram.pushBack(sf);
             }
             crow = Sprite::create();
-            crow->runAction(RepeatForever::create(Animate::create(Animation::createWithSpriteFrames(crowFram, 0.03))));
+            crow->runAction(RepeatForever::create(Animate::create(Animation::createWithSpriteFrames(crowFram, 0.16))));
+            crow->setScale(1.2);
             crow->setPosition(size.width - borderWidth - crow->getContentSize().width/2 - 30, size.height + 100);
             this->addChild(crow, 7);
             allEnemyRightCrow.pushBack(crow);
@@ -564,9 +567,10 @@ void NewGameScene_japan::newEnemy(float t) {
                 auto sf = SpriteFrame::create("japan/crow_right.png", Rect(i*300/4, 0, 300/4, 63));
                 crowFram.pushBack(sf);
             }
-            auto ani = Animation::createWithSpriteFrames(crowFram, 0.03);
+            auto ani = Animation::createWithSpriteFrames(crowFram, 0.16);
             crow = Sprite::create();
             crow->runAction(RepeatForever::create(Animate::create(ani)));
+            crow->setScale(1.2);
             crow->setPosition(borderWidth + crow->getContentSize().width/2 + 30, size.height + 100);
             this->addChild(crow, 7);
             allEnemyLeftCrow.pushBack(crow);
@@ -586,7 +590,8 @@ void NewGameScene_japan::newEnemy(float t) {
                 crowFram.pushBack(sf);
             }
             crow = Sprite::create();
-            crow->runAction(RepeatForever::create(Animate::create(Animation::createWithSpriteFrames(crowFram, 0.03))));
+            crow->runAction(RepeatForever::create(Animate::create(Animation::createWithSpriteFrames(crowFram, 0.16))));
+            crow->setScale(1.2);
             crow->setPosition(size.width - borderWidth - crow->getContentSize().width/2 - 30, size.height + 100);
             this->addChild(crow, 7);
             allEnemyRightCrow.pushBack(crow);
@@ -615,7 +620,7 @@ void NewGameScene_japan::newEnemy(float t) {
             enemy = Sprite::create("ccc.png");
             int x = random(border_width + enemy->getContentSize().width/2 + roofWidth, size.width- border_width -roofWidth - enemy->getContentSize().width/2);
             enemy->setPosition(Point(x, size.height+100));
-            enemy->setScale(3);
+            enemy->setScale(1.2);
             allEnemyFallen.pushBack(enemy);
             this->addChild(enemy, 7);
         }
@@ -640,7 +645,8 @@ void NewGameScene_japan::newEnemy(float t) {
                 crowFram.pushBack(sf);
             }
             crow = Sprite::create();
-            crow->runAction(RepeatForever::create(Animate::create(Animation::createWithSpriteFrames(crowFram, 0.03))));
+            crow->runAction(RepeatForever::create(Animate::create(Animation::createWithSpriteFrames(crowFram, 0.16))));
+            crow->setScale(1.2);
             crow->setPosition(size.width - borderWidth - crow->getContentSize().width/2 - 30, size.height + 100);
             this->addChild(crow, 7);
             allEnemyRightCrow.pushBack(crow);
@@ -651,9 +657,10 @@ void NewGameScene_japan::newEnemy(float t) {
                 auto sf = SpriteFrame::create("japan/crow_right.png", Rect(i*300/4, 0, 300/4, 63));
                 crowFram.pushBack(sf);
             }
-            auto ani = Animation::createWithSpriteFrames(crowFram, 0.03);
+            auto ani = Animation::createWithSpriteFrames(crowFram, 0.16);
             crow = Sprite::create();
             crow->runAction(RepeatForever::create(Animate::create(ani)));
+            crow->setScale(1.2);
             crow->setPosition(borderWidth + crow->getContentSize().width/2 + 30, size.height + 100);
             this->addChild(crow, 7);
             allEnemyLeftCrow.pushBack(crow);
@@ -881,7 +888,7 @@ void NewGameScene_japan::update(float t) {
                 label->setColor(Color3B::BLACK);
                 label->runAction(action_3);
                 this->addChild(label, 8);
-                score == 3000;
+                score += 3000;
             }
        }
 
@@ -1060,12 +1067,12 @@ void NewGameScene_japan::update(float t) {
 
 			my_player->setPositionX(my_player->getPositionX() + 20);
 			float y = a * (my_player->getPositionX() - bg_origin.x - borderWidth - 0.5 * my_player->playerWidth)*(my_player->getPositionX() - bg_origin.x + borderWidth - bg_size.width + 0.5 * my_player->playerWidth);
-			my_player->setPositionY(y + bg_size.height*0.16);
+			my_player->setPositionY(y + bg_size.height*0.2);
 
 			if (my_player->getPositionX() >= bg_origin.x + bg_size.width - borderWidth - my_player->playerWidth / 2)
 			{
 				my_player->isInAir = false;
-				my_player->setPosition(bg_origin.x + bg_size.width - borderWidth - my_player->playerWidth / 2, bg_origin.y + bg_size.height*0.16);
+				my_player->setPosition(bg_origin.x + bg_size.width - borderWidth - my_player->playerWidth / 2, bg_origin.y + bg_size.height*0.2);
 
 			}
 			/*
