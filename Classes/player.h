@@ -23,19 +23,20 @@ public:
 	CREATE_FUNC(Player);
 	virtual bool init();
 
-	int score;
+//	int score;
 	bool isInAir;
 	bool isMovingLeft;
 	bool isLeft;
-	bool isDead;
+//	bool isDead;
 
 	void logic();
-	void beAtked(int iValue);
+//	void beAtked(int iValue);
     float playerWidth;
     direction m_dir;
 
 	Sprite * spPlayer;
 	Vector<SpriteFrame *> allframe;
+    Vector<SpriteFrame *> allframeAttack;
 	Animate * ani;
 
 private:
@@ -47,7 +48,7 @@ private:
     
 	void playerInit(float spriteScale);
 
-	float flyingTime;
+//	float flyingTime;
 
 
 };

@@ -24,13 +24,13 @@ bool Player::init()
 	isInAir = false;
 	isMovingLeft = false;
 	isLeft = true;
-	isDead = false;
-	score = 0;
-	flyingTime = 0;
+//	isDead = false;
+//	score = 0;
+//	flyingTime = 0;
 
 	auto size = Director::getInstance()->getWinSize();
 
-	playerWidth = 100;
+	playerWidth = 150;
 
     m_dir = DIR_LEFT;
     
@@ -40,7 +40,7 @@ bool Player::init()
     }
     
     Animation * animation = Animation::createWithSpriteFrames(allframe);
-    animation->setDelayPerUnit(0.03);
+    animation->setDelayPerUnit(0.08);
     ani = Animate::create(animation);
     spPlayer = Sprite::create();
 
@@ -59,41 +59,63 @@ bool Player::init()
 
 void Player::logic()
 {
-//    while (allframe.size() != 0) {
-//        allframe.eraseObject(allframe.at(0));
-//    }
+
     
     for (int i = 0; i < allframe.size(); i++) {
         allframe.eraseObject(allframe.at(i));
         i--;
     }
     
+    for (int i = 0; i < allframeAttack.size(); i++) {
+        allframeAttack.eraseObject(allframeAttack.at(i));
+        i--;
+    }
     spPlayer->stopAllActions();
+    
+
     
     switch (m_dir) {
         case DIR_LEFT:
+        {
+            for (int i = 7; i < 9; i++) {
+                auto sf1 = SpriteFrame::create(StringUtils::format("run/run_right%d.png", i), Rect(0, 0, 150, 150));
+                allframeAttack.pushBack(sf1);
+            }
             for (int i = 1; i < 6; i++){
-				auto sf = SpriteFrame::create(StringUtils::format("run/run_left%d.png", i), Rect(0, 0, 100, 100));
+				auto sf = SpriteFrame::create(StringUtils::format("run/run_left%d.png", i), Rect(0, 0, 150, 150));
                 allframe.pushBack(sf);
             }
+        }
             break;
         
         case DIR_RIGHT:
+        {
+            for (int i = 7; i < 9; i++) {
+                auto sf1 = SpriteFrame::create(StringUtils::format("run/run_left%d.png", i), Rect(0, 0, 150, 150));
+                allframeAttack.pushBack(sf1);
+            }
             for (int i = 1; i < 6; i++){
-				auto sf = SpriteFrame::create(StringUtils::format("run/run_right%d.png", i), Rect(0, 0, 100, 100));
+				auto sf = SpriteFrame::create(StringUtils::format("run/run_right%d.png", i), Rect(0, 0, 150, 150));
                 allframe.pushBack(sf);
             }
+        }
             break;
             
         default:
             break;
     }
     
-    Animation * animation = Animation::createWithSpriteFrames(allframe);
-    animation->setDelayPerUnit(0.03);
+    auto animationAttack = Animation::createWithSpriteFrames(allframeAttack);
+    animationAttack->setDelayPerUnit(8);
+    auto aniAttack = Animate::create(animationAttack);
+    spPlayer->runAction(aniAttack);
+    
+    auto animation = Animation::createWithSpriteFrames(allframe);
+    animation->setDelayPerUnit(0.08);
     ani = Animate::create(animation);
     spPlayer->runAction(RepeatForever::create(ani));
 
+    
 
 }
 

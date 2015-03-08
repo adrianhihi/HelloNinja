@@ -22,7 +22,7 @@ public:
 	static cocos2d::Scene* createScene();
 	// Here's a difference. Method 'init' in cocos2d-x returns bool, instead of returning 'id' in cocos2d-iphone
 	virtual bool init();
-	virtual void onExit() override;
+	//virtual void onExit() override;
 	// a selector callback
 	void menuCloseCallback(cocos2d::Ref* pSender);
 	virtual bool onTouchBegan(Touch *touch, Event *unused_event);
@@ -80,10 +80,16 @@ private:
 	void jumpToMenu();
 	float start_point;
 	int HP = 3;
+    
+    int enemy_killed = 0;
 	MonsterLayer* m_monsterLayer;
 	cocos2d::Vec2 testTouchBegin;
+    bool abilityButtonTouched = false;
 
-	
+    Sprite * spPlayer;
+    Vector<SpriteFrame *> allframe;
+    Animate * ani;
+
 };
 
 #endif // __NEWGAMESCENE_JHAPAN_SCENE_H__
