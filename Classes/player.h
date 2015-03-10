@@ -36,7 +36,9 @@ public:
 
 	Sprite * spPlayer;
 	Vector<SpriteFrame *> allframe;
+    Vector<SpriteFrame *> allframeAttack;
 	Animate * ani;
+   // Animate * aniAttack;
 
 private:
     

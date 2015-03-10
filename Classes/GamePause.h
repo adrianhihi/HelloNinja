@@ -27,6 +27,10 @@ public:
     void recoverMusicCallback(CCObject* pSender);
     void restart(CCObject* pSender);
     bool isPause = false;
+    float bg_scale;
+private:
+    
+    Sprite *bg;
 };
 
 

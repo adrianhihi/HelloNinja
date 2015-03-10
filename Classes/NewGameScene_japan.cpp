@@ -61,14 +61,19 @@ bool NewGameScene_japan::init()
 	// add the label as a child to this layer
 	this->addChild(label, 6);
 
-	
-
+    //running sound
+//    CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("audio/running.wav");
+//    CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("audio/running.wav", true);
+//    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(2);
+    CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/swipSword.wav");
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/swipSword.wav");
+    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(2.5);
 
 
 	//menu
-	auto menu_item_1 = MenuItemImage::create("Menu/menu.png","Menu/menu_1.png", CC_CALLBACK_1(NewGameScene_japan::GoBack, this));
+	auto menu_item_1 = MenuItemImage::create("Menu/pause.png","Menu/pause1.png", CC_CALLBACK_1(NewGameScene_japan::GoBack, this));
 	
-    menu_item_1->setScale(0.8);
+    menu_item_1->setScale(1.2);
     //menu_item_1->setPosition(Vec2(visibleSize.width - menu_item_1->getContentSize().width - borderWidth/2,
     //                              menu_item_1->getContentSize().height / 2));
 	menu_item_1->setPosition(Vec2(origin.x + visibleSize.width - menu_item_1->getContentSize().width / 2,
@@ -197,6 +202,7 @@ bool NewGameScene_japan::init()
 
 	//m_player->spPlayer->setPosition(Point(bg_origin.x + borderWidth + m_player->playerWidth / 2, bg_origin.y + bg_size.height * 0.16f));
 	//m_player->setTag(0);
+    
 	m_player->setPosition(Point(bg_origin.x + borderWidth + m_player->playerWidth / 2, bg_origin.y + bg_size.height * 0.2f));
     this->addChild(m_player, 11, 0);
 
@@ -323,7 +329,7 @@ bool NewGameScene_japan::onTouchBegan(Touch *touch, Event *unsured_event){
 			//my_player-> runAction(MoveTo::create(0.5, Point(x_left, size.height * 0.16f)));
 			my_player->m_dir = DIR_LEFT;
 			my_player->isLeft = true;
-			my_player->logic();
+			//my_player->logic();
 		}
 		else if (!my_player->isInAir && my_player->isLeft == true){
 			//my_player-> runAction(MoveTo::create(0.5, Point(x_right, size.height * 0.16f)));
@@ -333,8 +339,9 @@ bool NewGameScene_japan::onTouchBegan(Touch *touch, Event *unsured_event){
 
 			my_player->m_dir = DIR_RIGHT;
 			my_player->isLeft = false;
-			my_player->logic();
+			//my_player->logic();
 		}
+        my_player->logic();
 	
 	}
 
@@ -812,6 +819,10 @@ void NewGameScene_japan::update(float t) {
 				enemy->removeFromParent();
 				allEnemyRoof.eraseObject(enemy);
                 i--;
+                CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/touchCrow.wav");
+                CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/touchCrow.wav");
+                CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(2.5);
+
 				this->runAction(Sequence::create(shake1, shake2, shake3, shake1, shake2, shake3, shake1, shake2, shake3, shake1, shake2, shake3, NULL));
 
 
@@ -829,6 +840,10 @@ void NewGameScene_japan::update(float t) {
 			enemy->removeFromParent();
 			allEnemyRoof.eraseObject(enemy);
             i--;
+            CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/touchCrow.wav");
+            CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/touchCrow.wav");
+            CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(2.5);
+
 			this->runAction(Sequence::create(shake1, shake2, shake3, shake1, shake2, shake3, shake1, shake2, shake3, shake1, shake2, shake3, NULL));
 
             auto label = Label::createWithTTF("HP -1", "fonts/Marker Felt.ttf", 24);
@@ -860,6 +875,9 @@ void NewGameScene_japan::update(float t) {
                 enemy->removeFromParent();
                 allEnemyFallen.eraseObject(enemy);
                 i--;
+           CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/attackBomb.wav");
+           CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/attackBomb.wav");
+           CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(2.5);
                 this->runAction(Sequence::create(shake1, shake2, shake3, shake1, shake2, shake3, shake1, shake2, shake3, shake1, shake2, shake3, NULL));
                 enemy_killed ++;
             if (enemy_killed == 1) {
@@ -930,6 +948,9 @@ void NewGameScene_japan::update(float t) {
             enemy->removeFromParent();
             allEnemyLeftCrow.eraseObject(enemy);
             i--;
+            CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/touchCrow.wav");
+            CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/touchCrow.wav");
+            CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(2.5);
             this->runAction(Sequence::create(shake1, shake2, shake3, shake1, shake2, shake3, shake1, shake2, shake3, shake1, shake2, shake3, NULL));
             
             auto label = Label::createWithTTF("HP -1", "fonts/Marker Felt.ttf", 24);
@@ -946,6 +967,9 @@ void NewGameScene_japan::update(float t) {
             enemy->removeFromParent();
             allEnemyLeftCrow.eraseObject(enemy);
             i--;
+            CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/touchCrow.wav");
+            CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/touchCrow.wav");
+            CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(2.5);
             this->runAction(Sequence::create(shake1, shake2, shake3, shake1, shake2, shake3, shake1, shake2, shake3, shake1, shake2, shake3, NULL));
             
             auto label = Label::createWithTTF("HP -1", "fonts/Marker Felt.ttf", 24);
@@ -977,6 +1001,9 @@ void NewGameScene_japan::update(float t) {
             enemy->removeFromParent();
             allEnemyRightCrow.eraseObject(enemy);
             i--;
+            CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/touchCrow.wav");
+            CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/touchCrow.wav");
+            CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(2.5);
             this->runAction(Sequence::create(shake1, shake2, shake3, shake1, shake2, shake3, shake1, shake2, shake3, shake1, shake2, shake3, NULL));
             
             auto label = Label::createWithTTF("HP -1", "fonts/Marker Felt.ttf", 24);
@@ -993,6 +1020,9 @@ void NewGameScene_japan::update(float t) {
             enemy->removeFromParent();
             allEnemyRightCrow.eraseObject(enemy);
             i--;
+            CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/touchCrow.wav");
+            CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/touchCrow.wav");
+            CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(2.5);
             this->runAction(Sequence::create(shake1, shake2, shake3, shake1, shake2, shake3, shake1, shake2, shake3, shake1, shake2, shake3, NULL));
             
             auto label = Label::createWithTTF("HP -1", "fonts/Marker Felt.ttf", 24);
@@ -1016,6 +1046,8 @@ void NewGameScene_japan::update(float t) {
 	auto labelHeight = (Label *) this->getChildByTag(111);
 	if (score < 10000000)score++;
 	labelHeight->setString(StringUtils::format("%d", score));
+    
+    
     
     //star
     for (int i = 0; i < allStar.size(); i++) {
@@ -1042,6 +1074,9 @@ void NewGameScene_japan::update(float t) {
             HP ++;
             star->removeFromParent();
             allStar.eraseObject(star);
+            CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/getStar.wav");
+            CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/getStar.wav");
+            CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(2.5);
             i--;
             auto label = Label::createWithTTF("HP +1", "fonts/Marker Felt.ttf", 24);
             label->setPosition(Point(origin.x + visibleSize.width / 2, 0));
@@ -1064,15 +1099,20 @@ void NewGameScene_japan::update(float t) {
 		if (my_player->isInAir&&!my_player->isMovingLeft)
 		{
 
+            if (my_player->getPositionX() == bg_origin.x + borderWidth + my_player->playerWidth / 2){
 
+                CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/flyAttack.aif");
+                CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/flyAttack.aif");
+                CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(2.5);
+            }
 			my_player->setPositionX(my_player->getPositionX() + 20);
 			float y = a * (my_player->getPositionX() - bg_origin.x - borderWidth - 0.5 * my_player->playerWidth)*(my_player->getPositionX() - bg_origin.x + borderWidth - bg_size.width + 0.5 * my_player->playerWidth);
-			my_player->setPositionY(y + bg_size.height*0.2);
+			my_player->setPositionY(y + bg_size.height*0.16);
 
 			if (my_player->getPositionX() >= bg_origin.x + bg_size.width - borderWidth - my_player->playerWidth / 2)
 			{
 				my_player->isInAir = false;
-				my_player->setPosition(bg_origin.x + bg_size.width - borderWidth - my_player->playerWidth / 2, bg_origin.y + bg_size.height*0.2);
+				my_player->setPosition(bg_origin.x + bg_size.width - borderWidth - my_player->playerWidth / 2, bg_origin.y + bg_size.height*0.16);
 
 			}
 			/*
@@ -1086,6 +1126,12 @@ void NewGameScene_japan::update(float t) {
 		}
 		else if (my_player->isInAir&&my_player->isMovingLeft)
 		{
+            
+            if (my_player->getPositionX() == bg_origin.x + bg_size.width - borderWidth - my_player->playerWidth / 2){
+                CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/flyAttack.aif");
+                CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/flyAttack.aif");
+                CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(2.5);
+            }
 
 			my_player->setPosition(my_player->getPositionX() - 20, bg_origin.y + bg_size.height*0.16);
 			float y = a * (my_player->getPositionX() - bg_origin.x - borderWidth - 0.5 * my_player->playerWidth)*(my_player->getPositionX() - bg_origin.x + borderWidth - bg_size.width + 0.5 * my_player->playerWidth);
@@ -1117,7 +1163,13 @@ void NewGameScene_japan::playerAbility_Teleportation(cocos2d::Ref *pSender)
 
 	if (!my_player->isInAir&&my_player->isLeft)
 	{
-		my_player->isLeft = false;
+        
+        if (my_player->getPositionX() == bg_origin.x + borderWidth + my_player->playerWidth / 2){
+            CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/swipSword.wav");
+            CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/swipSword.wav");
+            CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(10);
+        }
+        my_player->isLeft = false;
 		my_player->m_dir = DIR_RIGHT;
 		my_player->logic();
 		my_player->setPositionX(bg_origin.x + bg_size.width - borderWidth - my_player->playerWidth/2);
@@ -1125,7 +1177,13 @@ void NewGameScene_japan::playerAbility_Teleportation(cocos2d::Ref *pSender)
 	}
 	else if (!my_player->isInAir&&!my_player->isLeft)
 	{
-		my_player->isLeft = true;
+		      
+        if (my_player->getPositionX() == bg_origin.x + bg_size.width - borderWidth - my_player->playerWidth / 2){
+            CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/swipSword.wav");
+            CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/swipSword.wav");
+            CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(10);
+        }
+        my_player->isLeft = true;
 		my_player->m_dir = DIR_LEFT;
 		my_player->logic();
 		my_player->setPositionX(bg_origin.x + borderWidth + my_player->playerWidth / 2);

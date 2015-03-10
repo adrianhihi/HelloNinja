@@ -12,6 +12,7 @@ public:
     float bg_scale;
 	static cocos2d::Scene * createScene();
 	void menuCallBack(cocos2d::Ref * pSender);
+    void restart(cocos2d::Ref * pSender);
 };
 
 

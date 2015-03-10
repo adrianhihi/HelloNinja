@@ -2,6 +2,8 @@
 
 #include "GameOver.h"
 #include "HelloWorldScene.h"
+#include "NewGameScene_japan.h"
+#include "SimpleAudioEngine.h"
 
 Scene * GameOver::createScene() {
 	auto scene = Scene::create();
@@ -37,7 +39,11 @@ bool GameOver::init() {
 	//add Back item
 	auto menuItemBack = MenuItemImage::create("Menu/menu.png", "Menu/menu_1.png", CC_CALLBACK_1(GameOver::menuCallBack, this));
 	//menuItemBack->setColor(Color3B::BLACK);
-	auto menu = Menu::create(menuItemBack, NULL);
+    menuItemBack->setScale(1.8f);
+    auto restart = MenuItemImage::create("Menu/restart.png", "Menu/restart_1.png", CC_CALLBACK_1(GameOver::restart, this));
+    restart->setScale(1.8f);
+	auto menu = Menu::create(menuItemBack, restart, NULL);
+    menu->alignItemsVertically();
     menu->setPosition(Vec2(origin.x + visibleSize.width - menu->getContentSize().width / 2,
                            origin.y + menu->getContentSize().height / 2));
 	this->addChild(menu, 1);
@@ -49,3 +55,10 @@ void GameOver::menuCallBack(cocos2d::Ref * pSender) {
 	Director::getInstance()->replaceScene(TransitionCrossFade::create(2, HelloWorld::createScene()));
 };
 
+void GameOver::restart(cocos2d::Ref * pSender){
+    
+    CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/swordClick.wav");
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/swordClick.wav");
+    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(0.5);
+    Director::getInstance()->replaceScene(NewGameScene_japan::createScene());
+}
