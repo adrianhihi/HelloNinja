@@ -156,7 +156,12 @@ bool NewGameScene_japan::init()
 	this->addChild(labelHeight, 2);
 
 
-
+	//item array& skill
+	{
+		item_Array[0] = item_type::none_item;
+		item_Array[1] = item_type::none_item;
+		current_skill = skill_type::none_skill;
+	}
     
 	//boarder
 
@@ -204,26 +209,50 @@ bool NewGameScene_japan::init()
 	//m_player->setTag(0);
     
 	m_player->setPosition(Point(bg_origin.x + borderWidth + m_player->playerWidth / 2, bg_origin.y + bg_size.height * 0.2f));
-    this->addChild(m_player, 11, 0);
+	this->addChild(m_player, 11, 0);
 
 	//skill button
+	
+	
+	auto createSkillButton = MenuItemImage::create(
+		"scroll.png",
+		"scroll.png",
+		CC_CALLBACK_1(NewGameScene_japan::create_skill, this)
+		);
 
+	createSkillButton->setScale(bg_scale);
+
+	createSkillButton->setPosition(bg_origin.x + bg_size.width / 2, bg_origin.y + bg_size.height*0.125);
+	
 	auto abilityButtonItem = MenuItemImage::create(
-		"bang.png",
-		"bang.png",
-		CC_CALLBACK_1(NewGameScene_japan::playerAbility_Teleportation, this)
+		"",
+		"",
+		CC_CALLBACK_1(NewGameScene_japan::use_skill, this)
 		);
 
 	abilityButtonItem->setScale(bg_scale);
+	abilityButtonItem->setPosition(bg_origin + abilityButtonItem->getBoundingBox().size / 2);
+	abilityButtonItem->setVisible(false);
 
-	abilityButtonItem->setPosition(bg_origin + abilityButtonItem->getBoundingBox().size/2);
     //abilityButtonItem->setTag(112);
 	// create menu, it's an autorelease object
-	auto *menu = Menu::create(menu_item_1, abilityButtonItem, NULL);
+	auto *menu = Menu::create(menu_item_1, createSkillButton, NULL);
     
 	menu->setPosition(Point(0, 0));
+
+	menu->addChild(abilityButtonItem, 10, Scene_Tag::skill_button);
 	//menu->setColor(Color3B::BLUE);
-	this->addChild(menu, 20);
+	this->addChild(menu, 20, Scene_Tag::menu);
+
+	Sprite* item0 = Sprite::create("star.png");
+	item0->setPosition(bg_origin.x + bg_size.width / 2 - item0->getContentSize().width / 2, bg_origin.y + bg_size.height*0.15);
+	item0->setVisible(false);
+	Sprite* item1 = Sprite::create("star.png");
+	item1->setPosition(bg_origin.x + bg_size.width / 2 + item1->getContentSize().width / 2, bg_origin.y + bg_size.height*0.15);
+	item1->setVisible(false);
+
+	this->addChild(item0, 21, Scene_Tag::item_0);
+	this->addChild(item1, 21, Scene_Tag::item_1);
 
 	//===================
 
@@ -465,10 +494,11 @@ void NewGameScene_japan::jumpToMenu(){
 void NewGameScene_japan::newEnemy(float t) {
     auto size = Director::getInstance()->getWinSize();
     auto border = Sprite::create("japan/border_j.png");
-    auto border_width = border->getContentSize().width;
+    auto border_width = border->getBoundingBox().size.width;
+
     auto roof = Sprite::create("japan/roof_r.png");
   
-    int roofWidth = roof->getContentSize().width * 0.8f;
+	int roofWidth = roof->getBoundingBox().size.width * 0.8f;
     
     
     Sprite * enemy;
@@ -476,6 +506,8 @@ void NewGameScene_japan::newEnemy(float t) {
     Sprite * crow;
     Vector<SpriteFrame *> crowFram;
     
+	enemyNum = 4;
+
     enemyNum ++;
 	CCLOG("working!\n");
     switch (enemyNum) {
@@ -552,11 +584,10 @@ void NewGameScene_japan::newEnemy(float t) {
             }
         }
             break;
-            
         case 5: {
             star = Sprite::create("star.png");
-            int x = random(border_width + star->getContentSize().width/2 + roofWidth, size.width- border_width - roofWidth - star->getContentSize().width/2);
-            star->setPosition(Point(x, size.height+100));
+            int x = random(border_width + star->getContentSize().width/2, size.width- border_width - star->getContentSize().width/2);
+			star->setPosition(bg_origin.x + x, bg_origin.y+ size.height + 100);
             this->addChild(star, 7);
             allStar.pushBack(star);
         }
@@ -1050,7 +1081,8 @@ void NewGameScene_japan::update(float t) {
     
     
     //star
-    for (int i = 0; i < allStar.size(); i++) {
+    for (int i = 0; i < allStar.size(); i++) 
+	{
         auto star = allStar.at(i);
         Rect er(star->getPositionX(), star->getPositionY(), 40, 50);
         
@@ -1071,6 +1103,35 @@ void NewGameScene_japan::update(float t) {
 //            abilityButtonItem->setPosition(bg_origin + abilityButtonItem->getBoundingBox().size/2);
 //            this->addChild(abilityButtonItem);
             //abilityButtonTouched = true;
+			
+			//add star into item array
+			push_item(item_type::star);
+			
+
+			/*
+			
+			
+			if (item_Array[0] == item_Array[1] && item_Array[0] == item_type::star)
+			{
+				Menu *menu = (Menu*) getChildByTag(Scene_Tag::menu);
+
+				auto abilityButtonItem = MenuItemImage::create(
+					"Teleport.png",
+					"Teleport.png",
+					CC_CALLBACK_1(NewGameScene_japan::playerAbility_Teleportation, this)
+					);
+
+				abilityButtonItem->setScale(bg_scale);
+
+				abilityButtonItem->setPosition(bg_origin + abilityButtonItem->getBoundingBox().size / 2);
+
+				menu->addChild(abilityButtonItem, 10, Scene_Tag::skill_button);
+				item_Array[0] = item_Array[1] = item_type::none_item;
+				
+			}
+			*/
+
+
             HP ++;
             star->removeFromParent();
             allStar.eraseObject(star);
@@ -1157,7 +1218,42 @@ void NewGameScene_japan::update(float t) {
 	}   
 }
 
-void NewGameScene_japan::playerAbility_Teleportation(cocos2d::Ref *pSender)
+
+void NewGameScene_japan::create_skill(cocos2d::Ref* pSender)
+{
+	if (item_Array[0] == item_Array[1] && item_Array[0] == item_type::star)
+	{
+		
+		Menu* menu = (Menu*)getChildByTag(Scene_Tag::menu);
+		MenuItemImage* skill = (MenuItemImage*)menu->getChildByTag(Scene_Tag::skill_button);
+		auto teleport_img = Sprite::create("Teleport.png");
+		skill->setNormalImage(teleport_img);
+		skill->setScale(bg_scale);
+		skill->setPosition(bg_origin + skill->getBoundingBox().size / 2);
+		skill->setVisible(true);
+
+		current_skill = skill_type::teleport;
+		clear_item();
+	}
+
+}
+
+void NewGameScene_japan::use_skill(cocos2d::Ref* pSender)
+{
+	if (current_skill == skill_type::teleport)
+	{
+		playerAbility_Teleportation();
+		Menu* menu = (Menu*)getChildByTag(Scene_Tag::menu);
+		MenuItem* skill = (MenuItem*)menu->getChildByTag(Scene_Tag::skill_button);
+		skill->setVisible(false);
+
+		current_skill = skill_type::none_skill;
+
+	}
+
+}
+
+void NewGameScene_japan::playerAbility_Teleportation()
 {
 	Player *my_player = (Player *)(this->getChildByTag(Scene_Tag::player));
 
@@ -1190,5 +1286,56 @@ void NewGameScene_japan::playerAbility_Teleportation(cocos2d::Ref *pSender)
         abilityButtonTouched = true;
 	}
 }
+
+void NewGameScene_japan::push_item(int item)
+{
+	if (item_Array[0] == item_type::none_item) item_Array[0] = item;
+	else if (item_Array[1] == item_type::none_item) item_Array[1] = item;
+	else
+	{
+		item_Array[0] = item_Array[1];
+		item_Array[1] = item;
+	}
+	Sprite* item0 = (Sprite*)getChildByTag(Scene_Tag::item_0);
+	Sprite* item1 = (Sprite*)getChildByTag(Scene_Tag::item_1);
+
+
+	if (item_Array[0] == item_type::star)
+	{
+		Texture2D* tmp = TextureCache::sharedTextureCache()->addImage("star.png");
+		item0->setTexture(tmp);
+		item0->setScale(bg_scale);
+		item0->setPosition(bg_origin.x + bg_size.width / 2 - item0->getBoundingBox().size.width/2, bg_origin.y + bg_size.height*0.125);
+		item0->setVisible(true);
+	}
+	else if (item_Array[0] == item_type::none_item)
+	{
+		item0->setVisible(false);
+	}
+
+	if (item_Array[1] == item_type::star)
+	{
+		Texture2D* tmp = TextureCache::sharedTextureCache()->addImage("star.png");
+		item1->setTexture(tmp);
+		item1->setScale(bg_scale);
+		item1->setPosition(bg_origin.x + bg_size.width / 2 + item1->getBoundingBox().size.width / 2, bg_origin.y + bg_size.height*0.125);
+		item1->setVisible(true);
+	}
+	else if (item_Array[1] == item_type::none_item)
+	{
+		item1->setVisible(false);
+	}
+
+}
+
+void NewGameScene_japan::clear_item()
+{
+	item_Array[0] = item_Array[1] = item_type::none_item;
+	Sprite* item0 = (Sprite*)getChildByTag(Scene_Tag::item_0);
+	Sprite* item1 = (Sprite*)getChildByTag(Scene_Tag::item_1);
+	item0->setVisible(false);
+	item1->setVisible(false);
+}
+
 
 
