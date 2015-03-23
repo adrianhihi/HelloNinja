@@ -22,7 +22,7 @@ public:
 	static cocos2d::Scene* createScene();
 	// Here's a difference. Method 'init' in cocos2d-x returns bool, instead of returning 'id' in cocos2d-iphone
 	virtual bool init();
-	virtual void onExit() override;
+	//virtual void onExit() override;
 	// a selector callback
 	void menuCloseCallback(cocos2d::Ref* pSender);
 	virtual bool onTouchBegan(Touch *touch, Event *unused_event);
@@ -44,16 +44,42 @@ public:
 		border2 = 1001,
 		border3 = 1002,
 		border4 = 1003,
+		menu = 2001,
+		skill_button = 2002,
+		item_0 = 2003,
+		item_1 = 2004,
 		player = 0,
 	};
 
 	const int iSpeed = -10;
 	int score;
 
-	void playerAbility_Teleportation(cocos2d::Ref* pSender);
+	int item_Array[2];
+	enum item_type :int
+	{
+		none_item = 0,
+		star = 1,
+	};
+	int current_skill;
+	enum skill_type :int
+	{
+		none_skill = 0,
+		teleport = 1,
+	};
+
+	//Sprite * item0;
+	//Sprite * item1;
+
+	void create_skill(cocos2d::Ref* pSender);
+	void use_skill(cocos2d::Ref* pSender);
+
+	void playerAbility_Teleportation();
+	void push_item(int item);
+	void clear_item();
 
 	//__________________________________________________
 private:
+    int enemyNum;
     
     int enemyLeftRightDis;
     void logic(float t);
@@ -79,8 +105,11 @@ private:
 	void jumpToMenu();
 	float start_point;
 	int HP = 3;
+    
+    int enemy_killed = 0;
 	MonsterLayer* m_monsterLayer;
 	cocos2d::Vec2 testTouchBegin;
+    bool abilityButtonTouched = false;
 
 	
 };

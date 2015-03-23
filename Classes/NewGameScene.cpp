@@ -49,7 +49,7 @@ bool NewGame::init()
 		return false;
 	}
 	//this->schedule(schedule_selector(TollgateScene::logic));
-	Size visibleSize = Director::getInstance()->getWinSize();
+	Size visibleSize = Director::getInstance()->getVisibleSize();
 
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 	//set up the border
@@ -82,14 +82,16 @@ bool NewGame::init()
 
 	this->addChild(menu, 6);
 
-	auto bg_sprite_1 = Sprite::create("seaworld/s1.png");
+    auto bg_sprite_1 = Sprite::create("seaworld/seaworld_1.png");
+    bg_sprite_1->setScale(visibleSize.width/bg_sprite_1->getContentSize().width);
 	bg_sprite_1->setPosition(Point(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
 	auto Move_Down_1 = MoveTo::create(100, Point(visibleSize.width / 2 + origin.x, -visibleSize.height / 2));
 	bg_sprite_1->runAction(Move_Down_1);
 	// add the sprite as a child to this layer
 	this->addChild(bg_sprite_1,3);
 
-	auto bg_sprite_2 = Sprite::create("seaworld/s2.png");
+	auto bg_sprite_2 = Sprite::create("seaworld/seaworld_2.png");
+    bg_sprite_2->setScale(visibleSize.width/bg_sprite_1->getContentSize().width);
 
 	bg_sprite_2->setPosition(Point(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
 
@@ -97,15 +99,16 @@ bool NewGame::init()
 
 	// add the sprite as a child to this layer
 	this->addChild(bg_sprite_2,2);
-	auto bg_sprite_3 = Sprite::create("seaworld/s3.png");
-
+	auto bg_sprite_3 = Sprite::create("seaworld/seaworld_3.png");
+    bg_sprite_3->setScale(visibleSize.height/bg_sprite_3->getContentSize().height);
 	bg_sprite_3->setPosition(Point(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
 
     bg_sprite_3->runAction(MoveTo::create(500, Point(visibleSize.width / 2 + origin.x, -visibleSize.height / 2)));
 
 	// add the sprite as a child to this layer
 	this->addChild(bg_sprite_3,1);
-	auto bg_sprite_4 = Sprite::create("seaworld/s4.png");
+	auto bg_sprite_4 = Sprite::create("seaworld/seaworld_4.png");
+    bg_sprite_4->setScale(visibleSize.width/bg_sprite_4->getContentSize().width);
 	bg_sprite_4->setPosition(Point(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
 
 	// add the sprite as a child to this layer

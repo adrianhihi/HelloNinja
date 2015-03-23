@@ -20,8 +20,8 @@ bool BackgroundLayer::init()
 	Size visibleSize = Director::getInstance()->getWinSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-	auto border_left = Sprite::create("border/border_1.png");
-	auto border_right = Sprite::create("border/border_2.png");
+	auto border_left = Sprite::create("border/Ocean_border.png");
+	auto border_right = Sprite::create("border/Ocean_border2.png");
     borderWidth = border_left->getContentSize().width;
 
 	border1 = createBorder_left(Point(border_left->getContentSize().width/2, visibleSize.height/2));
@@ -44,7 +44,7 @@ bool BackgroundLayer::init()
 
 Sprite* BackgroundLayer::createBorder_left(Point pos)
 {
-	auto border = Sprite::create("border/border_1.png");
+	auto border = Sprite::create("border/Ocean_border.png");
 	Size borderSize = border->getContentSize();
 	Size visibleSize = Director::getInstance()->getWinSize();
 
@@ -55,7 +55,7 @@ Sprite* BackgroundLayer::createBorder_left(Point pos)
 
 Sprite* BackgroundLayer::createBorder_right(Point pos)
 {
-	auto border = Sprite::create("border/border_2.png");
+	auto border = Sprite::create("border/Ocean_border2.png");
 	Size borderSize = border->getContentSize();
 
 	border->setPosition(pos);
@@ -74,7 +74,7 @@ void BackgroundLayer::logic(float dt) {
 	posY1 += iSpeed;
 	posY2 += iSpeed;
 
-	auto myborder = Sprite::create("border/border_1.png");
+	auto myborder = Sprite::create("border/Ocean_border.png");
 
 	Size borderSize = myborder->getContentSize();
 

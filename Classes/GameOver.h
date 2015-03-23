@@ -9,8 +9,10 @@ class GameOver : public cocos2d::Layer
 public:
 	CREATE_FUNC(GameOver);
 	bool init();
+    float bg_scale;
 	static cocos2d::Scene * createScene();
 	void menuCallBack(cocos2d::Ref * pSender);
+    void restart(cocos2d::Ref * pSender);
 };
 
 
