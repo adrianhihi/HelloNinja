@@ -29,7 +29,8 @@ public:
 	bool isLeft;
 //	bool isDead;
 
-	void logic();
+	void logicRunning(float t);
+    void logicflying(float t);
 //	void beAtked(int iValue);
     float playerWidth;
     direction m_dir;

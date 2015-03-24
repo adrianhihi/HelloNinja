@@ -312,7 +312,6 @@ bool NewGameScene_japan::onTouchBegan(Touch *touch, Event *unsured_event){
 			my_player->isInAir = true;
 			my_player->isMovingLeft = true;
 
-			//my_player-> runAction(MoveTo::create(0.5, Point(x_left, size.height * 0.16f)));
 			my_player->m_dir = DIR_LEFT;
 			my_player->isLeft = true;
 
@@ -327,7 +326,7 @@ bool NewGameScene_japan::onTouchBegan(Touch *touch, Event *unsured_event){
 			
 		}
         
-        my_player->logic();
+//        my_player->logic();
 	
 	}
 
@@ -399,7 +398,6 @@ void NewGameScene_japan::moveStar(float t)
 
 void NewGameScene_japan::moveEnemyLeft(float t) {
     auto size = Director::getInstance()->getWinSize();
-//    for(auto enemyLeftCrow: allEnemyLeftCrow) {
     for (int i = 0; i < allEnemyLeftCrow.size(); i++) {
         auto enemyLeftCrow = allEnemyLeftCrow.at(i);
         if (enemyLeftCrow->getPositionY() > size.height - 200) {
@@ -519,7 +517,6 @@ void NewGameScene_japan::newEnemy(float t) {
             allEnemyRightCrow.pushBack(crow);
             
             int RandNum = random(0, 2);
-//            CCLOG("RandNum %d", RandNum);
             switch (RandNum) {
                 case 0:
                     enemyNum = -1;
@@ -792,26 +789,6 @@ void NewGameScene_japan::update(float t) {
             }
        }
 
-        
-       // }
-//       else if (pp.intersectsRect(er) && HP == 1){
-//            
-//            enemy->removeFromParent();
-//            allEnemyFallen.eraseObject(enemy);
-//            i--;
-//            this->runAction(Sequence::create(shake1, shake2, shake3, shake1, shake2, shake3, shake1, shake2, shake3, shake1, shake2, shake3, NULL));
-//            
-//            auto label = Label::createWithTTF("HP -1", "fonts/Marker Felt.ttf", 24);
-//            label->setPosition(Point(origin.x + visibleSize.width / 2, 0));
-//            auto Move_Down_3 = MoveBy::create(1, Vec2(0, visibleSize.height / 2));
-//            auto action_3 = RepeatForever::create(Move_Down_3);
-//            label->setColor(Color3B::RED);
-//            label->runAction(action_3);
-//            this->addChild(label, 8);
-//
-//            this->pause();
-//            Director::getInstance()->replaceScene(TransitionMoveInB::create(2, GameOver::createScene()));
-//        }
     }
     
     //enemy left crow
@@ -923,22 +900,6 @@ void NewGameScene_japan::update(float t) {
         Rect er(star->getPositionX(), star->getPositionY(), 40, 50);
         
         if (pp.intersectsRect(er)) {
-            //MenuItemImage *specialSkill= (MenuItemImage*)this->getChildByTag(112);
-            
-            //this->addChild(specialSkill);
-            //skill button
-//            
-//            auto abilityButtonItem = MenuItemImage::create(
-//                                                           "bang.png",
-//                                                           "bang.png",
-//                                                           CC_CALLBACK_1(NewGameScene_japan::playerAbility_Teleportation, this)
-//                                                           );
-//            
-//            abilityButtonItem->setScale(bg_scale);
-//            
-//            abilityButtonItem->setPosition(bg_origin + abilityButtonItem->getBoundingBox().size/2);
-//            this->addChild(abilityButtonItem);
-            //abilityButtonTouched = true;
             HP ++;
             star->removeFromParent();
             allStar.eraseObject(star);
@@ -954,6 +915,8 @@ void NewGameScene_japan::update(float t) {
     }
     
     labelHp->setString(StringUtils::format("Hp: %d", HP));
+    
+    // player update
     
 	{
 		
@@ -975,13 +938,7 @@ void NewGameScene_japan::update(float t) {
 				my_player->setPosition(bg_origin.x + bg_size.width - borderWidth - my_player->playerWidth / 2, bg_origin.y + bg_size.height*0.2);
 
 			}
-			/*
-			else if (this->getPositionX() >= origin.x + bgSize.x / 2 && isLeft)
-			{
-			this->setScaleX((this->getScaleX()) * -1.f);
-			isLeft = false;
-			}
-			*/
+			
 
 		}
 		else if (my_player->isInAir&&my_player->isMovingLeft)
@@ -998,17 +955,10 @@ void NewGameScene_japan::update(float t) {
 				
 
 			}
-			/*
-			else if (this->getPositionX() <= origin.x + bgSize.x / 2 && !isLeft)
-			{
-			this->setScaleX((this->getScaleX()) * -1.f);
-			isLeft = true;
-			}
-			*/
 		}
 
-
-	}   
+//     my_player->logic();
+	}
 }
 
 void NewGameScene_japan::playerAbility_Teleportation(cocos2d::Ref *pSender)
@@ -1019,7 +969,6 @@ void NewGameScene_japan::playerAbility_Teleportation(cocos2d::Ref *pSender)
 	{
 		my_player->isLeft = false;
 		my_player->m_dir = DIR_RIGHT;
-		my_player->logic();
 		my_player->setPositionX(bg_origin.x + bg_size.width - borderWidth - my_player->playerWidth/2);
         abilityButtonTouched = true;
 	}
@@ -1027,7 +976,7 @@ void NewGameScene_japan::playerAbility_Teleportation(cocos2d::Ref *pSender)
 	{
 		my_player->isLeft = true;
 		my_player->m_dir = DIR_LEFT;
-		my_player->logic();
+
 		my_player->setPositionX(bg_origin.x + borderWidth + my_player->playerWidth / 2);
         abilityButtonTouched = true;
 	}

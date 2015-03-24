@@ -724,7 +724,6 @@ bool Halloween::onTouchBegan(Touch *touch, Event *unsured_event){
 			//my_player-> runAction(MoveTo::create(0.5, Point(x_left, size.height * 0.16f)));
 			my_player->m_dir = DIR_LEFT;
 			my_player->isLeft = true;
-			my_player->logic();
 		}
 		else if (!my_player->isInAir && my_player->isLeft == true){
 			//my_player-> runAction(MoveTo::create(0.5, Point(x_right, size.height * 0.16f)));
@@ -734,7 +733,6 @@ bool Halloween::onTouchBegan(Touch *touch, Event *unsured_event){
 
 			my_player->m_dir = DIR_RIGHT;
 			my_player->isLeft = false;
-			my_player->logic();
 		}
 
 	}
@@ -1469,14 +1467,12 @@ void Halloween::playerAbility_Teleportation(cocos2d::Ref *pSender)
 	{
 		my_player->isLeft = false;
 		my_player->m_dir = DIR_RIGHT;
-		my_player->logic();
 		my_player->setPositionX(bg_origin.x + bg_size.width - borderWidth - my_player->playerWidth / 2);
 	}
 	else if (!my_player->isInAir&&!my_player->isLeft)
 	{
 		my_player->isLeft = true;
 		my_player->m_dir = DIR_LEFT;
-		my_player->logic();
 		my_player->setPositionX(bg_origin.x + borderWidth + my_player->playerWidth / 2);
 	}
 }
