@@ -16,7 +16,7 @@ bool BackgroundLayer_halloween::init()
 	{
 		return false;
 	}
-
+//
 	Size visibleSize = Director::getInstance()->getWinSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
