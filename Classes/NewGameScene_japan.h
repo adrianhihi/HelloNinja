@@ -109,6 +109,8 @@ private:
     int enemy_killed = 0;
 	MonsterLayer* m_monsterLayer;
 	cocos2d::Vec2 testTouchBegin;
+	float sweep_angle;
+	bool valid_touch;
     bool abilityButtonTouched = false;
 
 	

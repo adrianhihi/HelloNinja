@@ -234,6 +234,10 @@ bool NewGameScene_japan::init()
 	abilityButtonItem->setPosition(bg_origin + abilityButtonItem->getBoundingBox().size / 2);
 	abilityButtonItem->setVisible(false);
 
+	//touch related func init
+	valid_touch = false;
+	sweep_angle = 0.f;
+
     //abilityButtonItem->setTag(112);
 	// create menu, it's an autorelease object
 	auto *menu = Menu::create(menu_item_1, createSkillButton, NULL);
@@ -346,11 +350,49 @@ void NewGameScene_japan::logic(float t) {
 
 bool NewGameScene_japan::onTouchBegan(Touch *touch, Event *unsured_event){
 	
-	auto my_player = (Player *) this->getChildByTag(0);
-
 	if (touch->getLocation().x >= bg_origin.x + borderWidth&&touch->getLocation().x <= bg_origin.x + bg_size.width - borderWidth)
 	{
-		if (!my_player->isInAir && my_player->isLeft == false){
+		testTouchBegin = touch->getLocation();
+		valid_touch = true;
+	}
+	else valid_touch = false;
+
+	return true;
+}
+
+void NewGameScene_japan::onTouchMoved(Touch * touch, Event *unsured_event){
+
+}
+
+void NewGameScene_japan::onTouchEnded(Touch *touch, Event *unused_event){
+
+	auto my_player = (Player *) this->getChildByTag(0);
+
+	/*
+	if (testTouchBegin.distance(touch->getLocation()) > 1 && testTouchBegin.x<touch->getLocation().x && player->isLeft == true)
+	{
+		player->setScaleX((player->getScaleX()) * -1.f);
+		player->isLeft = false;
+		player->moveRight();
+	}
+
+	else if (testTouchBegin.distance(touch->getLocation()) > 1 && testTouchBegin.x>touch->getLocation().x && player->isLeft == false)
+	{
+		player->setScaleX((player->getScaleX()) * -1.f);
+		player->isLeft = true;
+		player->moveLeft();
+	}
+	*/
+
+
+	if (valid_touch&&testTouchBegin.distance(touch->getLocation()) > 50 && touch->getLocation().x >= bg_origin.x + borderWidth&&touch->getLocation().x <= bg_origin.x + bg_size.width - borderWidth)
+	{
+		Vec2 tmp = touch->getLocation() - testTouchBegin;
+		sweep_angle = tmp.getAngle();
+		if (sweep_angle<0)sweep_angle = 0;
+		if (sweep_angle>M_PI / 2.f)sweep_angle = M_PI - sweep_angle;
+		CCLOG("angle : %f,%f", sweep_angle, M_PI / 2.f);
+		if (testTouchBegin.x>touch->getLocation().x&&!my_player->isInAir && my_player->isLeft == false){
 
 			my_player->isInAir = true;
 			my_player->isMovingLeft = true;
@@ -360,7 +402,7 @@ bool NewGameScene_japan::onTouchBegan(Touch *touch, Event *unsured_event){
 			my_player->isLeft = true;
 			//my_player->logic();
 		}
-		else if (!my_player->isInAir && my_player->isLeft == true){
+		else if (testTouchBegin.x<touch->getLocation().x&&!my_player->isInAir && my_player->isLeft == true){
 			//my_player-> runAction(MoveTo::create(0.5, Point(x_right, size.height * 0.16f)));
 			my_player->isInAir = true;
 			my_player->isMovingLeft = false;
@@ -370,19 +412,9 @@ bool NewGameScene_japan::onTouchBegan(Touch *touch, Event *unsured_event){
 			my_player->isLeft = false;
 			//my_player->logic();
 		}
-        my_player->logic();
-	
+		my_player->logic();
+		valid_touch = false;
 	}
-
-	
-	return true;
-}
-
-void NewGameScene_japan::onTouchMoved(Touch * touch, Event *unsured_event){
-
-}
-
-void NewGameScene_japan::onTouchEnded(Touch *touch, Event *unused_event){
 }
 
 void NewGameScene_japan::onTouchCancelled(Touch *touch, Event *unused_event){
@@ -494,10 +526,11 @@ void NewGameScene_japan::jumpToMenu(){
 void NewGameScene_japan::newEnemy(float t) {
     auto size = Director::getInstance()->getWinSize();
     auto border = Sprite::create("japan/border_j.png");
+
     auto border_width = border->getBoundingBox().size.width;
 
     auto roof = Sprite::create("japan/roof_r.png");
-  
+	roof->setScale(bg_scale);
 	int roofWidth = roof->getBoundingBox().size.width * 0.8f;
     
     
@@ -586,7 +619,8 @@ void NewGameScene_japan::newEnemy(float t) {
             break;
         case 5: {
             star = Sprite::create("star.png");
-            int x = random(border_width + star->getContentSize().width/2, size.width- border_width - star->getContentSize().width/2);
+			star->setScale(bg_scale);
+			int x = random(borderWidth + roofWidth + star->getBoundingBox().size.width / 2, bg_size.width - borderWidth - roofWidth - star->getBoundingBox().size.width / 2);
 			star->setPosition(bg_origin.x + x, bg_origin.y+ size.height + 100);
             this->addChild(star, 7);
             allStar.pushBack(star);
@@ -1155,7 +1189,7 @@ void NewGameScene_japan::update(float t) {
 		
 		auto my_player = (Player *) this->getChildByTag(0);
 		
-		float a = -0.1*bg_size.height / (0.25 * (bg_size.width - my_player->playerWidth - 2 * borderWidth) * (bg_size.width - my_player->playerWidth - 2 * borderWidth));
+		float a = -1.f*(0.05 + 0.15*(sweep_angle / (M_PI/2.f)))*bg_size.height / (0.25 * (bg_size.width - my_player->playerWidth - 2 * borderWidth) * (bg_size.width - my_player->playerWidth - 2 * borderWidth));
 
 		if (my_player->isInAir&&!my_player->isMovingLeft)
 		{
