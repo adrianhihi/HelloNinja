@@ -157,8 +157,8 @@ void HelloWorld::Halloween(cocos2d::Ref *pSender){
 	CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/swordClick.wav");
 	CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/swordClick.wav");
 	CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(0.5);
-	auto scene = Halloween::createScene();
-	Director::getInstance()->replaceScene(scene);
+	//auto scene = Halloween::createScene();
+	//Director::getInstance()->replaceScene(scene);
 
 }
 
