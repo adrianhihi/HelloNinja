@@ -660,13 +660,13 @@ bool Halloween::init()
 	return true;
 }
 
-//
-//void Halloween::onExit()
-//{
-//	Layer::onExit();
-//
-//	_eventDispatcher->removeEventListenersForTarget(this);
-//}
+
+void Halloween::onExit()
+{
+	Layer::onExit();
+
+	_eventDispatcher->removeEventListenersForTarget(this);
+}
 
 
 

@@ -28,7 +28,7 @@ public:
     bool isMovingLeft;
     bool isLeft;
     //	bool isDead;
-    
+	void logic();
     void logicRunning(float t);
     void logicflying(float t);
     //	void beAtked(int iValue);
