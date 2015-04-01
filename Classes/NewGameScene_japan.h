@@ -51,7 +51,7 @@ public:
 		player = 0,
 	};
 
-	const int iSpeed = -10;
+	int iSpeed = -10;
 	int score;
 
 	int item_Array[2];
@@ -80,7 +80,8 @@ public:
 	//__________________________________________________
 private:
 	int enemyNum;
-
+    int speedTime;
+    
 	int enemyLeftRightDis;
 	void logic(float t);
 	Player* m_player;
@@ -92,19 +93,23 @@ private:
 	Vector<Sprite *> allStar;
 	Vector<Sprite *> allEnemyLeftCrow;
 	Vector<Sprite *> allEnemyRightCrow;
+    
 	void newEnemy(float t);
-	//	void newEnemy_crow(float t);
+    void newEnemy_speedUp(float t);
 	void moveEnemyRoof(float t);
 	void moveEnemyFallen(float t);
 	void moveStar(float t);
 	void moveEnemyRight(float t);
 	void moveEnemyLeft(float t);
+    
+    void timeController(float t);
+    
 	void EnemyFlip();
 	void update(float t);
 	void killMe(Node * pSender);
 	void jumpToMenu();
 	float start_point;
-	int HP = 3;
+	int HP = 2;
 
 	int enemy_killed = 0;
 	MonsterLayer* m_monsterLayer;
