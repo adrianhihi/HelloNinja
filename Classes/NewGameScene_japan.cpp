@@ -8,6 +8,7 @@
 #include "GameOver.h"
 #include "MenuSettings.h"
 #include "GamePause.h"
+#include "Setting.h"
 
 
 NewGameScene_japan::~NewGameScene_japan(){}
@@ -178,16 +179,16 @@ bool NewGameScene_japan::init()
 		borderWidth = border1->getBoundingBox().size.width;
 
 		border1->setPosition(Point(bg_origin.x + borderWidth / 2, bg_origin.y + bg_size.height / 2));
-		this->addChild(border1, 10, Scene_Tag::border1);
+		this->addChild(border1, 5, Scene_Tag::border1);
 
 		border3->setPosition(Point(bg_origin.x + borderWidth / 2, bg_origin.y + bg_size.height * 3 / 2));
-		this->addChild(border3, 10, Scene_Tag::border3);
+		this->addChild(border3, 5, Scene_Tag::border3);
 
 		border2->setPosition(Point(bg_origin.x + bg_size.width - borderWidth / 2, bg_origin.y + bg_size.height / 2));
-		this->addChild(border2, 10, Scene_Tag::border2);
+		this->addChild(border2, 5, Scene_Tag::border2);
 
 		border4->setPosition(Point(bg_origin.x + bg_size.width - borderWidth / 2, bg_origin.y + bg_size.height * 3 / 2));
-		this->addChild(border4, 10, Scene_Tag::border4);
+		this->addChild(border4, 5, Scene_Tag::border4);
 
 	}
 
