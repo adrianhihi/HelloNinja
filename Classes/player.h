@@ -14,43 +14,46 @@ enum direction{
 class Player : public Node
 {
 public:
-	static Player* createPlayer(const char* fileName, float spriteScale, Vec2 _bgsize, Vec3 _origin);
-
-	Player();
-	~Player();
-	CCSprite* getSprite();
-	void bindSprite(CCSprite* sprite);
-	CREATE_FUNC(Player);
-	virtual bool init();
-
-	int score;
-	bool isInAir;
-	bool isMovingLeft;
-	bool isLeft;
-	bool isDead;
-
+    static Player* createPlayer(const char* fileName, float spriteScale, Vec2 _bgsize, Vec3 _origin);
+    
+    Player();
+    ~Player();
+    CCSprite* getSprite();
+    void bindSprite(CCSprite* sprite);
+    CREATE_FUNC(Player);
+    virtual bool init();
+    
+    //	int score;
+    bool isInAir;
+    bool isMovingLeft;
+    bool isLeft;
+    bool shelled;
+    bool speedUp;
+    //	bool isDead;
 	void logic();
-	void beAtked(int iValue);
+    void logicRunning(float t);
+    void logicflying(float t);
+    //	void beAtked(int iValue);
     float playerWidth;
     direction m_dir;
-
-	Sprite * spPlayer;
-	Vector<SpriteFrame *> allframe;
+    
+    Sprite * spPlayer;
+    Vector<SpriteFrame *> allframe;
+    Vector<SpriteFrame *> allframeAir;
     Vector<SpriteFrame *> allframeAttack;
-	Animate * ani;
-   // Animate * aniAttack;
-
+    Animate * ani;
+    
 private:
     
     
     
     
-   
     
-	void playerInit(float spriteScale);
-
-	float flyingTime;
-
-
+    
+    void playerInit(float spriteScale);
+    
+    //	float flyingTime;
+    
+    
 };
 #endif

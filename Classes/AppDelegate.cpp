@@ -27,11 +27,9 @@ bool AppDelegate::applicationDidFinishLaunching() {
     auto director = Director::getInstance();
     auto glview = director->getOpenGLView();
     if(!glview) {
-        glview = GLViewImpl::create("Hello Ninja!");
+        glview = GLViewImpl::create("Hello Ninja");
         director->setOpenGLView(glview);
     }
-
-    //glview->setFrameSize(480, 720);
 
     // turn on display FPS
     director->setDisplayStats(false);

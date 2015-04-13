@@ -62,7 +62,7 @@
 using namespace cocos2d::ui;
 //using namespace cocostudio;
 USING_NS_CC;
-class BackgroundLayer_japan;
+class BackgroundLayer_halloween;
 class Player;
 class MonsterLayer;
 
@@ -101,7 +101,7 @@ public:
 		player = 0,
 	};
 
-	const int iSpeed = -5;
+	const int iSpeed = -10;
 	int score;
 
 	void playerAbility_Teleportation(cocos2d::Ref* pSender);
@@ -114,7 +114,7 @@ private:
 	void logic(float t);
 	Player* m_player;
 	bool onContactBegin(PhysicsContact& contact);
-	BackgroundLayer_japan* m_backgroundLayer;
+	BackgroundLayer_halloween* m_backgroundLayer;
 
 	Vector<Sprite *> allEnemyFallen;
 	Vector<Sprite *> allEnemyRoof;
@@ -134,8 +134,10 @@ private:
 	void jumpToMenu();
 	float start_point;
 	int HP = 3;
+    int enemy_killed = 0;
 	MonsterLayer* m_monsterLayer;
 	cocos2d::Vec2 testTouchBegin;
+    bool abilityButtonTouched = false;
 
 
 };

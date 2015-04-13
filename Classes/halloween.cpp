@@ -411,6 +411,8 @@
 
 #include "BackgroundLayer_japan.h"
 #include "GameOver.h"
+#include "MenuSettings.h"
+#include "GamePause.h"
 
 
 Halloween::~Halloween(){}
@@ -419,11 +421,11 @@ Halloween::~Halloween(){}
 Scene* Halloween::createScene()
 {
 
-	auto NewGameScene_japan = Scene::createWithPhysics();
+	auto Halloween= Scene::createWithPhysics();
 	// 'scene' is an autorelease object
 	Vect gravity(0, -0.5f);
-	NewGameScene_japan->getPhysicsWorld()->setGravity(gravity);
-	NewGameScene_japan->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+	Halloween->getPhysicsWorld()->setGravity(gravity);
+	//NewGameScene_japan->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 
 
@@ -433,16 +435,16 @@ Scene* Halloween::createScene()
 
 	node->setPhysicsBody(body);
 
-	NewGameScene_japan->addChild(node);
+	Halloween->addChild(node);
 
 
 
 	// 'layer' is an autorelease object
 	auto layer = Halloween::create();
 	// add layer as a child to scene
-	NewGameScene_japan->addChild(layer);
+	Halloween->addChild(layer);
 
-	return NewGameScene_japan;
+	return Halloween;
 }
 
 bool Halloween::init()
@@ -463,16 +465,20 @@ bool Halloween::init()
 
 	// add the label as a child to this layer
 	this->addChild(label, 6);
+    CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/swipSword.wav");
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/swipSword.wav");
+    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(2.5);
 
 
-
-
-
-	//menu
-	auto menu_item_1 = MenuItemFont::create("Go Back", CC_CALLBACK_1(Halloween::GoBack, this));
-	menu_item_1->setScale(1.2);
-	menu_item_1->setPosition(Vec2(visibleSize.width - menu_item_1->getContentSize().width - borderWidth / 2,
-		menu_item_1->getContentSize().height / 2));
+    
+    //menu
+    auto menu_item_1 = MenuItemImage::create("Menu/pause.png","Menu/pause1.png", CC_CALLBACK_1(Halloween::GoBack, this));
+    
+    menu_item_1->setScale(1.2);
+    //menu_item_1->setPosition(Vec2(visibleSize.width - menu_item_1->getContentSize().width - borderWidth/2,
+    //                              menu_item_1->getContentSize().height / 2));
+    menu_item_1->setPosition(Vec2(origin.x + visibleSize.width - menu_item_1->getContentSize().width / 2,
+                                  origin.y + menu_item_1->getContentSize().height / 2));
 
 
 
@@ -643,7 +649,7 @@ bool Halloween::init()
 	this->schedule(schedule_selector(Halloween::moveEnemyRight));
 
 
-	this->schedule(schedule_selector(Halloween::newEnemy), 1.5);
+	this->schedule(schedule_selector(Halloween::newEnemy), 1.325);
 
 	//http://www.hawstein.com/posts/ctci-solutions-contents.html
 
@@ -663,9 +669,10 @@ void Halloween::onExit()
 }
 
 
+
 void Halloween::GoBack(cocos2d::Ref *pSender){
 	CCLOG("go back");
-	Director::getInstance()->replaceScene(HelloWorld::createScene());
+	Director::getInstance()->replaceScene(GamePause::createScene());
 }
 
 void Halloween::logic(float t) {
@@ -676,7 +683,7 @@ void Halloween::logic(float t) {
 	posY1 += iSpeed;
 	posY2 += iSpeed;
 
-	auto myborder = Sprite::create("border/border_j.png");
+	//auto myborder = Sprite::create("border/border_j.png");
 
 	if (posY1 < -bg_size.height / 2) {
 		posY1 = posY2 + bg_size.height;
@@ -724,7 +731,7 @@ bool Halloween::onTouchBegan(Touch *touch, Event *unsured_event){
 			//my_player-> runAction(MoveTo::create(0.5, Point(x_left, size.height * 0.16f)));
 			my_player->m_dir = DIR_LEFT;
 			my_player->isLeft = true;
-			my_player->logic();
+			//my_player->logic();
 		}
 		else if (!my_player->isInAir && my_player->isLeft == true){
 			//my_player-> runAction(MoveTo::create(0.5, Point(x_right, size.height * 0.16f)));
@@ -734,9 +741,10 @@ bool Halloween::onTouchBegan(Touch *touch, Event *unsured_event){
 
 			my_player->m_dir = DIR_RIGHT;
 			my_player->isLeft = false;
-			my_player->logic();
+			//my_player->logic();
 		}
-
+        //my_player->logic();
+        
 	}
 
 
@@ -858,7 +866,7 @@ void Halloween::jumpToMenu(){
 
 void Halloween::newEnemy(float t) {
 	auto size = Director::getInstance()->getWinSize();
-	auto border = Sprite::create("japan/border_j.png");
+	auto border = Sprite::create("halloween/border_h.png");
 	auto border_width = border->getContentSize().width;
 	auto roof = Sprite::create("japan/roof_r.png");
 	int roofWidth = roof->getContentSize().width;
@@ -1004,7 +1012,7 @@ void Halloween::newEnemy(float t) {
 			break;
 		}
 	}
-			break;
+        break;
 
 	case 10: {
 		enemy = Sprite::create("ccc.png");
@@ -1189,8 +1197,8 @@ void Halloween::update(float t) {
 	for (int i = 0; i < allEnemyRoof.size(); i++) {
 		auto enemy = allEnemyRoof.at(i);
 		Rect er(enemy->getPositionX(), enemy->getPositionY(), 115, 103);
-		auto shake1 = MoveTo::create(0.01, Point(p_x, p_y - 8.0f));
-		auto shake2 = MoveTo::create(0.01, Point(p_x, p_y + 8.0f));
+		auto shake1 = MoveTo::create(0.01, Point(p_x, p_y - 50.0f));
+		auto shake2 = MoveTo::create(0.01, Point(p_x, p_y + 50.0f));
 
 		auto shake3 = MoveTo::create(0.01, Point(p_x, p_y));
 
@@ -1199,6 +1207,9 @@ void Halloween::update(float t) {
 			enemy->removeFromParent();
 			allEnemyRoof.eraseObject(enemy);
 			i--;
+            CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/touchCrow.wav");
+            CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/touchCrow.wav");
+            CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(2.5);
 			this->runAction(Sequence::create(shake1, shake2, shake3, shake1, shake2, shake3, shake1, shake2, shake3, shake1, shake2, shake3, NULL));
 
 
@@ -1216,6 +1227,10 @@ void Halloween::update(float t) {
 			enemy->removeFromParent();
 			allEnemyRoof.eraseObject(enemy);
 			i--;
+            CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/touchCrow.wav");
+            CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/touchCrow.wav");
+            CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(2.5);
+            
 			this->runAction(Sequence::create(shake1, shake2, shake3, shake1, shake2, shake3, shake1, shake2, shake3, shake1, shake2, shake3, NULL));
 
 			auto label = Label::createWithTTF("HP -1", "fonts/Marker Felt.ttf", 24);
@@ -1237,8 +1252,8 @@ void Halloween::update(float t) {
 	for (int i = 0; i < allEnemyFallen.size(); i++) {
 		auto enemy = allEnemyFallen.at(i);
 		Rect er(enemy->getPositionX(), enemy->getPositionY(), 40, 50);
-		auto shake1 = MoveTo::create(0.01, Point(p_x, p_y - 8.0f));
-		auto shake2 = MoveTo::create(0.01, Point(p_x, p_y + 8.0f));
+		auto shake1 = MoveTo::create(0.01, Point(p_x, p_y - 50.0f));
+		auto shake2 = MoveTo::create(0.01, Point(p_x, p_y + 50.0f));
 
 		auto shake3 = MoveTo::create(0.01, Point(p_x, p_y));
 
@@ -1249,15 +1264,41 @@ void Halloween::update(float t) {
 			enemy->removeFromParent();
 			allEnemyFallen.eraseObject(enemy);
 			i--;
+            CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/attackBomb.wav");
+            CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/attackBomb.wav");
+            CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(2.5);
+
 			this->runAction(Sequence::create(shake1, shake2, shake3, shake1, shake2, shake3, shake1, shake2, shake3, shake1, shake2, shake3, NULL));
 
-			auto label = Label::createWithTTF("HP -1", "fonts/Marker Felt.ttf", 24);
-			label->setPosition(Point(origin.x + visibleSize.width / 2, 0));
-			auto Move_Down_3 = MoveBy::create(1, Vec2(0, visibleSize.height / 2));
-			auto action_3 = RepeatForever::create(Move_Down_3);
-			label->setColor(Color3B::RED);
-			label->runAction(action_3);
-			this->addChild(label, 8);
+            enemy_killed ++;
+            if (enemy_killed == 1) {
+                auto label = Label::createWithTTF("First Blood! \n +1000!", "fonts/Marker Felt.ttf", 60);
+                label->setPosition(Point(origin.x + visibleSize.width / 2, 0));
+                auto Move_Down_3 = MoveBy::create(1, Vec2(0, visibleSize.height / 2));
+                auto action_3 = RepeatForever::create(Move_Down_3);
+                label->setColor(Color3B::BLACK);
+                label->runAction(action_3);
+                this->addChild(label, 8);
+                score += 1000;
+            }else if(enemy_killed == 2){
+                auto label = Label::createWithTTF("Double Kill! \n +2000", "fonts/Marker Felt.ttf", 60);
+                label->setPosition(Point(origin.x + visibleSize.width / 2, 0));
+                auto Move_Down_3 = MoveBy::create(1, Vec2(0, visibleSize.height / 2));
+                auto action_3 = RepeatForever::create(Move_Down_3);
+                label->setColor(Color3B::BLACK);
+                label->runAction(action_3);
+                this->addChild(label, 8);
+                score += 2000;
+            }else{
+                auto label = Label::createWithTTF("Ninja Kill! \n +3000", "fonts/Marker Felt.ttf", 60);
+                label->setPosition(Point(origin.x + visibleSize.width / 2, 0));
+                auto Move_Down_3 = MoveBy::create(1, Vec2(0, visibleSize.height / 2));
+                auto action_3 = RepeatForever::create(Move_Down_3);
+                label->setColor(Color3B::BLACK);
+                label->runAction(action_3);
+                this->addChild(label, 8);
+                score += 3000;
+            }
 
 		}
 		else if (pp.intersectsRect(er) && HP == 1){
@@ -1288,7 +1329,7 @@ void Halloween::update(float t) {
 		auto shake2 = MoveTo::create(0.01, Point(p_x, p_y + 8.0f));
 
 		auto shake3 = MoveTo::create(0.01, Point(p_x, p_y));
-
+        //if playerIsInAir {...}
 		if (pp.intersectsRect(er) && HP > 1) {
 
 
@@ -1296,6 +1337,10 @@ void Halloween::update(float t) {
 			enemy->removeFromParent();
 			allEnemyLeftCrow.eraseObject(enemy);
 			i--;
+            CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/touchCrow.wav");
+            CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/touchCrow.wav");
+            CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(2.5);
+
 			this->runAction(Sequence::create(shake1, shake2, shake3, shake1, shake2, shake3, shake1, shake2, shake3, shake1, shake2, shake3, NULL));
 
 			auto label = Label::createWithTTF("HP -1", "fonts/Marker Felt.ttf", 24);
@@ -1312,6 +1357,9 @@ void Halloween::update(float t) {
 			enemy->removeFromParent();
 			allEnemyLeftCrow.eraseObject(enemy);
 			i--;
+            CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/touchCrow.wav");
+            CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/touchCrow.wav");
+            CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(2.5);
 			this->runAction(Sequence::create(shake1, shake2, shake3, shake1, shake2, shake3, shake1, shake2, shake3, shake1, shake2, shake3, NULL));
 
 			auto label = Label::createWithTTF("HP -1", "fonts/Marker Felt.ttf", 24);
@@ -1343,6 +1391,9 @@ void Halloween::update(float t) {
 			enemy->removeFromParent();
 			allEnemyRightCrow.eraseObject(enemy);
 			i--;
+            CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/touchCrow.wav");
+            CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/touchCrow.wav");
+            CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(2.5);
 			this->runAction(Sequence::create(shake1, shake2, shake3, shake1, shake2, shake3, shake1, shake2, shake3, shake1, shake2, shake3, NULL));
 
 			auto label = Label::createWithTTF("HP -1", "fonts/Marker Felt.ttf", 24);
@@ -1359,6 +1410,9 @@ void Halloween::update(float t) {
 			enemy->removeFromParent();
 			allEnemyRightCrow.eraseObject(enemy);
 			i--;
+            CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/touchCrow.wav");
+            CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/touchCrow.wav");
+            CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(2.5);
 			this->runAction(Sequence::create(shake1, shake2, shake3, shake1, shake2, shake3, shake1, shake2, shake3, shake1, shake2, shake3, NULL));
 
 			auto label = Label::createWithTTF("HP -1", "fonts/Marker Felt.ttf", 24);
@@ -1385,22 +1439,42 @@ void Halloween::update(float t) {
 
 	//star
 	for (int i = 0; i < allStar.size(); i++) {
-		auto star = allStar.at(i);
-		Rect er(star->getPositionX(), star->getPositionY(), 40, 50);
+        auto star = allStar.at(i);
+        Rect er(star->getPositionX(), star->getPositionY(), 40, 50);
+        
+        if (pp.intersectsRect(er)) {
+            //MenuItemImage *specialSkill= (MenuItemImage*)this->getChildByTag(112);
+            
+            //this->addChild(specialSkill);
+            //skill button
+            //
+            //            auto abilityButtonItem = MenuItemImage::create(
+            //                                                           "bang.png",
+            //                                                           "bang.png",
+            //                                                           CC_CALLBACK_1(NewGameScene_japan::playerAbility_Teleportation, this)
+            //                                                           );
+            //
+            //            abilityButtonItem->setScale(bg_scale);
+            //
+            //            abilityButtonItem->setPosition(bg_origin + abilityButtonItem->getBoundingBox().size/2);
+            //            this->addChild(abilityButtonItem);
+            //abilityButtonTouched = true;
+            HP ++;
+            star->removeFromParent();
+            allStar.eraseObject(star);
+            CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/getStar.wav");
+            CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/getStar.wav");
+            CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(2.5);
+            i--;
+            auto label = Label::createWithTTF("HP +1", "fonts/Marker Felt.ttf", 24);
+            label->setPosition(Point(origin.x + visibleSize.width / 2, 0));
+            auto Move_Down_3 = MoveBy::create(1, Vec2(0, visibleSize.height / 2));
+            auto action_3 = RepeatForever::create(Move_Down_3);
+            label->setColor(Color3B::RED);
+            label->runAction(action_3);
+            this->addChild(label, 8);
+        }
 
-		if (pp.intersectsRect(er)) {
-			HP++;
-			star->removeFromParent();
-			allStar.eraseObject(star);
-			i--;
-			auto label = Label::createWithTTF("HP +1", "fonts/Marker Felt.ttf", 24);
-			label->setPosition(Point(origin.x + visibleSize.width / 2, 0));
-			auto Move_Down_3 = MoveBy::create(1, Vec2(0, visibleSize.height / 2));
-			auto action_3 = RepeatForever::create(Move_Down_3);
-			label->setColor(Color3B::RED);
-			label->runAction(action_3);
-			this->addChild(label, 8);
-		}
 	}
 
 	labelHp->setString(StringUtils::format("Hp: %d", HP));
@@ -1469,14 +1543,14 @@ void Halloween::playerAbility_Teleportation(cocos2d::Ref *pSender)
 	{
 		my_player->isLeft = false;
 		my_player->m_dir = DIR_RIGHT;
-		my_player->logic();
+		//my_player->logic();
 		my_player->setPositionX(bg_origin.x + bg_size.width - borderWidth - my_player->playerWidth / 2);
 	}
 	else if (!my_player->isInAir&&!my_player->isLeft)
 	{
 		my_player->isLeft = true;
 		my_player->m_dir = DIR_LEFT;
-		my_player->logic();
+		//my_player->logic();
 		my_player->setPositionX(bg_origin.x + borderWidth + my_player->playerWidth / 2);
 	}
 }

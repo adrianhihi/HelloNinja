@@ -32,7 +32,7 @@ public:
 	// implement the "static create()" method manually
 	CREATE_FUNC(NewGameScene_japan);
 	void GoBack(cocos2d::Ref* pSender);
-    int borderWidth;
+	int borderWidth;
 
 	float bg_scale;
 	Size bg_size;
@@ -51,7 +51,7 @@ public:
 		player = 0,
 	};
 
-	const int iSpeed = -10;
+	int iSpeed = -10;
 	int score;
 
 	int item_Array[2];
@@ -79,41 +79,46 @@ public:
 
 	//__________________________________________________
 private:
-    int enemyNum;
+	int enemyNum;
+    int speedTime;
     
-    int enemyLeftRightDis;
-    void logic(float t);
+	int enemyLeftRightDis;
+	void logic(float t);
 	Player* m_player;
 	bool onContactBegin(PhysicsContact& contact);
 	BackgroundLayer_japan* m_backgroundLayer;
 
-    Vector<Sprite *> allEnemyFallen;
+	Vector<Sprite *> allEnemyFallen;
 	Vector<Sprite *> allEnemyRoof;
-    Vector<Sprite *> allStar;
-    Vector<Sprite *> allEnemyLeftCrow;
-    Vector<Sprite *> allEnemyRightCrow;
+	Vector<Sprite *> allStar;
+	Vector<Sprite *> allEnemyLeftCrow;
+	Vector<Sprite *> allEnemyRightCrow;
+    
 	void newEnemy(float t);
-//	void newEnemy_crow(float t);
+    void newEnemy_speedUp(float t);
 	void moveEnemyRoof(float t);
-    void moveEnemyFallen(float t);
-    void moveStar(float t);
-    void moveEnemyRight(float t);
-    void moveEnemyLeft(float t);
-    void EnemyFlip();
+	void moveEnemyFallen(float t);
+	void moveStar(float t);
+	void moveEnemyRight(float t);
+	void moveEnemyLeft(float t);
+    
+    void timeController(float t);
+    
+	void EnemyFlip();
 	void update(float t);
 	void killMe(Node * pSender);
 	void jumpToMenu();
 	float start_point;
-	int HP = 3;
-    
-    int enemy_killed = 0;
+	int HP = 2;
+
+	int enemy_killed = 0;
 	MonsterLayer* m_monsterLayer;
 	cocos2d::Vec2 testTouchBegin;
 	float sweep_angle;
 	bool valid_touch;
-    bool abilityButtonTouched = false;
+	bool abilityButtonTouched = false;
 
-	
+
 };
 
 #endif // __NEWGAMESCENE_JHAPAN_SCENE_H__

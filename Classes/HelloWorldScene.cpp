@@ -2,6 +2,7 @@
 #include "SimpleAudioEngine.h"
 #include "NewGameScene.h"
 #include "NewGameScene_japan.h"
+#include "NewGameScene_halloween.h"
 #include "Setting.h"
 #include "halloween.h"
 #include "MenuSettings.h"
@@ -157,7 +158,7 @@ void HelloWorld::Halloween(cocos2d::Ref *pSender){
 	CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/swordClick.wav");
 	CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/swordClick.wav");
 	CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(0.5);
-	auto scene = Halloween::createScene();
+	auto scene = NewGameScene_halloween::createScene();
 	Director::getInstance()->replaceScene(scene);
 
 }
