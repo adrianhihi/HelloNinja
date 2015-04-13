@@ -192,7 +192,7 @@ bool NewGameScene_japan::init()
 
 	}
 
-
+	enemyNum = -1;
 	//player
 
 	m_player = Player::create();

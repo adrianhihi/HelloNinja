@@ -101,6 +101,11 @@ private:
     Vector<Sprite *> allEnemyLeftCrow;
     Vector<Sprite *> allEnemyRightCrow;
     
+	Sprite * LeftWarning;
+	Sprite * RightWarning;
+	float LeftWarningLifeTimer;
+	float RightWarningLifeTimer;
+
     void newEnemy(float t);
     void newEnemy_speedUp(float t);
     void moveEnemyRoof(float t);

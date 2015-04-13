@@ -179,6 +179,10 @@ bool NewGameScene_halloween::init()
         item_Array[0] = item_type::none_item;
         item_Array[1] = item_type::none_item;
         current_skill = skill_type::none_skill;
+
+		LeftWarningLifeTimer = 0.f;
+		RightWarningLifeTimer = 0.f;
+
     }
     
     //boarder
@@ -209,7 +213,7 @@ bool NewGameScene_halloween::init()
         
     }
     
-    
+	enemyNum = -1;
     //player
     
     m_player = Player::create();
@@ -415,7 +419,7 @@ void NewGameScene_halloween::logic(float t) {
 
 bool NewGameScene_halloween::onTouchBegan(Touch *touch, Event *unsured_event){
     
-    if (touch->getLocation().x >= bg_origin.x + borderWidth&&touch->getLocation().x <= bg_origin.x + bg_size.width - borderWidth)
+    if (touch->getLocation().x >= bg_origin.x &&touch->getLocation().x <= bg_origin.x + bg_size.width)
     {
         testTouchBegin = touch->getLocation();
         valid_touch = true;
@@ -450,7 +454,7 @@ void NewGameScene_halloween::onTouchEnded(Touch *touch, Event *unused_event){
      */
     
     
-    if (valid_touch&&testTouchBegin.distance(touch->getLocation()) > 50 && touch->getLocation().x >= bg_origin.x + borderWidth&&touch->getLocation().x <= bg_origin.x + bg_size.width - borderWidth)
+    if (valid_touch&&testTouchBegin.distance(touch->getLocation()) > 50 && touch->getLocation().x >= bg_origin.x&&touch->getLocation().x <= bg_origin.x + bg_size.width)
     {
         Vec2 tmp = touch->getLocation() - testTouchBegin;
         sweep_angle = tmp.getAngle();
@@ -1187,6 +1191,16 @@ void NewGameScene_halloween::newEnemy(float t) {
                 enemy = Sprite::create("japan/roof_l.png");
                 enemy->setPosition(Point(border_width + enemy->getContentSize().width/2 * 0.8, size.height + 100));
                 enemy->setScale(0.8);
+
+				if (LeftWarningLifeTimer <= 0.f)
+				{
+					LeftWarning = Sprite::create("warning.png");
+					LeftWarning->setPosition(LeftWarning->getContentSize().width / 2.f, size.height*2.f / 5.f);
+					LeftWarning->setScale(0.5f);
+					LeftWarningLifeTimer = 0.5f;
+					this->addChild(LeftWarning, 10);
+				}
+
                 this -> addChild(enemy, 7);
                 allEnemyRoof.pushBack(enemy);
             }
@@ -1209,6 +1223,16 @@ void NewGameScene_halloween::newEnemy(float t) {
                 enemy = Sprite::create("japan/roof_r.png");
                 enemy->setPosition(Point(size.width - border_width - enemy->getContentSize().width/2 * 0.8, size.height + 100));
                 enemy->setScale(0.8);
+
+			    if (RightWarningLifeTimer <= 0.f)
+				{
+					RightWarning = Sprite::create("warning.png");
+					RightWarning->setPosition(size.width - RightWarning->getContentSize().width / 2.f, size.height*2.f / 5.f);
+					RightWarning->setScale(0.5f);
+					RightWarningLifeTimer = 0.5f;
+					this->addChild(RightWarning, 10);
+				}
+
                 this -> addChild(enemy, 7);
                 allEnemyRoof.pushBack(enemy);
             }
@@ -1436,7 +1460,28 @@ void NewGameScene_halloween::update(float t) {
     auto p_x = this->getPositionX();
     auto p_y = this->getPositionY();
     
-    
+	if (LeftWarningLifeTimer > 0.f)
+	{
+		LeftWarningLifeTimer -= t;
+		if (LeftWarningLifeTimer <= 0.f)
+		{
+			LeftWarning->removeFromParent();
+			LeftWarning = NULL;
+			LeftWarningLifeTimer = 0.f;
+		}
+	}
+
+	if (RightWarningLifeTimer > 0.f)
+	{
+		RightWarningLifeTimer -= t;
+		if (RightWarningLifeTimer <= 0.f)
+		{
+			RightWarning->removeFromParent();
+			RightWarning = NULL;
+			RightWarningLifeTimer = 0.f;
+		}
+	}
+
     //enemy roof
     for (int i = 0; i < allEnemyRoof.size(); i++) {
         auto enemy = allEnemyRoof.at(i);
