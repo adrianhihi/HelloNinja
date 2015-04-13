@@ -1,21 +1,29 @@
+//
+//  GamePauseHalloween.h
+//  Ninja
+//
+//  Created by Haimo Bai on 4/2/15.
+//
+//
 
-#ifndef xuwutest_GamePause_h
-#define xuwutest_GamePause_h
+#ifndef __Ninja__GamePauseHalloween__
+#define __Ninja__GamePauseHalloween__
+
 #include "cocos2d.h"
-#include "NewGameScene_japan.h"
+#include "NewGameScene_halloween.h"
 
 USING_NS_CC;
 
-class GamePause : public cocos2d::Layer
+class GamePauseHalloween : public cocos2d::Layer
 {
 public:
     
-    ~GamePause();
+    ~GamePauseHalloween();
     static cocos2d::Scene* createScene();
     bool init();
     void goback(CCObject*);
     void resumegame(CCObject*);
-    CREATE_FUNC(GamePause);
+    CREATE_FUNC(GamePauseHalloween);
     void pauseMusicCallback(CCObject* pSender);
     void recoverMusicCallback(CCObject* pSender);
     void restart(CCObject* pSender);

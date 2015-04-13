@@ -24,6 +24,9 @@ public:
     bool init();
     CREATE_FUNC(Credits);
     void closeCallback(CCObject*);
+    float bg_scale;
+private:
+    Sprite *bg;
   
 };
 

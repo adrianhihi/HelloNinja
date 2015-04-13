@@ -22,8 +22,11 @@ public:
     
     CREATE_FUNC(MenuSettings);
 	bool isPause;
-    MenuItemImage *_turnOn, *_turnOff, *menuItem;
-    MenuItemFont *creditItem;
+    float bg_scale;
+    MenuItemImage *_turnOn, *_turnOff, *menuItem, *creditItem;
+    //MenuItemFont *creditItem;
+private:
+    Sprite* bg;
 };
 
 #endif

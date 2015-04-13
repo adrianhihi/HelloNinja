@@ -1,26 +1,33 @@
-#include "NewGameScene_japan.h"
+//
+//  NewGameScene_halloween.cpp
+//  Ninja
+//
+//  Created by Haimo Bai on 4/1/15.
+//
+//
+
+#include "NewGameScene_halloween.h"
 #include "HelloWorldScene.h"
-#include "BackgroundLayer.h"
+
 #include "simpleAudioEngine.h"
 #include "player.h"
 
-#include "BackgroundLayer_japan.h"
-#include "GameOver.h"
+#include "GameOverHalloween.h"
 #include "MenuSettings.h"
-#include "GamePause.h"
-#include "Setting.h"
+#include "GamePauseHalloween.h"
 
 
-NewGameScene_japan::~NewGameScene_japan(){}
+
+NewGameScene_halloween::~NewGameScene_halloween(){}
 
 
-Scene* NewGameScene_japan::createScene()
+Scene* NewGameScene_halloween::createScene()
 {
     
-    auto NewGameScene_japan = Scene::createWithPhysics();
+    auto Halloween= Scene::createWithPhysics();
     // 'scene' is an autorelease object
     Vect gravity(0, -0.5f);
-    NewGameScene_japan->getPhysicsWorld()->setGravity(gravity);
+    Halloween->getPhysicsWorld()->setGravity(gravity);
     //NewGameScene_japan->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
     Size visibleSize = Director::getInstance()->getVisibleSize();
     
@@ -31,19 +38,21 @@ Scene* NewGameScene_japan::createScene()
     
     node->setPhysicsBody(body);
     
-    NewGameScene_japan->addChild(node);
+    Halloween->addChild(node);
     
     
     
     // 'layer' is an autorelease object
-    auto layer = NewGameScene_japan::create();
+    auto layer = NewGameScene_halloween::create();
     // add layer as a child to scene
-    NewGameScene_japan->addChild(layer);
-    
-    return NewGameScene_japan;
+    Halloween->addChild(layer);
+
+
+    return Halloween;
 }
 
-bool NewGameScene_japan::init()
+
+bool NewGameScene_halloween::init()
 {
     if (!Layer::init()){
         return false;
@@ -55,7 +64,7 @@ bool NewGameScene_japan::init()
     //set up the border
     
     // position the label on the center of the screen
-    auto label = Label::createWithTTF("Japan Mission!", "fonts/Marker Felt.ttf", 24);
+    auto label = Label::createWithTTF("Halloween Mission!", "fonts/Marker Felt.ttf", 24);
     label->setPosition(Vec2(origin.x + visibleSize.width / 2,
                             label->getContentSize().height / 2));
     
@@ -72,7 +81,7 @@ bool NewGameScene_japan::init()
     
     
     //menu
-    auto menu_item_1 = MenuItemImage::create("Menu/pause.png", "Menu/pause1.png", CC_CALLBACK_1(NewGameScene_japan::GoBack, this));
+    auto menu_item_1 = MenuItemImage::create("Menu/pause.png", "Menu/pause1.png", CC_CALLBACK_1(NewGameScene_halloween::GoBack, this));
     
     menu_item_1->setScale(1.2);
     //menu_item_1->setPosition(Vec2(visibleSize.width - menu_item_1->getContentSize().width - borderWidth/2,
@@ -82,7 +91,7 @@ bool NewGameScene_japan::init()
     
     
     ////background
-    auto bg_sprite_1 = Sprite::create("japan/Nihon1.png");
+    auto bg_sprite_1 = Sprite::create("halloween/Halloween1.png");
     
     if (visibleSize.width / bg_sprite_1->getContentSize().width >= visibleSize.height / bg_sprite_1->getContentSize().height)
         bg_sprite_1->setScale(bg_scale = visibleSize.height / bg_sprite_1->getContentSize().height);
@@ -103,7 +112,7 @@ bool NewGameScene_japan::init()
     // add the sprite as a child to this layer
     this->addChild(bg_sprite_1, 4);
     
-    auto bg_sprite_2 = Sprite::create("japan/Nihon2.png");
+    auto bg_sprite_2 = Sprite::create("halloween/Halloween2.png");
     //    bg_sprite_2->setScale(0.5);
     // position the sprite on the center of the screen
     bg_sprite_2->setScale(bg_scale);
@@ -114,7 +123,7 @@ bool NewGameScene_japan::init()
     
     // add the sprite as a child to this layer
     this->addChild(bg_sprite_2, 3);
-    auto bg_sprite_3 = Sprite::create("japan/Nihon3.png");
+    auto bg_sprite_3 = Sprite::create("halloween/Halloween3.png");
     
     // position the sprite on the center of the screen
     bg_sprite_3->setScale(bg_scale);
@@ -125,7 +134,7 @@ bool NewGameScene_japan::init()
     
     // add the sprite as a child to this layer
     this->addChild(bg_sprite_3, 2);
-    auto bg_sprite_4 = Sprite::create("japan/Nihon4.png");
+    auto bg_sprite_4 = Sprite::create("halloween/Halloween4.png");
     
     
     
@@ -135,7 +144,15 @@ bool NewGameScene_japan::init()
     bg_sprite_4->setTag(1);
     // add the sprite as a child to this layer
     this->addChild(bg_sprite_4, 1);
-    
+    auto bg_start = Sprite::create("halloween/Halloween_bottom.png");
+    bg_start->setScale(bg_scale);
+    bg_start->setPosition(Point(bg_size.width / 2 + bg_origin.x, bg_size.height / 2 + bg_origin.y));
+    //bg_start->setTag(1);
+    // add the sprite as a child to this layer
+    this->addChild(bg_start, 7);
+    auto Move_Down_4 = MoveTo::create(30, Point(bg_size.width / 2 + bg_origin.x, -bg_size.height / 2));
+    bg_start->runAction(Move_Down_4);
+
     
     // HP label
     
@@ -162,15 +179,17 @@ bool NewGameScene_japan::init()
         item_Array[0] = item_type::none_item;
         item_Array[1] = item_type::none_item;
         current_skill = skill_type::none_skill;
+        LeftWarningLifeTimer = 0.f;
+        RightWarningLifeTimer = 0.f;
     }
     
     //boarder
     
     {
-        auto border1 = Sprite::create("japan/border_j.png");
-        auto border3 = Sprite::create("japan/border_j.png");
-        auto border2 = Sprite::create("japan/border_j_2.png");
-        auto border4 = Sprite::create("japan/border_j_2.png");
+        auto border1 = Sprite::create("halloween/border_h.png");
+        auto border3 = Sprite::create("halloween/border_h.png");
+        auto border2 = Sprite::create("halloween/border_h_2.png");
+        auto border4 = Sprite::create("halloween/border_h_2.png");
         border1->setScale(bg_scale);
         border3->setScale(bg_scale);
         border2->setScale(bg_scale);
@@ -210,7 +229,7 @@ bool NewGameScene_japan::init()
     //m_player->setTag(0);
     
     m_player->setPosition(Point(bg_origin.x + borderWidth + m_player->playerWidth / 2, bg_origin.y + bg_size.height * 0.2f));
-    this->addChild(m_player, 11, 0);
+    this->addChild(m_player, 5, 0);
     
     //skill button
     
@@ -218,7 +237,7 @@ bool NewGameScene_japan::init()
     auto createSkillButton = MenuItemImage::create(
                                                    "scroll.png",
                                                    "scroll.png",
-                                                   CC_CALLBACK_1(NewGameScene_japan::create_skill, this)
+                                                   CC_CALLBACK_1(NewGameScene_halloween::create_skill, this)
                                                    );
     
     createSkillButton->setScale(bg_scale);
@@ -228,7 +247,7 @@ bool NewGameScene_japan::init()
     auto abilityButtonItem = MenuItemImage::create(
                                                    "Teleport",
                                                    "Teleport_1",
-                                                   CC_CALLBACK_1(NewGameScene_japan::use_skill, this)
+                                                   CC_CALLBACK_1(NewGameScene_halloween::use_skill, this)
                                                    );
     
     abilityButtonItem->setScale(bg_scale);
@@ -267,10 +286,10 @@ bool NewGameScene_japan::init()
     
     EventListenerTouchOneByOne * event = EventListenerTouchOneByOne::create();
     event->setSwallowTouches(true);
-    event->onTouchBegan = CC_CALLBACK_2(NewGameScene_japan::onTouchBegan, this);
-    event->onTouchMoved = CC_CALLBACK_2(NewGameScene_japan::onTouchMoved, this);
-    event->onTouchEnded = CC_CALLBACK_2(NewGameScene_japan::onTouchEnded, this);
-    event->onTouchCancelled = CC_CALLBACK_2(NewGameScene_japan::onTouchCancelled, this);
+    event->onTouchBegan = CC_CALLBACK_2(NewGameScene_halloween::onTouchBegan, this);
+    event->onTouchMoved = CC_CALLBACK_2(NewGameScene_halloween::onTouchMoved, this);
+    event->onTouchEnded = CC_CALLBACK_2(NewGameScene_halloween::onTouchEnded, this);
+    event->onTouchCancelled = CC_CALLBACK_2(NewGameScene_halloween::onTouchCancelled, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(event, this);
     
     
@@ -280,18 +299,18 @@ bool NewGameScene_japan::init()
     speedTime = 0;
     
     //Enemy
-    this->schedule(schedule_selector(NewGameScene_japan::logic)); // borderSpeed;
-    this->schedule(schedule_selector(NewGameScene_japan::moveEnemyRoof)); // same as borderSpeed
-    this->schedule(schedule_selector(NewGameScene_japan::newEnemy), 1.315);
+    this->schedule(schedule_selector(NewGameScene_halloween::logic)); // borderSpeed;
+    this->schedule(schedule_selector(NewGameScene_halloween::moveEnemyRoof)); // same as borderSpeed
+    this->schedule(schedule_selector(NewGameScene_halloween::newEnemy), 1.315);
     
-    this->schedule(schedule_selector(NewGameScene_japan::newEnemy_speedUp), 1);
-    this->schedule(schedule_selector(NewGameScene_japan::timeController), 0.1);
+    this->schedule(schedule_selector(NewGameScene_halloween::newEnemy_speedUp), 1);
+    this->schedule(schedule_selector(NewGameScene_halloween::timeController), 0.1);
     
     
-    this->schedule(schedule_selector(NewGameScene_japan::moveEnemyFallen));
-    this->schedule(schedule_selector(NewGameScene_japan::moveStar));
-    this->schedule(schedule_selector(NewGameScene_japan::moveEnemyLeft));
-    this->schedule(schedule_selector(NewGameScene_japan::moveEnemyRight));
+    this->schedule(schedule_selector(NewGameScene_halloween::moveEnemyFallen));
+    this->schedule(schedule_selector(NewGameScene_halloween::moveStar));
+    this->schedule(schedule_selector(NewGameScene_halloween::moveEnemyLeft));
+    this->schedule(schedule_selector(NewGameScene_halloween::moveEnemyRight));
     
     
     
@@ -314,12 +333,12 @@ bool NewGameScene_japan::init()
 //}
 
 
-void NewGameScene_japan::GoBack(cocos2d::Ref *pSender){
+void NewGameScene_halloween::GoBack(cocos2d::Ref *pSender){
     CCLOG("go back");
-    Director::getInstance()->pushScene(GamePause::createScene());
+    Director::getInstance()->pushScene(GamePauseHalloween::createScene());
 }
 
-void NewGameScene_japan::logic(float t) {
+void NewGameScene_halloween::logic(float t) {
     int posY1 = this->getChildByTag(Scene_Tag::border1)->getPositionY();
     int posY2 = this->getChildByTag(Scene_Tag::border3)->getPositionY();
     
@@ -396,9 +415,10 @@ void NewGameScene_japan::logic(float t) {
 }
 
 
-bool NewGameScene_japan::onTouchBegan(Touch *touch, Event *unsured_event){
+bool NewGameScene_halloween::onTouchBegan(Touch *touch, Event *unsured_event){
     
-    if (touch->getLocation().x >= bg_origin.x + borderWidth&&touch->getLocation().x <= bg_origin.x + bg_size.width - borderWidth)
+//    if (touch->getLocation().x >= bg_origin.x + borderWidth&&touch->getLocation().x <= bg_origin.x + bg_size.width - borderWidth)
+    if (touch->getLocation().x >= bg_origin.x &&touch->getLocation().x <= bg_origin.x + bg_size.width)
     {
         testTouchBegin = touch->getLocation();
         valid_touch = true;
@@ -408,11 +428,11 @@ bool NewGameScene_japan::onTouchBegan(Touch *touch, Event *unsured_event){
     return true;
 }
 
-void NewGameScene_japan::onTouchMoved(Touch * touch, Event *unsured_event){
+void NewGameScene_halloween::onTouchMoved(Touch * touch, Event *unsured_event){
     
 }
 
-void NewGameScene_japan::onTouchEnded(Touch *touch, Event *unused_event){
+void NewGameScene_halloween::onTouchEnded(Touch *touch, Event *unused_event){
     
     auto my_player = (Player *) this->getChildByTag(0);
     
@@ -433,8 +453,8 @@ void NewGameScene_japan::onTouchEnded(Touch *touch, Event *unused_event){
      */
     
     
-    if (valid_touch&&testTouchBegin.distance(touch->getLocation()) > 50 && touch->getLocation().x >= bg_origin.x + borderWidth&&touch->getLocation().x <= bg_origin.x + bg_size.width - borderWidth)
-    {
+//    if (valid_touch&&testTouchBegin.distance(touch->getLocation()) > 50 && touch->getLocation().x >= bg_origin.x + borderWidth&&touch->getLocation().x <= bg_origin.x + bg_size.width - borderWidth)
+    if (valid_touch&&testTouchBegin.distance(touch->getLocation()) > 50 && touch->getLocation().x >= bg_origin.x&&touch->getLocation().x <= bg_origin.x + bg_size.width){
         Vec2 tmp = touch->getLocation() - testTouchBegin;
         sweep_angle = tmp.getAngle();
         if (sweep_angle<0)sweep_angle = 0;
@@ -465,13 +485,13 @@ void NewGameScene_japan::onTouchEnded(Touch *touch, Event *unused_event){
     }
 }
 
-void NewGameScene_japan::onTouchCancelled(Touch *touch, Event *unused_event){
+void NewGameScene_halloween::onTouchCancelled(Touch *touch, Event *unused_event){
     
 }
 
 
 //move enemy roof
-void NewGameScene_japan::moveEnemyRoof(float t) {
+void NewGameScene_halloween::moveEnemyRoof(float t) {
     
     
     for (int i = 0; i < allEnemyRoof.size(); i++)
@@ -487,7 +507,7 @@ void NewGameScene_japan::moveEnemyRoof(float t) {
     }
 };
 
-void NewGameScene_japan::moveEnemyFallen(float t)
+void NewGameScene_halloween::moveEnemyFallen(float t)
 {
     
     for (int i = 0; i < allEnemyFallen.size(); i++)
@@ -503,7 +523,7 @@ void NewGameScene_japan::moveEnemyFallen(float t)
     }
 };
 
-void NewGameScene_japan::moveStar(float t)
+void NewGameScene_halloween::moveStar(float t)
 {
     
     for (int i = 0; i < allStar.size(); i++)
@@ -520,7 +540,7 @@ void NewGameScene_japan::moveStar(float t)
     
 };
 
-void NewGameScene_japan::moveEnemyLeft(float t) {
+void NewGameScene_halloween::moveEnemyLeft(float t) {
     auto size = Director::getInstance()->getWinSize();
     //    for(auto enemyLeftCrow: allEnemyLeftCrow) {
     for (int i = 0; i < allEnemyLeftCrow.size(); i++) {
@@ -540,7 +560,7 @@ void NewGameScene_japan::moveEnemyLeft(float t) {
     }
 }
 
-void NewGameScene_japan::moveEnemyRight(float t) {
+void NewGameScene_halloween::moveEnemyRight(float t) {
     auto size = Director::getInstance()->getWinSize();
     for (int i = 0; i < allEnemyRightCrow.size(); i++) {
         auto enemyRightCrow = allEnemyRightCrow.at(i);
@@ -560,19 +580,19 @@ void NewGameScene_japan::moveEnemyRight(float t) {
     
 }
 
-void NewGameScene_japan::killMe(Node * pSender) {
+void NewGameScene_halloween::killMe(Node * pSender) {
     pSender->removeFromParentAndCleanup(true);
 };
 
-void NewGameScene_japan::jumpToMenu(){
+void NewGameScene_halloween::jumpToMenu(){
     Director::getInstance()->replaceScene(HelloWorld::createScene());
     
 };
 
-void NewGameScene_japan::newEnemy_speedUp(float t){
+void NewGameScene_halloween::newEnemy_speedUp(float t){
     if (m_player->speedUp && speedTime < 30) {
         auto size = Director::getInstance()->getWinSize();
-        auto border = Sprite::create("japan/border_j.png");
+        auto border = Sprite::create("halloween/border_h.png");
         auto border_width = border->getContentSize().width;
         auto roof = Sprite::create("japan/roof_r.png");
         
@@ -581,7 +601,9 @@ void NewGameScene_japan::newEnemy_speedUp(float t){
         Sprite * enemy;
         Sprite * star;
         Sprite * crow;
+        Sprite * tree;
         Vector<SpriteFrame *> crowFram;
+        Vector<SpriteFrame *> treeFram;
         
         enemyNum ++;
         CCLOG("Speed up now!\n");
@@ -589,6 +611,9 @@ void NewGameScene_japan::newEnemy_speedUp(float t){
                 
             case 0: {
                 enemy = Sprite::create("aaa.png");
+                
+                CCLOG("*****%f*****\n", border_width + enemy->getContentSize().width/2 + roofWidth - size.width- border_width -roofWidth - enemy->getContentSize().width/2);
+                
                 int x = random(border_width + enemy->getContentSize().width/2 + roofWidth, size.width- border_width -roofWidth - enemy->getContentSize().width/2);
                 enemy->setPosition(Point(x, size.height+100));
                 enemy->setScale(1.2);
@@ -597,27 +622,49 @@ void NewGameScene_japan::newEnemy_speedUp(float t){
             }
                 break;
             case 1: {
-                enemy = Sprite::create("japan/roof_r.png");
-                enemy->setPosition(Point(size.width - border_width - enemy->getContentSize().width/2 * 0.8, size.height + 100));
-                enemy->setScale(0.8);
-                this -> addChild(enemy, 7);
-                allEnemyRoof.pushBack(enemy);
+                
+                enemy = Sprite::create("halloween/Halloween_sickle.png");
+//                enemy->setPosition(Point(size.width - border_width - enemy->getContentSize().width/2 * 0.8, size.height + 100));
+//                enemy->setScale(0.8);
+                for(int i = 0; i < 4; i ++){
+                    auto sf = SpriteFrame::create("halloween/Halloween_sickle.png", Rect(i * 736 / 4, 0, 736 / 4, 223));
+                    treeFram.pushBack(sf);
+                }
+                auto ani = Animation::createWithSpriteFrames(treeFram, 0.3);
+                tree = Sprite::create();
+                tree->runAction(RepeatForever::create(Animate::create(ani)));
+                tree->setPosition(Point(size.width - border_width - enemy->getContentSize().width*0.8, size.height + 100));
+                //tree->setScale(0.8);
+                this -> addChild(tree, 3);
+                allEnemyRoof.pushBack(tree);
+                
             }
                 break;
             case 2: {
-                enemy = Sprite::create("japan/roof_l.png");
-                enemy->setPosition(Point(border_width + enemy->getContentSize().width/2 * 0.8, size.height + 100));
-                enemy->setScale(0.8);
-                this -> addChild(enemy, 7);
-                allEnemyRoof.pushBack(enemy);
+                enemy = Sprite::create("halloween/Halloween_sickle_l.png");
+//                enemy->setPosition(Point(border_width + enemy->getContentSize().width/2 * 0.8, size.height + 100));
+//                enemy->setScale(0.8);
+//                this -> addChild(enemy, 7);
+//                allEnemyRoof.pushBack(enemy);
+                for(int i = 0; i < 4; i ++){
+                    auto sf = SpriteFrame::create("halloween/Halloween_sickle_l.png", Rect(i * 736 / 4, 0, 736 / 4, 223));
+                    treeFram.pushBack(sf);
+                }
+                auto ani = Animation::createWithSpriteFrames(treeFram, 0.3);
+                tree = Sprite::create();
+                tree->runAction(RepeatForever::create(Animate::create(ani)));
+                tree->setPosition(Point(border_width + enemy->getContentSize().width * 0.8, size.height + 100));
+                //tree->setScale(0.8);
+                this -> addChild(tree, 3);
+                allEnemyRoof.pushBack(tree);
             }
                 break;
             case 3: {
                 for (int i = 0; i < 4; i++) {
-                    auto sf = SpriteFrame::create("japan/crow_right.png", Rect(i*300/4, 0, 300/4, 63));
+                    auto sf = SpriteFrame::create("halloween/Halloween_ghost1.png", Rect(i*425/3, 0, 425/3, 98));
                     crowFram.pushBack(sf);
                 }
-                auto ani = Animation::createWithSpriteFrames(crowFram, 0.16);
+                auto ani = Animation::createWithSpriteFrames(crowFram, 0.12);
                 crow = Sprite::create();
                 
                 crow->runAction(RepeatForever::create(Animate::create(ani)));
@@ -629,11 +676,11 @@ void NewGameScene_japan::newEnemy_speedUp(float t){
                 break;
             case 4: {
                 for (int i = 0; i < 8; i++) {
-                    auto sf = SpriteFrame::create("japan/goose_left.png", Rect(i*945/8, 0, 945/8, 85));
+                    auto sf = SpriteFrame::create("halloween/Halloween_ghost2.png", Rect(i*425/3, 0, 425/3, 98));
                     crowFram.pushBack(sf);
                 }
                 crow = Sprite::create();
-                crow->runAction(RepeatForever::create(Animate::create(Animation::createWithSpriteFrames(crowFram, 0.16))));
+                crow->runAction(RepeatForever::create(Animate::create(Animation::createWithSpriteFrames(crowFram, 0.12))));
                 crow->setScale(1.2);
                 crow->setPosition(size.width - borderWidth - crow->getContentSize().width/2 - 30, size.height + 100);
                 this->addChild(crow, 7);
@@ -663,7 +710,7 @@ void NewGameScene_japan::newEnemy_speedUp(float t){
                 break;
                 
             case 5: {
-                star = Sprite::create("japan/sakura.png");
+                star = Sprite::create("halloween/Halloween_pumpkin.png");
                 //CCLOG("*********************\n");
                 
                 int x = random(border_width + star->getContentSize().width/2 + roofWidth, size.width- border_width - roofWidth - star->getContentSize().width/2);
@@ -674,10 +721,21 @@ void NewGameScene_japan::newEnemy_speedUp(float t){
                 break;
             case 6: {
                 enemy = Sprite::create("japan/roof_l.png");
-                enemy->setPosition(Point(border_width + enemy->getContentSize().width/2 * 0.8, size.height + 100));
-                enemy->setScale(0.8);
-                this -> addChild(enemy, 7);
-                allEnemyRoof.pushBack(enemy);
+//                enemy->setPosition(Point(border_width + enemy->getContentSize().width/2 * 0.8, size.height + 100));
+//                enemy->setScale(0.8);
+//                this -> addChild(enemy, 7);
+//                allEnemyRoof.pushBack(enemy);
+                for(int i = 0; i < 4; i ++){
+                    auto sf = SpriteFrame::create("halloween/Halloween_sickle_l.png", Rect(i * 736 / 4, 0, 736 / 4, 223));
+                    treeFram.pushBack(sf);
+                }
+                auto ani = Animation::createWithSpriteFrames(treeFram, 0.3);
+                tree = Sprite::create();
+                tree->runAction(RepeatForever::create(Animate::create(ani)));
+                tree->setPosition(Point(border_width + enemy->getContentSize().width*0.8, size.height + 100));
+                //tree->setScale(0.8);
+                this -> addChild(tree, 3);
+                allEnemyRoof.pushBack(tree);
             }
                 break;
             case 7: {
@@ -696,10 +754,21 @@ void NewGameScene_japan::newEnemy_speedUp(float t){
                 break;
             case 8: {
                 enemy = Sprite::create("japan/roof_r.png");
-                enemy->setPosition(Point(size.width - border_width - enemy->getContentSize().width/2 * 0.8, size.height + 100));
-                enemy->setScale(0.8);
-                this -> addChild(enemy, 7);
-                allEnemyRoof.pushBack(enemy);
+//                enemy->setPosition(Point(size.width - border_width - enemy->getContentSize().width/2 * 0.8, size.height + 100));
+//                enemy->setScale(0.8);
+//                this -> addChild(enemy, 7);
+//                allEnemyRoof.pushBack(enemy);
+                for(int i = 0; i < 4; i ++){
+                    auto sf = SpriteFrame::create("halloween/Halloween_sickle.png", Rect(i * 736 / 4, 0, 736 / 4, 223));
+                    treeFram.pushBack(sf);
+                }
+                auto ani = Animation::createWithSpriteFrames(treeFram, 0.3);
+                tree = Sprite::create();
+                tree->runAction(RepeatForever::create(Animate::create(ani)));
+                tree->setPosition(Point(size.width - border_width - enemy->getContentSize().width*0.8, size.height + 100));
+                //tree->setScale(0.8);
+                this -> addChild(tree, 3);
+                allEnemyRoof.pushBack(tree);
             }
                 break;
             case 9: {
@@ -740,6 +809,8 @@ void NewGameScene_japan::newEnemy_speedUp(float t){
                 
             case 10: {
                 enemy = Sprite::create("ccc.png");
+                CCLOG("******%f******\n", border_width + enemy->getContentSize().width/2 + roofWidth - size.width- border_width -roofWidth - enemy->getContentSize().width/2);
+                
                 int x = random(border_width + enemy->getContentSize().width/2 + roofWidth, size.width- border_width -roofWidth - enemy->getContentSize().width/2);
                 enemy->setPosition(Point(x, size.height+100));
                 enemy->setScale(1.2);
@@ -749,16 +820,38 @@ void NewGameScene_japan::newEnemy_speedUp(float t){
                 break;
             case 11: {
                 enemy = Sprite::create("japan/roof_l.png");
-                enemy->setPosition(Point(border_width + enemy->getContentSize().width/2, size.height + 100));
-                this -> addChild(enemy, 7);
-                allEnemyRoof.pushBack(enemy);
+//                enemy->setPosition(Point(border_width + enemy->getContentSize().width/2, size.height + 100));
+//                this -> addChild(enemy, 7);
+//                allEnemyRoof.pushBack(enemy);
+                for(int i = 0; i < 4; i ++){
+                    auto sf = SpriteFrame::create("halloween/Halloween_sickle_l.png", Rect(i * 736 / 4, 0, 736 / 4, 223));
+                    treeFram.pushBack(sf);
+                }
+                auto ani = Animation::createWithSpriteFrames(treeFram, 0.3);
+                tree = Sprite::create();
+                tree->runAction(RepeatForever::create(Animate::create(ani)));
+                tree->setPosition(Point(border_width + enemy->getContentSize().width*0.8, size.height + 100));
+                //tree->setScale(0.8);
+                this -> addChild(tree, 3);
+                allEnemyRoof.pushBack(tree);
             }
                 break;
             case 12: {
                 enemy = Sprite::create("japan/roof_r.png");
-                enemy->setPosition(Point(size.width - border_width - enemy->getContentSize().width/2, size.height + 100));
-                this -> addChild(enemy, 7);
-                allEnemyRoof.pushBack(enemy);
+//                enemy->setPosition(Point(size.width - border_width - enemy->getContentSize().width/2, size.height + 100));
+//                this -> addChild(enemy, 7);
+//                allEnemyRoof.pushBack(enemy);
+                for(int i = 0; i < 4; i ++){
+                    auto sf = SpriteFrame::create("halloween/Halloween_sickle.png", Rect(i * 736 / 4, 0, 736 / 4, 223));
+                    treeFram.pushBack(sf);
+                }
+                auto ani = Animation::createWithSpriteFrames(treeFram, 0.3);
+                tree = Sprite::create();
+                tree->runAction(RepeatForever::create(Animate::create(ani)));
+                tree->setPosition(Point(size.width - border_width - enemy->getContentSize().width*0.8, size.height + 100));
+                //tree->setScale(0.8);
+                this -> addChild(tree, 3);
+                allEnemyRoof.pushBack(tree);
             }
                 break;
             case 13: {
@@ -766,8 +859,8 @@ void NewGameScene_japan::newEnemy_speedUp(float t){
                 //                    auto sf = SpriteFrame::create("japan/crow_left.png", Rect(i*300/4, 0, 300/4, 63));
                 //                    crowFram.pushBack(sf);
                 //                }
-                for (int i = 0; i < 8; i++) {
-                    auto sf = SpriteFrame::create("japan/goose_left.png", Rect(i*945/8, 0, 945/8, 85));
+                for (int i = 0; i < 4; i++) {
+                    auto sf = SpriteFrame::create("halloween/Halloween_ghost1.png", Rect(i*425/3, 0, 425/3, 98));
                     crowFram.pushBack(sf);
                 }
                 crow = Sprite::create();
@@ -780,7 +873,7 @@ void NewGameScene_japan::newEnemy_speedUp(float t){
                 break;
             case 14: {
                 for (int i = 0; i < 4; i++) {
-                    auto sf = SpriteFrame::create("japan/crow_right.png", Rect(i*300/4, 0, 300/4, 63));
+                    auto sf = SpriteFrame::create("halloween/Halloween_ghost2.png", Rect(i*425/3, 0, 425/3, 98));
                     crowFram.pushBack(sf);
                 }
                 auto ani = Animation::createWithSpriteFrames(crowFram, 0.16);
@@ -820,7 +913,7 @@ void NewGameScene_japan::newEnemy_speedUp(float t){
 
 
 
-void NewGameScene_japan::newEnemy(float t) {
+void NewGameScene_halloween::newEnemy(float t) {
     //	auto size = Director::getInstance()->getWinSize();
     //	auto border = Sprite::create("japan/border_j.png");
     //
@@ -1059,7 +1152,7 @@ void NewGameScene_japan::newEnemy(float t) {
     //		break;
     if (!m_player->speedUp || (m_player->speedUp && speedTime > 30)) {
         auto size = Director::getInstance()->getWinSize();
-        auto border = Sprite::create("japan/border_j.png");
+        auto border = Sprite::create("halloween/border_h.png");
         auto border_width = border->getContentSize().width;
         auto roof = Sprite::create("japan/roof_r.png");
         
@@ -1069,7 +1162,9 @@ void NewGameScene_japan::newEnemy(float t) {
         Sprite * enemy;
         Sprite * star;
         Sprite * crow;
+        Sprite * tree;
         Vector<SpriteFrame *> crowFram;
+        Vector<SpriteFrame *> treeFram;
         //enemyNum = 4;
         enemyNum ++;
         CCLOG("working!\n");
@@ -1077,7 +1172,7 @@ void NewGameScene_japan::newEnemy(float t) {
                 
             case 0: {
                 enemy = Sprite::create("aaa.png");
-                CCLOG("*******aaaaaaaa*********\n");
+                CCLOG("*****%f*****\n", border_width + enemy->getContentSize().width/2 + roofWidth - size.width- border_width -roofWidth - enemy->getContentSize().width/2);
                 
                 int x = random(border_width + enemy->getContentSize().width/2 + roofWidth, size.width- border_width -roofWidth - enemy->getContentSize().width/2);
                 enemy->setPosition(Point(x, size.height+100));
@@ -1088,20 +1183,60 @@ void NewGameScene_japan::newEnemy(float t) {
                 break;
             case 1: {
                 enemy = Sprite::create("japan/roof_r.png");
-                CCLOG("***********rooof**********\n");
+//                CCLOG("***********rooof**********\n");
+//                
+//                enemy->setPosition(Point(size.width - border_width - enemy->getContentSize().width/2 * 0.8, size.height + 100));
+//                enemy->setScale(0.8);
+//                this -> addChild(enemy, 7);
+//                allEnemyRoof.pushBack(enemy);
+                if (RightWarningLifeTimer <= 0.f)
+                {
+                    RightWarning = Sprite::create("warning.png");
+                    RightWarning->setPosition(size.width - RightWarning->getContentSize().width / 2.f, size.height*2.f / 5.f);
+                    RightWarning->setScale(0.5f);
+                    RightWarningLifeTimer = 0.5f;
+                    this->addChild(RightWarning, 10);
+                }
                 
-                enemy->setPosition(Point(size.width - border_width - enemy->getContentSize().width/2 * 0.8, size.height + 100));
-                enemy->setScale(0.8);
-                this -> addChild(enemy, 7);
-                allEnemyRoof.pushBack(enemy);
+                for(int i = 0; i < 4; i ++){
+                    auto sf = SpriteFrame::create("halloween/Halloween_sickle.png", Rect(i * 736 / 4, 0, 736 / 4, 223));
+                    treeFram.pushBack(sf);
+                }
+                auto ani = Animation::createWithSpriteFrames(treeFram, 0.3);
+                tree = Sprite::create();
+                tree->runAction(RepeatForever::create(Animate::create(ani)));
+                tree->setPosition(Point(size.width - border_width - enemy->getContentSize().width*0.8, size.height + 100));
+                //tree->setScale(0.8);
+                this -> addChild(tree, 3);
+                allEnemyRoof.pushBack(tree);
             }
                 break;
             case 2: {
                 enemy = Sprite::create("japan/roof_l.png");
-                enemy->setPosition(Point(border_width + enemy->getContentSize().width/2 * 0.8, size.height + 100));
-                enemy->setScale(0.8);
-                this -> addChild(enemy, 7);
-                allEnemyRoof.pushBack(enemy);
+//                enemy->setPosition(Point(border_width + enemy->getContentSize().width/2 * 0.8, size.height + 100));
+//                enemy->setScale(0.8);
+//                this -> addChild(enemy, 7);
+//                allEnemyRoof.pushBack(enemy);
+                
+                if (LeftWarningLifeTimer <= 0.f)
+                {
+                    LeftWarning = Sprite::create("warning.png");
+                    LeftWarning->setPosition(LeftWarning->getContentSize().width / 2.f, size.height*2.f / 5.f);
+                    LeftWarning->setScale(0.5f);
+                    LeftWarningLifeTimer = 0.5f;
+                    this->addChild(LeftWarning, 10);
+                }
+                for(int i = 0; i < 4; i ++){
+                    auto sf = SpriteFrame::create("halloween/Halloween_sickle_l.png", Rect(i * 736 / 4, 0, 736 / 4, 223));
+                    treeFram.pushBack(sf);
+                }
+                auto ani = Animation::createWithSpriteFrames(treeFram, 0.3);
+                tree = Sprite::create();
+                tree->runAction(RepeatForever::create(Animate::create(ani)));
+                tree->setPosition(Point(border_width + enemy->getContentSize().width*0.8, size.height + 100));
+                //tree->setScale(0.8);
+                this -> addChild(tree, 3);
+                allEnemyRoof.pushBack(tree);
             }
                 break;
             case 3: {
@@ -1158,7 +1293,7 @@ void NewGameScene_japan::newEnemy(float t) {
             case 5: {
                 //CCLOG("*********************\n");
                 
-                star = Sprite::create("japan/sakura.png");
+                star = Sprite::create("halloween/Halloween_pumpkin.png");
                 int x = random(border_width + star->getContentSize().width/2 + roofWidth, size.width- border_width - roofWidth - star->getContentSize().width/2);
                 //CCLOG("%d", x);
                 star->setPosition(Point(x, size.height+100));
@@ -1168,10 +1303,29 @@ void NewGameScene_japan::newEnemy(float t) {
                 break;
             case 6: {
                 enemy = Sprite::create("japan/roof_l.png");
-                enemy->setPosition(Point(border_width + enemy->getContentSize().width/2 * 0.8, size.height + 100));
-                enemy->setScale(0.8);
-                this -> addChild(enemy, 7);
-                allEnemyRoof.pushBack(enemy);
+//                enemy->setPosition(Point(border_width + enemy->getContentSize().width/2 * 0.8, size.height + 100));
+//                enemy->setScale(0.8);
+//                this -> addChild(enemy, 7);
+//                allEnemyRoof.pushBack(enemy);
+                if (LeftWarningLifeTimer <= 0.f)
+                {
+                    LeftWarning = Sprite::create("warning.png");
+                    LeftWarning->setPosition(LeftWarning->getContentSize().width / 2.f, size.height*2.f / 5.f);
+                    LeftWarning->setScale(0.5f);
+                    LeftWarningLifeTimer = 0.5f;
+                    this->addChild(LeftWarning, 10);
+                }
+                for(int i = 0; i < 4; i ++){
+                    auto sf = SpriteFrame::create("halloween/Halloween_sickle_l.png", Rect(i * 736 / 4, 0, 736 / 4, 223));
+                    treeFram.pushBack(sf);
+                }
+                auto ani = Animation::createWithSpriteFrames(treeFram, 0.3);
+                tree = Sprite::create();
+                tree->runAction(RepeatForever::create(Animate::create(ani)));
+                tree->setPosition(Point(border_width + enemy->getContentSize().width*0.8, size.height + 100));
+                //tree->setScale(0.8);
+                this -> addChild(tree, 3);
+                allEnemyRoof.pushBack(tree);
             }
                 break;
             case 7: {
@@ -1190,10 +1344,30 @@ void NewGameScene_japan::newEnemy(float t) {
                 break;
             case 8: {
                 enemy = Sprite::create("japan/roof_r.png");
-                enemy->setPosition(Point(size.width - border_width - enemy->getContentSize().width/2 * 0.8, size.height + 100));
-                enemy->setScale(0.8);
-                this -> addChild(enemy, 7);
-                allEnemyRoof.pushBack(enemy);
+//                enemy->setPosition(Point(size.width - border_width - enemy->getContentSize().width/2 * 0.8, size.height + 100));
+//                enemy->setScale(0.8);
+//                this -> addChild(enemy, 7);
+//                allEnemyRoof.pushBack(enemy);
+                if (RightWarningLifeTimer <= 0.f)
+                {
+                    RightWarning = Sprite::create("warning.png");
+                    RightWarning->setPosition(size.width - RightWarning->getContentSize().width / 2.f, size.height*2.f / 5.f);
+                    RightWarning->setScale(0.5f);
+                    RightWarningLifeTimer = 0.5f;
+                    this->addChild(RightWarning, 10);
+                }
+
+                for(int i = 0; i < 4; i ++){
+                    auto sf = SpriteFrame::create("halloween/Halloween_sickle.png", Rect(i * 736 / 4, 0, 736 / 4, 223));
+                    treeFram.pushBack(sf);
+                }
+                auto ani = Animation::createWithSpriteFrames(treeFram, 0.3);
+                tree = Sprite::create();
+                tree->runAction(RepeatForever::create(Animate::create(ani)));
+                tree->setPosition(Point(size.width - border_width - enemy->getContentSize().width*0.8, size.height + 100));
+                //tree->setScale(0.8);
+                this -> addChild(tree, 3);
+                allEnemyRoof.pushBack(tree);
             }
                 break;
             case 9: {
@@ -1234,6 +1408,8 @@ void NewGameScene_japan::newEnemy(float t) {
                 
             case 10: {
                 enemy = Sprite::create("ccc.png");
+                
+                CCLOG("******%f*****\n", border_width + enemy->getContentSize().width/2 + roofWidth - size.width- border_width -roofWidth - enemy->getContentSize().width/2);
                 int x = random(border_width + enemy->getContentSize().width/2 + roofWidth, size.width- border_width -roofWidth - enemy->getContentSize().width/2);
                 enemy->setPosition(Point(x, size.height+100));
                 enemy->setScale(1.2);
@@ -1243,16 +1419,54 @@ void NewGameScene_japan::newEnemy(float t) {
                 break;
             case 11: {
                 enemy = Sprite::create("japan/roof_l.png");
-                enemy->setPosition(Point(border_width + enemy->getContentSize().width/2, size.height + 100));
-                this -> addChild(enemy, 7);
-                allEnemyRoof.pushBack(enemy);
+//                enemy->setPosition(Point(border_width + enemy->getContentSize().width/2, size.height + 100));
+//                this -> addChild(enemy, 7);
+//                allEnemyRoof.pushBack(enemy);
+                if (LeftWarningLifeTimer <= 0.f)
+                {
+                    LeftWarning = Sprite::create("warning.png");
+                    LeftWarning->setPosition(LeftWarning->getContentSize().width / 2.f, size.height*2.f / 5.f);
+                    LeftWarning->setScale(0.5f);
+                    LeftWarningLifeTimer = 0.5f;
+                    this->addChild(LeftWarning, 10);
+                }
+                for(int i = 0; i < 4; i ++){
+                    auto sf = SpriteFrame::create("halloween/Halloween_sickle_l.png", Rect(i * 736 / 4, 0, 736 / 4, 223));
+                    treeFram.pushBack(sf);
+                }
+                auto ani = Animation::createWithSpriteFrames(treeFram, 0.3);
+                tree = Sprite::create();
+                tree->runAction(RepeatForever::create(Animate::create(ani)));
+                tree->setPosition(Point(border_width + enemy->getContentSize().width*0.8, size.height + 100));
+                //tree->setScale(0.8);
+                this -> addChild(tree, 3);
+                allEnemyRoof.pushBack(tree);
             }
                 break;
             case 12: {
                 enemy = Sprite::create("japan/roof_r.png");
-                enemy->setPosition(Point(size.width - border_width - enemy->getContentSize().width/2, size.height + 100));
-                this -> addChild(enemy, 7);
-                allEnemyRoof.pushBack(enemy);
+//                enemy->setPosition(Point(size.width - border_width - enemy->getContentSize().width/2, size.height + 100));
+//                this -> addChild(enemy, 7);
+//                allEnemyRoof.pushBack(enemy);
+                if (RightWarningLifeTimer <= 0.f)
+                {
+                    RightWarning = Sprite::create("warning.png");
+                    RightWarning->setPosition(size.width - RightWarning->getContentSize().width / 2.f, size.height*2.f / 5.f);
+                    RightWarning->setScale(0.5f);
+                    RightWarningLifeTimer = 0.5f;
+                    this->addChild(RightWarning, 10);
+                }
+                for(int i = 0; i < 4; i ++){
+                    auto sf = SpriteFrame::create("halloween/Halloween_sickle.png", Rect(i * 736 / 4, 0, 736 / 4, 223));
+                    treeFram.pushBack(sf);
+                }
+                auto ani = Animation::createWithSpriteFrames(treeFram, 0.3);
+                tree = Sprite::create();
+                tree->runAction(RepeatForever::create(Animate::create(ani)));
+                tree->setPosition(Point(size.width - border_width - enemy->getContentSize().width*0.8, size.height + 100));
+                //tree->setScale(0.8);
+                this -> addChild(tree, 3);
+                allEnemyRoof.pushBack(tree);
             }
                 break;
             case 13: {
@@ -1260,8 +1474,8 @@ void NewGameScene_japan::newEnemy(float t) {
                 //                    auto sf = SpriteFrame::create("japan/crow_left.png", Rect(i*300/4, 0, 300/4, 63));
                 //                    crowFram.pushBack(sf);
                 //                }
-                for (int i = 0; i < 8; i++) {
-                    auto sf = SpriteFrame::create("japan/goose_left.png", Rect(i*945/8, 0, 945/8, 85));
+                for (int i = 0; i < 4; i++) {
+                    auto sf = SpriteFrame::create("halloween/Halloween_ghost1.png", Rect(i*425/3, 0, 425/3, 98));
                     crowFram.pushBack(sf);
                 }
                 crow = Sprite::create();
@@ -1274,7 +1488,7 @@ void NewGameScene_japan::newEnemy(float t) {
                 break;
             case 14: {
                 for (int i = 0; i < 4; i++) {
-                    auto sf = SpriteFrame::create("japan/crow_right.png", Rect(i*300/4, 0, 300/4, 63));
+                    auto sf = SpriteFrame::create("halloween/Halloween_ghost2.png", Rect(i*425/3, 0, 425/3, 98));
                     crowFram.pushBack(sf);
                 }
                 auto ani = Animation::createWithSpriteFrames(crowFram, 0.16);
@@ -1408,7 +1622,7 @@ void NewGameScene_japan::newEnemy(float t) {
     
 }
 
-void NewGameScene_japan::update(float t) {
+void NewGameScene_halloween::update(float t) {
     
     Size visibleSize = Director::getInstance()->getWinSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
@@ -1418,6 +1632,28 @@ void NewGameScene_japan::update(float t) {
     Rect pp(plane->getPositionX(), plane->getPositionY(), plane->playerWidth, plane->playerWidth);
     auto p_x = this->getPositionX();
     auto p_y = this->getPositionY();
+    if (LeftWarningLifeTimer > 0.f)
+    {
+        LeftWarningLifeTimer -= t;
+        if (LeftWarningLifeTimer <= 0.f)
+        {
+            LeftWarning->removeFromParent();
+            LeftWarning = NULL;
+            LeftWarningLifeTimer = 0.f;
+        }
+    }
+    
+    if (RightWarningLifeTimer > 0.f)
+    {
+        RightWarningLifeTimer -= t;
+        if (RightWarningLifeTimer <= 0.f)
+        {
+            RightWarning->removeFromParent();
+            RightWarning = NULL;
+            RightWarningLifeTimer = 0.f;
+        }
+    }
+
     
     
     //enemy roof
@@ -1449,13 +1685,13 @@ void NewGameScene_japan::update(float t) {
             
             
             
-//            			auto label = Label::createWithTTF("HP -1", "fonts/Marker Felt.ttf", 24);
-//            			label->setPosition(Point(origin.x + visibleSize.width / 2, 0));
-//            			auto Move_Down_3 = MoveBy::create(1, Vec2(0, visibleSize.height / 2));
-//            			auto action_3 = RepeatForever::create(Move_Down_3);
-//            			label->setColor(Color3B::RED);
-//            			label->runAction(action_3);
-//            			this->addChild(label, 8);
+            //			auto label = Label::createWithTTF("HP -1", "fonts/Marker Felt.ttf", 24);
+            //			label->setPosition(Point(origin.x + visibleSize.width / 2, 0));
+            //			auto Move_Down_3 = MoveBy::create(1, Vec2(0, visibleSize.height / 2));
+            //			auto action_3 = RepeatForever::create(Move_Down_3);
+            //			label->setColor(Color3B::RED);
+            //			label->runAction(action_3);
+            //			this->addChild(label, 8);
             
         }
         else if (pp.intersectsRect(er) && HP == 1){
@@ -1478,7 +1714,7 @@ void NewGameScene_japan::update(float t) {
             //			this->addChild(label, 8);
             
             this->pause();
-            Director::getInstance()->replaceScene(TransitionMoveInB::create(2, GameOver::createScene()));
+            Director::getInstance()->replaceScene(TransitionMoveInB::create(2, GameOverHalloween::createScene()));
             
             
         }
@@ -1609,7 +1845,7 @@ void NewGameScene_japan::update(float t) {
                 
                 
                 this->pause();
-                Director::getInstance()->replaceScene(TransitionMoveInB::create(2, GameOver::createScene()));
+                Director::getInstance()->replaceScene(TransitionMoveInB::create(2, GameOverHalloween::createScene()));
             }
         }
         
@@ -1722,7 +1958,7 @@ void NewGameScene_japan::update(float t) {
                 
                 
                 this->pause();
-                Director::getInstance()->replaceScene(TransitionMoveInB::create(2, GameOver::createScene()));
+                Director::getInstance()->replaceScene(TransitionMoveInB::create(2, GameOverHalloween::createScene()));
             }
         }
         else {
@@ -1938,7 +2174,7 @@ void NewGameScene_japan::update(float t) {
 }
 
 
-void NewGameScene_japan::create_skill(cocos2d::Ref* pSender)
+void NewGameScene_halloween::create_skill(cocos2d::Ref* pSender)
 {
     if (item_Array[0] == item_Array[1] && item_Array[0] == item_type::star)
     {
@@ -1957,7 +2193,7 @@ void NewGameScene_japan::create_skill(cocos2d::Ref* pSender)
     
 }
 
-void NewGameScene_japan::use_skill(cocos2d::Ref* pSender)
+void NewGameScene_halloween::use_skill(cocos2d::Ref* pSender)
 {
     if (current_skill == skill_type::teleport)
     {
@@ -1972,7 +2208,7 @@ void NewGameScene_japan::use_skill(cocos2d::Ref* pSender)
     
 }
 
-void NewGameScene_japan::playerAbility_Teleportation()
+void NewGameScene_halloween::playerAbility_Teleportation()
 {
     Player *my_player = (Player *)(this->getChildByTag(Scene_Tag::player));
     
@@ -2006,7 +2242,7 @@ void NewGameScene_japan::playerAbility_Teleportation()
     }
 }
 
-void NewGameScene_japan::push_item(int item)
+void NewGameScene_halloween::push_item(int item)
 {
     if (item_Array[0] == item_type::none_item) item_Array[0] = item;
     else if (item_Array[1] == item_type::none_item) item_Array[1] = item;
@@ -2021,7 +2257,7 @@ void NewGameScene_japan::push_item(int item)
     
     if (item_Array[0] == item_type::star)
     {
-        Texture2D* tmp = TextureCache::sharedTextureCache()->addImage("japan/sakura.png");
+        Texture2D* tmp = TextureCache::sharedTextureCache()->addImage("halloween/Halloween_pumpkin.png");
         item0->setTexture(tmp);
         item0->setScale(bg_scale);
         item0->setPosition(bg_origin.x + bg_size.width / 2 - item0->getBoundingBox().size.width / 2, bg_origin.y + bg_size.height*0.125);
@@ -2034,7 +2270,7 @@ void NewGameScene_japan::push_item(int item)
     
     if (item_Array[1] == item_type::star)
     {
-        Texture2D* tmp = TextureCache::sharedTextureCache()->addImage("japan/sakura.png");
+        Texture2D* tmp = TextureCache::sharedTextureCache()->addImage("halloween/Halloween_pumpkin.png");
         item1->setTexture(tmp);
         item1->setScale(bg_scale);
         item1->setPosition(bg_origin.x + bg_size.width / 2 + item1->getBoundingBox().size.width / 2, bg_origin.y + bg_size.height*0.125);
@@ -2047,7 +2283,7 @@ void NewGameScene_japan::push_item(int item)
     
 }
 
-void NewGameScene_japan::clear_item()
+void NewGameScene_halloween::clear_item()
 {
     item_Array[0] = item_Array[1] = item_type::none_item;
     Sprite* item0 = (Sprite*)getChildByTag(Scene_Tag::item_0);
@@ -2055,7 +2291,7 @@ void NewGameScene_japan::clear_item()
     item0->setVisible(false);
     item1->setVisible(false);
 }
-void NewGameScene_japan::timeController(float t) {
+void NewGameScene_halloween::timeController(float t) {
     
     // speedUp time
     if (m_player->speedUp) {
@@ -2066,6 +2302,4 @@ void NewGameScene_japan::timeController(float t) {
         m_player->speedUp = false;
     }
 }
-
-
 

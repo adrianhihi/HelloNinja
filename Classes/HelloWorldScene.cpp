@@ -2,6 +2,7 @@
 #include "SimpleAudioEngine.h"
 #include "NewGameScene.h"
 #include "NewGameScene_japan.h"
+#include "NewGameScene_halloween.h"
 #include "Setting.h"
 #include "halloween.h"
 #include "MenuSettings.h"
@@ -46,13 +47,13 @@ bool HelloWorld::init()
     
 
 	//close button
-    auto closeItem = MenuItemImage::create("CloseNormal.png",
-                                           "CloseSelected.png",
+    auto closeItem = MenuItemImage::create("Menu/pause.png",
+                                           "Menu/pause1.png",
                                            CC_CALLBACK_1(HelloWorld::menuCloseCallback, this));
     
 	closeItem->setPosition(Vec2(origin.x + visibleSize.width - closeItem->getContentSize().width/2*1.3 ,
                                 origin.y + closeItem->getContentSize().height/2*1.3));
-    closeItem->setScale(1.3);
+    //closeItem->setScale(1.5);
     auto menu_1 = Menu::create(closeItem, NULL);
     menu_1->setPosition(Vec2::ZERO);
     this->addChild(menu_1, 2);
@@ -101,10 +102,10 @@ bool HelloWorld::init()
 	this->addChild(menu,3);
 
 	//background music    
-
+    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(0.5);
 	CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("audio/Ninja.mp3");
 	CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("audio/Ninja.mp3", true);
-	CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(0.2);
+
 	isPause = false;
 	//playonloop.com
 
@@ -122,9 +123,9 @@ bool HelloWorld::init()
 
 void HelloWorld::Play(cocos2d::Ref *pSender){
 	CCLOG("Play");
-	CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/click.wav");
-	CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/click.wav");
-	CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(0.2);
+	CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/swordClick.wav");
+	CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/swordClick.wav");
+	CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(0.5);
 	auto scene = NewGame::createScene();
 	Director::getInstance()->replaceScene(scene);
 
@@ -132,21 +133,21 @@ void HelloWorld::Play(cocos2d::Ref *pSender){
 }
 void HelloWorld::Resume(cocos2d::Ref *pSender){
 	CCLOG("Resume");
-	CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/click.wav");
-	CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/click.wav");
-	CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(0.2);
+	CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/swordClick.wav");
+	CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/swordClick.wav");
+	CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(0.5);
 }
 void HelloWorld::Highscores(cocos2d::Ref *pSender){
 	CCLOG("HS");
-	CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/click.wav");
-	CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/click.wav");
-	CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(0.2);
+	CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/swordClick.wav");
+	CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/swordClick.wav");
+	CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(0.5);
 }
 void HelloWorld::Nihon(cocos2d::Ref *pSender){
 	CCLOG("Nihon");
-	CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/click.wav");
-	CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/click.wav");
-	CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(0.2);
+	CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/swordClick.wav");
+	CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/swordClick.wav");
+	CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(0.5);
 	auto scene = NewGameScene_japan::createScene();
 	Director::getInstance()->replaceScene(scene);
 
@@ -154,19 +155,19 @@ void HelloWorld::Nihon(cocos2d::Ref *pSender){
 
 void HelloWorld::Halloween(cocos2d::Ref *pSender){
 	CCLOG("HalloWeen");
-	CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/click.wav");
-	CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/click.wav");
-	CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(0.2);
-	auto scene = Halloween::createScene();
+	CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/swordClick.wav");
+	CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/swordClick.wav");
+	CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(0.5);
+	auto scene = NewGameScene_halloween::createScene();
 	Director::getInstance()->replaceScene(scene);
 
 }
 
 void HelloWorld::Settings(cocos2d::Ref *pSender){
 	CCLOG("Settings");
-	CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/click.wav");
-	CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/click.wav");
-	CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(0.2);
+	CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/swordClick.wav");
+	CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/swordClick.wav");
+	CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(0.5);
 	auto scene = MenuSettings::createScene();
 	Director::getInstance()->pushScene(scene);
 

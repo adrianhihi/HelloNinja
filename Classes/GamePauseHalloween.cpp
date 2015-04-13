@@ -1,23 +1,31 @@
-#include "GamePause.h"
+//
+//  GamePauseHalloween.cpp
+//  Ninja
+//
+//  Created by Haimo Bai on 4/2/15.
+//
+//
+
+#include "GamePauseHalloween.h"
 #include "SimpleAudioEngine.h"
 #include "NewGameScene_japan.h"
 #include "HelloWorldScene.h"
 
 
-GamePause::~GamePause(){}
+GamePauseHalloween::~GamePauseHalloween(){}
 
 
 
-Scene* GamePause::createScene()
+Scene* GamePauseHalloween::createScene()
 {
     auto scene = Scene::create();
-    auto layer = GamePause::create();
+    auto layer = GamePauseHalloween::create();
     scene->addChild(layer);
     
     return scene;
 }
 
-bool GamePause::init()
+bool GamePauseHalloween::init()
 {
     CCLayer::init();
     
@@ -33,10 +41,10 @@ bool GamePause::init()
     bg->setScale(bg_scale);
     this->addChild(bg);
     
-    auto backItem = MenuItemImage::create("Menu/menu.png", "Menu/menu_1.png", CC_CALLBACK_1(GamePause::goback, this));
+    auto backItem = MenuItemImage::create("Menu/menu.png", "Menu/menu_1.png", CC_CALLBACK_1(GamePauseHalloween::goback, this));
     backItem->setScale(1.8f);
     
-    auto continueItem=MenuItemImage::create("Menu/continue.png", "Menu/continue_1.png", CC_CALLBACK_1(GamePause::resumegame, this));
+    auto continueItem=MenuItemImage::create("Menu/continue.png", "Menu/continue_1.png", CC_CALLBACK_1(GamePauseHalloween::resumegame, this));
     continueItem->setScale(1.8f);
     
     
@@ -47,11 +55,11 @@ bool GamePause::init()
     _turnOff = MenuItemImage::create(
                                      "Menu/sound_off.png",
                                      "Menu/sound_off_1.png");
-    MenuItemToggle *toggleItem = MenuItemToggle::createWithCallback(CC_CALLBACK_1(GamePause::pauseMusicCallback, this), _turnOn, _turnOff, NULL);
+    MenuItemToggle *toggleItem = MenuItemToggle::createWithCallback(CC_CALLBACK_1(GamePauseHalloween::pauseMusicCallback, this), _turnOn, _turnOff, NULL);
     
     toggleItem->setScale(1.8f);
     
-    auto restart = MenuItemImage::create("Menu/restart.png", "Menu/restart_1.png", CC_CALLBACK_1(GamePause::restart, this));
+    auto restart = MenuItemImage::create("Menu/restart.png", "Menu/restart_1.png", CC_CALLBACK_1(GamePauseHalloween::restart, this));
     restart->setScale(1.8f);
     
     
@@ -64,7 +72,7 @@ bool GamePause::init()
     return true;
 }
 
-void GamePause:: goback(CCObject*)
+void GamePauseHalloween:: goback(CCObject*)
 {
     CCLOG("go back");
     CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/swordClick.wav");
@@ -73,7 +81,7 @@ void GamePause:: goback(CCObject*)
     Director::getInstance()->replaceScene(HelloWorld::createScene());
 }
 
-void GamePause::resumegame(CCObject*)
+void GamePauseHalloween::resumegame(CCObject*)
 {
     CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/swordClick.wav");
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/swordClick.wav");
@@ -81,7 +89,7 @@ void GamePause::resumegame(CCObject*)
     Director::getInstance()->popScene();
 }
 
-void GamePause::pauseMusicCallback(CCObject*)
+void GamePauseHalloween::pauseMusicCallback(CCObject*)
 {
     CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/swordClick.wav");
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/swordClick.wav");
@@ -98,7 +106,7 @@ void GamePause::pauseMusicCallback(CCObject*)
     }
 }
 
-void GamePause::recoverMusicCallback(CCObject*)
+void GamePauseHalloween::recoverMusicCallback(CCObject*)
 {
     CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/swordClick.wav");
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/swordClick.wav");
@@ -106,11 +114,11 @@ void GamePause::recoverMusicCallback(CCObject*)
     CocosDenshion::SimpleAudioEngine::getInstance()->resumeBackgroundMusic();
     isPause = true;
 }
-void GamePause::restart(CCObject*){
-
+void GamePauseHalloween::restart(CCObject*){
+    
     CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/swordClick.wav");
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/swordClick.wav");
     CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(0.5);
-    Director::getInstance()->replaceScene(NewGameScene_japan::createScene());
+    Director::getInstance()->replaceScene(NewGameScene_halloween::createScene());
     //Director::getInstance()->popScene();
 }

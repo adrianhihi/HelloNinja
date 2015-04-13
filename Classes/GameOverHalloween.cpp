@@ -1,18 +1,24 @@
+//
+//  GameOverHalloween.cpp
+//  Ninja
+//
+//  Created by Haimo Bai on 4/2/15.
+//
+//
 
-
-#include "GameOver.h"
+#include "GameOverHalloween.h"
 #include "HelloWorldScene.h"
-#include "NewGameScene_japan.h"
+#include "NewGameScene_halloween.h"
 #include "SimpleAudioEngine.h"
 
-Scene * GameOver::createScene() {
+Scene * GameOverHalloween::createScene() {
     auto scene = Scene::create();
-    auto layer = GameOver::create();
+    auto layer = GameOverHalloween::create();
     scene->addChild(layer);
     return scene;
 };
 
-bool GameOver::init() {
+bool GameOverHalloween::init() {
     Size visibleSize = Director::getInstance()->getWinSize();
     
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
@@ -22,7 +28,7 @@ bool GameOver::init() {
     }
     //add back ground
     auto size = Director::getInstance()->getWinSize();
-    auto spbk = Sprite::create("japan/Nihon_lose.png");
+    auto spbk = Sprite::create("end.png");
     
     
     if(visibleSize.width / spbk->getContentSize().width >= visibleSize.height / spbk->getContentSize().height){
@@ -37,10 +43,10 @@ bool GameOver::init() {
     spbk->setPosition(Point(size.width / 2, size.height / 2));
     this->addChild(spbk);
     //add Back item
-    auto menuItemBack = MenuItemImage::create("Menu/menu.png", "Menu/menu_1.png", CC_CALLBACK_1(GameOver::menuCallBack, this));
+    auto menuItemBack = MenuItemImage::create("Menu/menu.png", "Menu/menu_1.png", CC_CALLBACK_1(GameOverHalloween::menuCallBack, this));
     //menuItemBack->setColor(Color3B::BLACK);
     menuItemBack->setScale(1.8f);
-    auto restart = MenuItemImage::create("Menu/restart.png", "Menu/restart_1.png", CC_CALLBACK_1(GameOver::restart, this));
+    auto restart = MenuItemImage::create("Menu/restart.png", "Menu/restart_1.png", CC_CALLBACK_1(GameOverHalloween::restart, this));
     restart->setScale(1.8f);
     auto menu = Menu::create(menuItemBack, restart, NULL);
     menu->alignItemsVertically();
@@ -51,14 +57,14 @@ bool GameOver::init() {
     return true;
 };
 
-void GameOver::menuCallBack(cocos2d::Ref * pSender) {
+void GameOverHalloween::menuCallBack(cocos2d::Ref * pSender) {
     Director::getInstance()->replaceScene(TransitionCrossFade::create(2, HelloWorld::createScene()));
 };
 
-void GameOver::restart(cocos2d::Ref * pSender){
+void GameOverHalloween::restart(cocos2d::Ref * pSender){
     
     CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/swordClick.wav");
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/swordClick.wav");
     CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(0.5);
-    Director::getInstance()->replaceScene(NewGameScene_japan::createScene());
+    Director::getInstance()->replaceScene(NewGameScene_halloween::createScene());
 }
