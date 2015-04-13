@@ -1,11 +1,3 @@
-//
-//  GamePause.cpp
-//  xuwutest
-//
-//  Created by Xu Wu on 3/6/15.
-//
-//
-
 #include "GamePause.h"
 #include "SimpleAudioEngine.h"
 #include "NewGameScene_japan.h"
@@ -120,4 +112,5 @@ void GamePause::restart(CCObject*){
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/swordClick.wav");
     CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(0.5);
     Director::getInstance()->replaceScene(NewGameScene_japan::createScene());
+    //Director::getInstance()->popScene();
 }

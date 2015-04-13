@@ -1,10 +1,3 @@
-//
-//  GamePause.h
-//  xuwutest
-//
-//  Created by Xu Wu on 3/5/15.
-//
-//
 
 #ifndef xuwutest_GamePause_h
 #define xuwutest_GamePause_h

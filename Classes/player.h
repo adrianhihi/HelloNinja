@@ -27,8 +27,10 @@ public:
     bool isInAir;
     bool isMovingLeft;
     bool isLeft;
+    bool shelled;
+    bool speedUp;
     //	bool isDead;
-    
+	void logic();
     void logicRunning(float t);
     void logicflying(float t);
     //	void beAtked(int iValue);
@@ -37,6 +39,7 @@ public:
     
     Sprite * spPlayer;
     Vector<SpriteFrame *> allframe;
+    Vector<SpriteFrame *> allframeAir;
     Vector<SpriteFrame *> allframeAttack;
     Animate * ani;
     
