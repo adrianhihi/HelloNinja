@@ -229,7 +229,7 @@ bool NewGameScene_halloween::init()
     //m_player->setTag(0);
     
     m_player->setPosition(Point(bg_origin.x + borderWidth + m_player->playerWidth / 2, bg_origin.y + bg_size.height * 0.2f));
-    this->addChild(m_player, 5, 0);
+    this->addChild(m_player, 7, 0);
     
     //skill button
     
@@ -279,8 +279,8 @@ bool NewGameScene_halloween::init()
     item1->setPosition(bg_origin.x + bg_size.width / 2 + item1->getContentSize().width / 2, bg_origin.y + bg_size.height*0.15);
     item1->setVisible(false);
     
-    this->addChild(item0, 21, Scene_Tag::item_0);
-    this->addChild(item1, 21, Scene_Tag::item_1);
+    this->addChild(item0, 20, Scene_Tag::item_0);
+    this->addChild(item1, 20, Scene_Tag::item_1);
     
     //===================
     
@@ -622,7 +622,7 @@ void NewGameScene_halloween::newEnemy_speedUp(float t){
             }
                 break;
             case 1: {
-                enemy = Sprite::create("halloween/Hall.png");
+                enemy = Sprite::create("halloween/Halloween_sickle_l.png");
 //                enemy->setPosition(Point(size.width - border_width - enemy->getContentSize().width/2 * 0.8, size.height + 100));
 //                enemy->setScale(0.8);
                 for(int i = 0; i < 4; i ++){
@@ -634,7 +634,7 @@ void NewGameScene_halloween::newEnemy_speedUp(float t){
                 tree->runAction(RepeatForever::create(Animate::create(ani)));
                 tree->setPosition(Point(size.width - border_width - enemy->getContentSize().width*0.8, size.height + 100));
                 //tree->setScale(0.8);
-                this -> addChild(tree, 3);
+                this -> addChild(tree, 7);
                 allEnemyRoof.pushBack(tree);
                 
             }
@@ -654,7 +654,7 @@ void NewGameScene_halloween::newEnemy_speedUp(float t){
                 tree->runAction(RepeatForever::create(Animate::create(ani)));
                 tree->setPosition(Point(border_width + enemy->getContentSize().width * 0.8, size.height + 100));
                 //tree->setScale(0.8);
-                this -> addChild(tree, 3);
+                this -> addChild(tree, 7);
                 allEnemyRoof.pushBack(tree);
             }
                 break;
@@ -733,7 +733,7 @@ void NewGameScene_halloween::newEnemy_speedUp(float t){
                 tree->runAction(RepeatForever::create(Animate::create(ani)));
                 tree->setPosition(Point(border_width + enemy->getContentSize().width*0.8, size.height + 100));
                 //tree->setScale(0.8);
-                this -> addChild(tree, 3);
+                this -> addChild(tree, 7);
                 allEnemyRoof.pushBack(tree);
             }
                 break;
@@ -766,7 +766,7 @@ void NewGameScene_halloween::newEnemy_speedUp(float t){
                 tree->runAction(RepeatForever::create(Animate::create(ani)));
                 tree->setPosition(Point(size.width - border_width - enemy->getContentSize().width*0.8, size.height + 100));
                 //tree->setScale(0.8);
-                this -> addChild(tree, 3);
+                this -> addChild(tree, 7);
                 allEnemyRoof.pushBack(tree);
             }
                 break;
@@ -831,7 +831,7 @@ void NewGameScene_halloween::newEnemy_speedUp(float t){
                 tree->runAction(RepeatForever::create(Animate::create(ani)));
                 tree->setPosition(Point(border_width + enemy->getContentSize().width*0.8, size.height + 100));
                 //tree->setScale(0.8);
-                this -> addChild(tree, 3);
+                this -> addChild(tree, 7);
                 allEnemyRoof.pushBack(tree);
             }
                 break;
@@ -849,7 +849,7 @@ void NewGameScene_halloween::newEnemy_speedUp(float t){
                 tree->runAction(RepeatForever::create(Animate::create(ani)));
                 tree->setPosition(Point(size.width - border_width - enemy->getContentSize().width*0.8, size.height + 100));
                 //tree->setScale(0.8);
-                this -> addChild(tree, 3);
+                this -> addChild(tree, 7);
                 allEnemyRoof.pushBack(tree);
             }
                 break;
@@ -1197,7 +1197,7 @@ void NewGameScene_halloween::newEnemy(float t) {
                 tree->runAction(RepeatForever::create(Animate::create(ani)));
                 tree->setPosition(Point(size.width - border_width - enemy->getContentSize().width*0.8, size.height + 100));
                 //tree->setScale(0.8);
-                this -> addChild(tree, 3);
+                this -> addChild(tree, 7);
                 allEnemyRoof.pushBack(tree);
             }
                 break;
@@ -1225,7 +1225,7 @@ void NewGameScene_halloween::newEnemy(float t) {
                 tree->runAction(RepeatForever::create(Animate::create(ani)));
                 tree->setPosition(Point(border_width + enemy->getContentSize().width*0.8, size.height + 100));
                 //tree->setScale(0.8);
-                this -> addChild(tree, 3);
+                this -> addChild(tree, 7);
                 allEnemyRoof.pushBack(tree);
             }
                 break;
@@ -1306,7 +1306,7 @@ void NewGameScene_halloween::newEnemy(float t) {
                 tree->runAction(RepeatForever::create(Animate::create(ani)));
                 tree->setPosition(Point(border_width + enemy->getContentSize().width*0.8, size.height + 100));
                 //tree->setScale(0.8);
-                this -> addChild(tree, 3);
+                this -> addChild(tree, 7);
                 allEnemyRoof.pushBack(tree);
             }
                 break;
@@ -1348,7 +1348,7 @@ void NewGameScene_halloween::newEnemy(float t) {
                 tree->runAction(RepeatForever::create(Animate::create(ani)));
                 tree->setPosition(Point(size.width - border_width - enemy->getContentSize().width*0.8, size.height + 100));
                 //tree->setScale(0.8);
-                this -> addChild(tree, 3);
+                this -> addChild(tree, 7);
                 allEnemyRoof.pushBack(tree);
             }
                 break;
@@ -1413,7 +1413,7 @@ void NewGameScene_halloween::newEnemy(float t) {
                 tree->runAction(RepeatForever::create(Animate::create(ani)));
                 tree->setPosition(Point(border_width + enemy->getContentSize().width*0.8, size.height + 100));
                 //tree->setScale(0.8);
-                this -> addChild(tree, 3);
+                this -> addChild(tree, 7);
                 allEnemyRoof.pushBack(tree);
             }
                 break;
@@ -1431,7 +1431,7 @@ void NewGameScene_halloween::newEnemy(float t) {
                 tree->runAction(RepeatForever::create(Animate::create(ani)));
                 tree->setPosition(Point(size.width - border_width - enemy->getContentSize().width*0.8, size.height + 100));
                 //tree->setScale(0.8);
-                this -> addChild(tree, 3);
+                this -> addChild(tree, 7);
                 allEnemyRoof.pushBack(tree);
             }
                 break;
