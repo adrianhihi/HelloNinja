@@ -126,7 +126,7 @@ void HelloWorld::Play(cocos2d::Ref *pSender){
 	CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/swordClick.wav");
 	CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/swordClick.wav");
 	CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(0.5);
-	auto scene = NewGame::createScene();
+	auto scene = NewGameScene::createScene();
 	Director::getInstance()->replaceScene(scene);
 
 
