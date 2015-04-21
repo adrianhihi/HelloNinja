@@ -28,11 +28,10 @@ public:
 
 	void Play(cocos2d::Ref* pSender);
 	void Highscores(cocos2d::Ref* pSender);
-	//void Settings(cocos2d::Ref* pSender);
+	void Settings(cocos2d::Ref* pSender);
 	void Resume(cocos2d::Ref* pSender);
 	void Nihon(cocos2d::Ref* pSender);
 	void Halloween(cocos2d::Ref* pSender);
-    void Settings(cocos2d::Ref* pSender);
 
     // implement the "static create()" method manually
     CREATE_FUNC(HelloWorld);
@@ -42,6 +41,9 @@ public:
 	void StopMusic(float dt);
 	void PauseMusic(float dt);
 	void ResumeMusic(float dt);
+
+	bool isPause;
+    float bg_scale;
 
 	bool onTouchBegan(cocos2d::Touch *touch, cocos2d::Event * event1);
 	void onTouchMoved(cocos2d::Touch *touch, cocos2d::Event * event2);

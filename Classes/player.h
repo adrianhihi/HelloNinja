@@ -6,49 +6,54 @@
 using namespace std;
 using namespace cocos2d;
 USING_NS_CC;
+
+enum direction{
+    DIR_LEFT,
+    DIR_RIGHT
+};
 class Player : public Node
 {
 public:
-	static Player* createPlayer(const char* fileName, float spriteScale, Vec2 _bgsize, Vec3 _origin);
-
-	Player();
-	~Player();
-	CCSprite* getSprite();
-	void bindSprite(CCSprite* sprite);
-	CREATE_FUNC(Player);
-	virtual bool init();
-	void moveToRight();
-	void moveToLeft();
-	Vec2 TouchBegin;
-
-	int score;
-	bool isInAir;
-	bool isMovingLeft;
-	bool isLeft;
-	bool isDead;
-
-	Vec2 origin;
-	Vec2 bgSize;
-	//void quickMove();
-	//void moveDown();
-	void logic(float dt);
-
-	void beAtked(int iValue);
+    static Player* createPlayer(const char* fileName, float spriteScale, Vec2 _bgsize, Vec3 _origin);
+    
+    Player();
+    ~Player();
+    CCSprite* getSprite();
+    void bindSprite(CCSprite* sprite);
+    CREATE_FUNC(Player);
+    virtual bool init();
+    
+    //	int score;
+    bool isInAir;
+    bool isMovingLeft;
+    bool isLeft;
+    bool shelled;
+    bool speedUp;
+    //	bool isDead;
+	void logic();
+    void logicRunning(float t);
+    void logicflying(float t);
+    //	void beAtked(int iValue);
+    float playerWidth;
+    direction m_dir;
+    
+    Sprite * spPlayer;
+    Vector<SpriteFrame *> allframe;
+    Vector<SpriteFrame *> allframeAir;
+    Vector<SpriteFrame *> allframeAttack;
+    Animate * ani;
+    
 private:
-	//CC_SYNTHESIZE(int, m_iHP, iHP);
-
-	//void hurt(int iValue);
-
-	//void cure(int iValue);
-
-	//CCSprite* m_sprite;
-
-	void playerInit(float spriteScale);
-
-	void update(float time);
-	float flyingTime;
-
-	//virtual void onExit();
-
+    
+    
+    
+    
+    
+    
+    void playerInit(float spriteScale);
+    
+    //	float flyingTime;
+    
+    
 };
 #endif

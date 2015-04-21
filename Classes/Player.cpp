@@ -1,13 +1,131 @@
-#include "Player.h"
+//#include "Player.h"
+//#include "ObjectTag.h"
+//#include "cocos2d.h"
+//#include "simpleAudioEngine.h"
+//#include "BackgroundLayer_japan.h"
+//
+////#include “CocoStudio.h”
+//
+////using namespace cocostudio;
+//Player::Player()
+//{
+//	//m_iHP = 100;
+//}
+//Player::~Player()
+//{
+//}
+//
+//void Player::playerInit(float spriteScale)
+//{
+//	
+//}
+//
+//bool Player::init()
+//{
+//	isInAir = false;
+//	isMovingLeft = false;
+//	isLeft = true;
+//	isDead = false;
+//	score = 0;
+//	flyingTime = 0;
+//
+//	auto size = Director::getInstance()->getWinSize();
+//
+//	playerWidth = 150;
+//
+//    m_dir = DIR_LEFT;
+//    
+//    for (int i = 1; i < 6; i++){
+//		auto sf = SpriteFrame::create(StringUtils::format("run/run_left%d.png", i), Rect(0, 0, playerWidth, playerWidth));
+//        allframe.pushBack(sf);
+//    }
+//    
+//
+//    Animation * animation = Animation::createWithSpriteFrames(allframe);
+//    animation->setDelayPerUnit(0.08);
+//    ani = Animate::create(animation);
+//    spPlayer = Sprite::create();
+//
+//    spPlayer->setTag(110);
+//    spPlayer->runAction(RepeatForever::create(ani));
+//    this->addChild(spPlayer);
+//   
+//
+//
+//	return true;
+//}
+//
+//
+//
+//
+//
+//void Player::logic()
+//{
+////    while (allframe.size() != 0) {
+////        allframe.eraseObject(allframe.at(0));
+////    }
+//    
+//    for (int i = 0; i < allframe.size(); i++) {
+//        allframe.eraseObject(allframe.at(i));
+//        i--;
+//    }
+//    
+//    spPlayer->stopAllActions();
+//    
+//    switch (m_dir) {
+//        case DIR_LEFT:
+//            for (int i = 7; i < 9; i ++) {
+//                auto sf1 = SpriteFrame::create(StringUtils::format("run/run_right%d.png",i), Rect(0, 0, 150, 150));
+//                allframeAttack.pushBack(sf1);
+//            }
+//            for (int i = 1; i < 6; i++){
+//				auto sf = SpriteFrame::create(StringUtils::format("run/run_left%d.png", i), Rect(0, 0, 150, 150));
+//                allframe.pushBack(sf);
+//            }
+//            break;
+//        
+//        case DIR_RIGHT:
+//            for (int i = 7; i < 9; i ++) {
+//                auto sf1 = SpriteFrame::create(StringUtils::format("run/run_left%d.png",i), Rect(0, 0, 150, 150));
+//                allframeAttack.pushBack(sf1);
+//            }
+//            for (int i = 1; i < 6; i++){
+//				auto sf = SpriteFrame::create(StringUtils::format("run/run_right%d.png", i), Rect(0, 0, 150, 150));
+//                allframe.pushBack(sf);
+//            }
+//            break;
+//            
+//        default:
+//            break;
+//    }
+//    
+//    Animation * animationAttack = Animation::createWithSpriteFrames(allframeAttack);
+//    animationAttack->setDelayPerUnit(0.08);
+//    //auto aniAttack = Animate::create(animationAttack);
+//    //spPlayer->runAction(aniAttack);
+//    
+//    Animation * animation = Animation::createWithSpriteFrames(allframe);
+//    animation->setDelayPerUnit(0.08);
+//    ani = Animate::create(animation);
+//    //auto aniWalk = RepeatForever::create(ani);
+//    spPlayer->runAction(RepeatForever::create(ani));
+//    
+//    //spPlayer->runAction(Sequence::create(aniAttack, ani, ani, NULL));
+//
+//
+//}
+
+#include "player.h"
 #include "ObjectTag.h"
 #include "cocos2d.h"
+#include "BackgroundLayer_japan.h"
 
 //#include “CocoStudio.h”
 
 //using namespace cocostudio;
 Player::Player()
 {
-	//m_iHP = 100;
+    //m_iHP = 100;
 }
 Player::~Player()
 {
@@ -15,159 +133,487 @@ Player::~Player()
 
 void Player::playerInit(float spriteScale)
 {
-	//this->setScale(spriteScale);
-
-	//this->setPosition(origin.x + this->getBoundingBox().size.width*0.5, origin.y + bgSize.y * 0.2);
+    
 }
-
 bool Player::init()
 {
-	isInAir = false;
-	isMovingLeft = false;
-	isLeft = true;
-	isDead = false;
-	score = 0;
-	flyingTime = 0;
+    isInAir = false;
+    isMovingLeft = false;
+    isLeft = true;
+    shelled = false;
+    speedUp = false;
+    
+    
+    auto size = Director::getInstance()->getWinSize();
+    
+    playerWidth = 150;
+    
+    m_dir = DIR_LEFT;
+    
+    for (int i = 1; i < 7; i++){
+        auto sf = SpriteFrame::create(StringUtils::format("run/run_left%d.png", i), Rect(0, 0, playerWidth, playerWidth));
+        allframe.pushBack(sf);
+    }
+    
+    Animation * animation = Animation::createWithSpriteFrames(allframe);
+    animation->setDelayPerUnit(0.08);
+    ani = Animate::create(animation);
+    spPlayer = Sprite::create();
+    
+    spPlayer->setTag(110);
+    spPlayer->runAction(RepeatForever::create(ani));
+    this->addChild(spPlayer);
+    this->schedule(schedule_selector(Player::logicRunning), 0.15);
+    this->schedule(schedule_selector(Player::logicflying));
+    
+    
+    return true;
+}
+void Player::logic()
+{
+	//    while (allframe.size() != 0) {
+	//        allframe.eraseObject(allframe.at(0));
+	//    }
 
-	auto size = Director::getInstance()->getWinSize();
-	auto playerSp = Sprite::create();
-	//playerSp->setPosition(size.width * 0.5f, size.height * 0.5f);
-	auto body = PhysicsBody::createCircle(playerSp->getContentSize().width*0.03f);
-
-	//body->getShape(0)->setFriction(0);
-	//body->getShape(0)->setRestitution(1.0f);
-	//body->setCategoryBitmask(1);    // 0001
-	//body->setCollisionBitmask(1);   // 0001
-	//body->setContactTestBitmask(1); // 0001
-	//this->setPhysicsBody(body);
-
-
-	this->addChild(playerSp);
-	playerSp->setTag(0);
-	Vector<SpriteFrame *> allframe;
-	for (int i = 0; i < 4; i++){
-		SpriteFrame * sf = SpriteFrame::create("player.png", Rect(i * 75, 0, 75, 100));
-		allframe.pushBack(sf);
+	for (int i = 0; i < allframe.size(); i++) {
+		allframe.eraseObject(allframe.at(i));
+		i--;
 	}
-	Animation * ani = Animation::createWithSpriteFrames(allframe, 0.01);
-	playerSp->runAction(RepeatForever::create(Animate::create(ani)));
-	this->setTag(ObjectTag_Player);
-	return true;
-}
 
-void Player::moveToRight()
-{
-	isInAir = true;
-	isMovingLeft = false;
-	flyingTime = 0.f;
-	this->scheduleUpdate();
-	//this->getPhysicsBody()->applyImpulse(Vect(15000, 0));
-	CCLOG("------------>");
-}
-void Player::moveToLeft()
-{
-	isInAir = true;
-	isMovingLeft = true;
-	flyingTime = 0.f;
-	this->scheduleUpdate();
-	//this->getPhysicsBody()->applyImpulse(Vect(-15000, 0));
-	CCLOG("<------------");
-}
-//void Player::quickMove()
-//{
-//
-//	this->getPhysicsBody()->applyImpulse(Vect(0, 15000));
-//	CCLOG("go");
-//}
-//
-//void Player::moveDown()
-//{
-//
-//	this->getPhysicsBody()->applyImpulse(Vect(0, -15000));
-//	CCLOG("down");
-//}
+	spPlayer->stopAllActions();
 
-void Player::logic(float dt)
-{
-}
-
-//void Player::beAtked(int iValue)
-//{
-//	if (iValue < 0)
-//	{
-//		cure(-iValue);
-//	}
-//	else
-//	{
-//		hurt(std::abs(iValue));
-//	}
-//}
-//void Player::hurt(int iValue)
-//{
-//	setiHP(getiHP() - iValue);
-//}
-//void Player::cure(int iValue)
-//{
-//	setiHP(getiHP() + iValue);
-//}
-void Player::update(float time)
-{
-	flyingTime += time;
-
-
-
-	float a = -0.2*bgSize.y / (0.25 * (bgSize.x - this->boundingBox().size.width) * (bgSize.x - this->boundingBox().size.width));
-
-	if (isInAir&&!isMovingLeft)
-	{
-
-
-		this->setPositionX(this->getPositionX() + 10);
-		float y = a * (this->getPositionX() - origin.x - 0.5 * this->boundingBox().size.width)*(this->getPositionX() - origin.x - bgSize.x + 0.5 * this->boundingBox().size.width);
-		this->setPositionY(y + bgSize.y*0.2);
-
-		if (this->getPositionX() >= origin.x + bgSize.x - this->boundingBox().size.width / 2)
-		{
-			isInAir = false;
-			this->setPosition(origin.x + bgSize.x - this->boundingBox().size.width / 2, origin.y + bgSize.y*0.2);
-			this->unscheduleUpdate();
-
+	switch (m_dir) {
+	case DIR_LEFT:
+		for (int i = 7; i < 9; i++) {
+			auto sf1 = SpriteFrame::create(StringUtils::format("run/run_right%d.png", i), Rect(0, 0, 150, 150));
+			allframeAttack.pushBack(sf1);
 		}
-		/*
-		else if (this->getPositionX() >= origin.x + bgSize.x / 2 && isLeft)
-		{
-		this->setScaleX((this->getScaleX()) * -1.f);
-		isLeft = false;
+		for (int i = 1; i < 6; i++){
+			auto sf = SpriteFrame::create(StringUtils::format("run/run_left%d.png", i), Rect(0, 0, 150, 150));
+			allframe.pushBack(sf);
 		}
-		*/
+		break;
 
+	case DIR_RIGHT:
+		for (int i = 7; i < 9; i++) {
+			auto sf1 = SpriteFrame::create(StringUtils::format("run/run_left%d.png", i), Rect(0, 0, 150, 150));
+			allframeAttack.pushBack(sf1);
+		}
+		for (int i = 1; i < 6; i++){
+			auto sf = SpriteFrame::create(StringUtils::format("run/run_right%d.png", i), Rect(0, 0, 150, 150));
+			allframe.pushBack(sf);
+		}
+		break;
+
+	default:
+		break;
 	}
-	else if (isInAir&&isMovingLeft)
-	{
 
-		this->setPosition(this->getPositionX() - 10, origin.y + bgSize.y*0.2);
-		float y = a * (this->getPositionX() - origin.x - 0.5 * this->boundingBox().size.width)*(this->getPositionX() - origin.x - bgSize.x + 0.5 * this->boundingBox().size.width);
-		this->setPositionY(y + bgSize.y*0.2);
+	Animation * animationAttack = Animation::createWithSpriteFrames(allframeAttack);
+	animationAttack->setDelayPerUnit(0.08);
+	//auto aniAttack = Animate::create(animationAttack);
+	//spPlayer->runAction(aniAttack);
 
-		if (this->getPositionX() <= origin.x + this->boundingBox().size.width / 2)
-		{
-			isInAir = false;
-			this->setPosition(origin.x + this->boundingBox().size.width / 2, origin.y + bgSize.y*0.2);
-			this->unscheduleUpdate();
+	Animation * animation = Animation::createWithSpriteFrames(allframe);
+	animation->setDelayPerUnit(0.08);
+	ani = Animate::create(animation);
+	//auto aniWalk = RepeatForever::create(ani);
+	spPlayer->runAction(RepeatForever::create(ani));
 
-		}
-		/*
-		else if (this->getPositionX() <= origin.x + bgSize.x / 2 && !isLeft)
-		{
-		this->setScaleX((this->getScaleX()) * -1.f);
-		isLeft = true;
-		}
-		*/
-	}
-	return;
-
+	//spPlayer->runAction(Sequence::create(aniAttack, ani, ani, NULL));
 
 
 }
+
+
+
+void Player::logicflying(float t) {
+    auto size = Director::getInstance()->getWinSize();
+    if(speedUp){
+        if (this->isInAir) {
+            spPlayer->stopAllActions();
+            for (int i = 0; i < allframeAttack.size(); i++) {
+                allframeAttack.eraseObject(allframeAttack.at(i));
+                i--;
+            }
+            
+            switch (m_dir) {
+                case DIR_LEFT:
+                {
+                    if (this->getPositionX() > size.width/2) {
+                        auto sf1 = SpriteFrame::create("unbeatable/run_right7.png", Rect(0, 0, 150, 150));
+                        allframeAttack.pushBack(sf1);
+                    }
+                    else {
+                        auto sf1 = SpriteFrame::create("unbeatable/run_right8.png", Rect(0, 0, 150, 150));
+                        allframeAttack.pushBack(sf1);
+                    }
+                }
+                    break;
+                    
+                case DIR_RIGHT:
+                {
+                    if (this->getPositionX() < size.width/2) {
+                        auto sf1 = SpriteFrame::create("unbeatable/run_left7.png", Rect(0, 0, 150, 150));
+                        allframeAttack.pushBack(sf1);
+                    }
+                    else {
+                        auto sf1 = SpriteFrame::create("unbeatable/run_left8.png", Rect(0, 0, 150, 150));
+                        allframeAttack.pushBack(sf1);
+                    }
+                }
+                    break;
+                    
+                default:
+                    break;
+            }
+            
+            
+            auto animationAttack = Animation::createWithSpriteFrames(allframeAttack);
+            animationAttack->setDelayPerUnit(0.02);
+            auto aniAttack = Animate::create(animationAttack);
+            spPlayer->runAction(aniAttack);
+        }
+    }else{
+        if (shelled) {
+            if (this->isInAir) {
+                spPlayer->stopAllActions();
+                for (int i = 0; i < allframeAir.size(); i++) {
+                    allframeAir.eraseObject(allframeAir.at(i));
+                    i--;
+                }
+                
+                switch (m_dir) {
+                    case DIR_LEFT:
+                    {
+                        if (this->getPositionX() > size.width/2) {
+                            auto sf1 = SpriteFrame::create("shelled/right7.png", Rect(0, 0, 200, 200));
+                            allframeAir.pushBack(sf1);
+                        }
+                        else {
+                            auto sf1 = SpriteFrame::create("shelled/right8.png", Rect(0, 0, 200, 200));
+                            allframeAir.pushBack(sf1);
+                        }
+                    }
+                        break;
+                        
+                    case DIR_RIGHT:
+                    {
+                        if (this->getPositionX() < size.width/2) {
+                            auto sf1 = SpriteFrame::create("shelled/7.png", Rect(0, 0, 200, 200));
+                            allframeAir.pushBack(sf1);
+                        }
+                        else {
+                            auto sf1 = SpriteFrame::create("shelled/8.png", Rect(0, 0, 200, 200));
+                            allframeAir.pushBack(sf1);
+                        }
+                    }
+                        break;
+                        
+                    default:
+                        break;
+                }
+                auto animationAttack = Animation::createWithSpriteFrames(Player::allframeAir);
+                animationAttack->setDelayPerUnit(0.02);
+                auto aniAttack = Animate::create(animationAttack);
+                spPlayer->runAction(aniAttack);
+            }
+        }else {
+            if (this->isInAir) {
+                spPlayer->stopAllActions();
+                for (int i = 0; i < allframeAir.size(); i++) {
+                    allframeAir.eraseObject(allframeAir.at(i));
+                    i--;
+                }
+                
+                switch (m_dir) {
+                    case DIR_LEFT:
+                    {
+                        if (this->getPositionX() > size.width/2) {
+                            auto sf1 = SpriteFrame::create("run/run_right7.png", Rect(0, 0, 150, 150));
+                            allframeAir.pushBack(sf1);
+                        }
+                        else {
+                            auto sf1 = SpriteFrame::create("run/run_right8.png", Rect(0, 0, 150, 150));
+                            allframeAir.pushBack(sf1);
+                        }
+                    }
+                        break;
+                        
+                    case DIR_RIGHT:
+                    {
+                        if (this->getPositionX() < size.width/2) {
+                            auto sf1 = SpriteFrame::create("run/run_left7.png", Rect(0, 0, 150, 150));
+                            allframeAir.pushBack(sf1);
+                        }
+                        else {
+                            auto sf1 = SpriteFrame::create("run/run_left8.png", Rect(0, 0, 150, 150));
+                            allframeAir.pushBack(sf1);
+                        }
+                    }
+                        break;
+                        
+                    default:
+                        break;
+                }
+                auto animationAttack = Animation::createWithSpriteFrames(Player::allframeAir);
+                animationAttack->setDelayPerUnit(0.02);
+                auto aniAttack = Animate::create(animationAttack);
+                spPlayer->runAction(aniAttack);
+            }
+        }
+    }
+}
+
+//void Player::logicRunning(float t)
+//{
+//    
+//    if (!this->isInAir) {
+//        spPlayer->stopAllActions();
+//        for (int i = 0; i < allframe.size(); i++) {
+//            allframe.eraseObject(allframe.at(i));
+//            i--;
+//        }
+//        
+//        switch (m_dir) {
+//            case DIR_LEFT:
+//            {
+//                for (int i = 1; i < 6; i++){
+//                    auto sf = SpriteFrame::create(StringUtils::format("run/run_left%d.png", i), Rect(0, 0, 150, 150));
+//                    allframe.pushBack(sf);
+//                }
+//            }
+//                break;
+//                
+//            case DIR_RIGHT:
+//            {
+//                for (int i = 1; i < 6; i++){
+//                    auto sf = SpriteFrame::create(StringUtils::format("run/run_right%d.png", i), Rect(0, 0, 150, 150));
+//                    allframe.pushBack(sf);
+//                }
+//            }
+//                break;
+//                
+//            default:
+//                break;
+//        }
+//        
+//        auto animation = Animation::createWithSpriteFrames(allframe);
+//        animation->setDelayPerUnit(0.08);
+//        ani = Animate::create(animation);
+//        spPlayer->runAction(ani);
+//        
+//    }
+//    
+//    else {
+//        
+//        //        for (int i = 0; i < allframeAttack.size(); i++) {
+//        //            allframeAttack.eraseObject(allframeAttack.at(i));
+//        //            i--;
+//        //        }
+//        //
+//        //        if (spPlayer->getPositionX() < size.width/2) {
+//        //            switch (m_dir) {
+//        //                case DIR_LEFT:
+//        //                {
+//        //                   auto sf1 = SpriteFrame::create("run/run_right7.png", Rect(0, 0, 150, 150));
+//        //                    allframeAttack.pushBack(sf1);
+//        //                }
+//        //                    break;
+//        //                case DIR_RIGHT:
+//        //                {
+//        //                  auto  sf1 = SpriteFrame::create("run/run_left7.png", Rect(0, 0, 150, 150));
+//        //                  allframeAttack.pushBack(sf1);
+//        //                }
+//        //                default:
+//        //                    break;
+//        //            }
+//        //
+//        //            auto animationAttack = Animation::createWithSpriteFrames(allframeAttack);
+//        //            animationAttack->setDelayPerUnit(0.08);
+//        //            auto aniAttack = Animate::create(animationAttack);
+//        //            spPlayer->runAction(aniAttack);
+//        //        }
+//        //
+//        //        else {
+//        //            switch (m_dir) {
+//        //                case DIR_LEFT:
+//        //                {
+//        //                    auto sf1 = SpriteFrame::create("run/run_right8.png", Rect(0, 0, 150, 150));
+//        //                    allframeAttack.pushBack(sf1);
+//        //                }
+//        //                    break;
+//        //                case DIR_RIGHT:
+//        //                {
+//        //                    auto  sf1 = SpriteFrame::create("run/run_left8.png", Rect(0, 0, 150, 150));
+//        //                    allframeAttack.pushBack(sf1);
+//        //                }
+//        //                default:
+//        //                    break;
+//        //            }
+//        //
+//        //            auto animationAttack = Animation::createWithSpriteFrames(allframeAttack);
+//        //            animationAttack->setDelayPerUnit(0.08);
+//        //            auto aniAttack = Animate::create(animationAttack);
+//        //            spPlayer->runAction(aniAttack);
+//    }
+//    
+//    //        for (int i = 0; i < allframeAttack.size(); i++) {
+//    //            allframeAttack.eraseObject(allframeAttack.at(i));
+//    //            i--;
+//    //        }
+//    //
+//    //        switch (m_dir) {
+//    //            case DIR_LEFT:
+//    //            {
+//    //                for (int i = 7; i < 9; i++) {
+//    //                    auto sf1 = SpriteFrame::create(StringUtils::format("run/run_right%d.png", i), Rect(0, 0, 150, 150));
+//    //                    allframeAttack.pushBack(sf1);
+//    //                }
+//    //            }
+//    //                break;
+//    //
+//    //            case DIR_RIGHT:
+//    //            {
+//    //                for (int i = 7; i < 9; i++) {
+//    //                    auto sf1 = SpriteFrame::create(StringUtils::format("run/run_left%d.png", i), Rect(0, 0, 150, 150));
+//    //                    allframeAttack.pushBack(sf1);
+//    //                }
+//    //            }
+//    //                break;
+//    //                
+//    //            default:
+//    //                break;
+//    //        }
+//    //        
+//    //        auto animationAttack = Animation::createWithSpriteFrames(allframeAttack);
+//    //        animationAttack->setDelayPerUnit(0.08);
+//    //        auto aniAttack = Animate::create(animationAttack);
+//    //        spPlayer->runAction(aniAttack);
+//    
+//}
+
+void Player::logicRunning(float t)
+{
+    
+    if (this->speedUp) {
+        if (!this->isInAir) {
+            spPlayer->stopAllActions();
+            for (int i = 0; i < allframe.size(); i++) {
+                allframe.eraseObject(allframe.at(i));
+                i--;
+            }
+            
+            switch (m_dir) {
+                case DIR_LEFT:
+                {
+                    for (int i = 1; i < 7; i++){
+                        auto sf = SpriteFrame::create(StringUtils::format("unbeatable/run_left%d.png", i), Rect(0, 0, 150, 150));
+                        allframe.pushBack(sf);
+                    }
+                }
+                    break;
+                    
+                case DIR_RIGHT:
+                {
+                    for (int i = 1; i < 7; i++){
+                        auto sf = SpriteFrame::create(StringUtils::format("unbeatable/run_right%d.png", i), Rect(0, 0, 150, 150));
+                        allframe.pushBack(sf);
+                    }
+                }
+                    break;
+                    
+                default:
+                    break;
+            }
+            
+        }
+    }
+    
+    else {
+        if (shelled) {
+            if (!this->isInAir) {
+                spPlayer->stopAllActions();
+                for (int i = 0; i < allframe.size(); i++) {
+                    allframe.eraseObject(allframe.at(i));
+                    i--;
+                }
+                
+                switch (m_dir) {
+                    case DIR_LEFT:
+                    {
+                        for (int i = 1; i < 7; i++){
+                            auto sf = SpriteFrame::create(StringUtils::format("shelled/%d.png", i), Rect(0, 0, 200, 200));
+                            allframe.pushBack(sf);
+                        }
+                    }
+                        break;
+                        
+                    case DIR_RIGHT:
+                    {
+                        for (int i = 1; i < 7; i++){
+                            auto sf = SpriteFrame::create(StringUtils::format("shelled/right%d.png", i), Rect(0, 0, 200, 200));
+                            allframe.pushBack(sf);
+                        }
+                    }
+                        break;
+                        
+                    default:
+                        break;
+                }
+                
+                
+            }
+        }
+        
+        else {
+            if (!this->isInAir) {
+                spPlayer->stopAllActions();
+                for (int i = 0; i < allframe.size(); i++) {
+                    allframe.eraseObject(allframe.at(i));
+                    i--;
+                }
+                
+                switch (m_dir) {
+                    case DIR_LEFT:
+                    {
+                        for (int i = 1; i < 7; i++){
+                            auto sf = SpriteFrame::create(StringUtils::format("run/run_left%d.png", i), Rect(0, 0, 150, 150));
+                            allframe.pushBack(sf);
+                        }
+                    }
+                        break;
+                        
+                    case DIR_RIGHT:
+                    {
+                        for (int i = 1; i < 7; i++){
+                            auto sf = SpriteFrame::create(StringUtils::format("run/run_right%d.png", i), Rect(0, 0, 150, 150));
+                            allframe.pushBack(sf);
+                        }
+                    }
+                        break;
+                        
+                    default:
+                        break;
+                }
+                
+            }
+        }
+    }
+    
+    
+    auto animation = Animation::createWithSpriteFrames(allframe);
+    animation->setDelayPerUnit(0.08);
+    ani = Animate::create(animation);
+    spPlayer->runAction(ani);
+    
+    
+    
+}
+
+
+
+
+
 
 

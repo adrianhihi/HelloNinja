@@ -9,9 +9,12 @@
 #include "MenuSettings.h"
 #include "HelloWorldScene.h"
 #include "SimpleAudioEngine.h"
+#include "Credits.h"
 
 USING_NS_CC;
 MenuSettings::~MenuSettings(){}
+
+
 
 Scene* MenuSettings::createScene()
 {
@@ -25,43 +28,146 @@ Scene* MenuSettings::createScene()
 bool MenuSettings::init()
 {
     CCLayer::init();
+    
+    //background
     Size visibleSize = Director::getInstance()->getVisibleSize();
     Size windowSize = Director::getInstance()->getWinSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
-    auto closeItem = MenuItemFont::create("go back", this,menu_selector(MenuSettings::goback));
     
-    closeItem->setPosition(Vec2(origin.x + visibleSize.width - closeItem->getContentSize().width/2 ,
-                                origin.y + closeItem->getContentSize().height/2));
-    auto menu_1 = Menu::create(closeItem, NULL);
-    menu_1->setPosition(Vec2::ZERO);
-    this->addChild(menu_1, 2);
+    
+    bg = Sprite::create("optionsBg.png");
+    bg->setTag(1);
+    bg->setPosition(Point(windowSize.width/2, windowSize.height/2));
+    bg_scale = visibleSize.height / bg->getContentSize().height;
+    bg->setScale(bg_scale);
+    this->addChild(bg);
+	
+    //Size visibleSize = Director::getInstance()->getVisibleSize();
+    //Size windowSize = Director::getInstance()->getWinSize();
+    //Vec2 origin = Director::getInstance()->getVisibleOrigin();
+	menuItem = MenuItemImage::create("Menu/menu.png", "Menu/menu_1.png", CC_CALLBACK_1(MenuSettings::goback, this));
+    
+    
+	menuItem->setScale(1.8f);
+    
+    //closeItem->setPosition(Vec2(origin.x + visibleSize.width - closeItem->getContentSize().width/2 ,
+    //                            origin.y + closeItem->getContentSize().height/2));
 
+	
+
+	//auto menu_item_2 = MenuItemImage::create("Menu/Nihon1.png", "Menu/Nihon2.png", CC_CALLBACK_1(HelloWorld::Nihon, this));
+
+
+	//if (musicIsOn == true){		
+	//	auto menu_2 = Menu::create(pauseBG, NULL);
+	//	menu_2->alignItemsVertically();
+	//	menu_2->setScale(0.8);
+	//	addChild(menu_2);
+	//}
+	//if (musicIsOn == false){
+	//	auto menu_2 = Menu::create(recoverBG, NULL);
+	//	menu_2->alignItemsVertically();
+	//	menu_2->setScale(0.8);
+	//	addChild(menu_2);
+	//}
+	
+
+
+	
+	_turnOn = MenuItemImage::create(
+		"Menu/sound_on.png",
+		"Menu/sound_on_1.png");
+	_turnOff = MenuItemImage::create(
+		"Menu/sound_off.png",
+		"Menu/sound_off_1.png");
+	MenuItemToggle *toggleItem = MenuItemToggle::createWithCallback(CC_CALLBACK_1(MenuSettings::pauseMusicCallback, this), _turnOn, _turnOff, NULL);
+    toggleItem->setTag(110);
     
-    auto pauseBG=MenuItemFont::create("pause",this,menu_selector(MenuSettings::pauseMusicCallback));
-    auto recoverBG=MenuItemFont::create("recover",this,menu_selector(MenuSettings::recoverMusicCallback));
-    auto menu_2=Menu::create(pauseBG,recoverBG,NULL);
-    menu_2->alignItemsVertically();
-    addChild(menu_2);
+     //creditItem = MenuItemFont::create("Credits", CC_CALLBACK_1(MenuSettings::credits, this));
+
+	toggleItem->setScale(1.8f);
     
+    creditItem = MenuItemImage::create("Menu/credits.png", "Menu/credits1.png", CC_CALLBACK_1(MenuSettings::credits, this));
+    
+    
+    creditItem->setScale(1.8f);
+	//toggleItem->setPosition(Point(visibleSize.width / 2, visibleSize.height / 2));
+
+	//MenuItemImage *_musicOn, *_musicOff;
+	//_turnOn = MenuItemImage::create(
+	//	"Menu/music_on.png",
+	//	"Menu/music_on_1.png");
+	//_turnOff = MenuItemImage::create(
+	//	"Menu/music_off.png",
+	//	"Menu/music_off_1.png");
+	//MenuItemToggle *musicItem = MenuItemToggle::createWithCallback(CC_CALLBACK_1(MenuSettings::recoverMusicCallback, this), _musicOn, _musicOff, NULL);
+
+	//musicItem->setScale(0.8f);
+	//auto musicItem = MenuItemImage::create("Menu/music_on.png", "Menu/music_on_1.png", CC_CALLBACK_1(MenuSettings::recoverMusicCallback, this));
+
+	auto menu_2 = Menu::create(toggleItem, menuItem, creditItem, NULL);
+	menu_2->alignItemsVertically();
+	addChild(menu_2);
+	//auto pauseBG = MenuItemImage::create("Menu/MusicIsOff.png", "Menu/MusicIsOn.png", CC_CALLBACK_1(MenuSettings::pauseMusicCallback, this));
+	//auto recoverBG = MenuItemImage::create("Menu/MusicIsOn.png", "Menu/MusicIsOff.png", CC_CALLBACK_1(MenuSettings::recoverMusicCallback, this));
+ //   auto menu_2=Menu::create(pauseBG,recoverBG,NULL);
+ //   menu_2->alignItemsVertically();
+ //   addChild(menu_2);
+
     
     return true;
 }
 
-void MenuSettings:: goback(CCObject*)
+void MenuSettings:: goback(cocos2d::Ref *pSender)
 {
-    Director::getInstance()->popScene();
+	CCLOG("go back");
+    CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/swordClick.wav");
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/swordClick.wav");
+    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(0.5);
+	Director::getInstance()->popScene();
 }
 
-void MenuSettings::pauseMusicCallback(CCObject*)
+void MenuSettings::pauseMusicCallback(cocos2d::Ref *pSender)
 {
-    CocosDenshion::SimpleAudioEngine::getInstance()->pauseBackgroundMusic();
+    CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/swordClick.wav");
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/swordClick.wav");
+    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(0.5);
+    if (isPause == true)
+	{
+		CocosDenshion::SimpleAudioEngine::getInstance()->resumeBackgroundMusic();
+//        MenuItemToggle * toggleItem = (MenuItemToggle *)this->getChildByTag(110);
+//        toggleItem = MenuItemToggle::createWithCallback(CC_CALLBACK_1(MenuSettings::pauseMusicCallback, this), _turnOff, _turnOn, NULL);
+//        auto menu_2 = Menu::create(toggleItem, menuItem, creditItem, NULL);
+//        menu_2->alignItemsVertically();
+//        addChild(menu_2);
+		isPause = false;
+	}
+	else{
+	
+		CocosDenshion::SimpleAudioEngine::getInstance()->pauseBackgroundMusic();
+		isPause = true;
+//        MenuItemToggle * toggleItem = (MenuItemToggle *)this->getChildByTag(110);
+//        toggleItem = MenuItemToggle::createWithCallback(CC_CALLBACK_1(MenuSettings::pauseMusicCallback, this), _turnOn, _turnOff, NULL);
+//        auto menu_2 = Menu::create(toggleItem, menuItem, creditItem, NULL);
+//        menu_2->alignItemsVertically();
+//        addChild(menu_2);
+	}
 }
 
-void MenuSettings::recoverMusicCallback(CCObject*)
+void MenuSettings::recoverMusicCallback(cocos2d::Ref *pSender)
 {
+    CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/swordClick.wav");
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/swordClick.wav");
+    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(0.5);
     CocosDenshion::SimpleAudioEngine::getInstance()->resumeBackgroundMusic();
+	isPause = true;
 }
-
+void MenuSettings::credits(cocos2d::Ref *pSender){
+    CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/swordClick.wav");
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/swordClick.wav");
+    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(0.5);
+    Director::getInstance()->replaceScene(Credits::createScene());
+}
 
 
 

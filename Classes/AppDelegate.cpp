@@ -27,13 +27,12 @@ bool AppDelegate::applicationDidFinishLaunching() {
     auto director = Director::getInstance();
     auto glview = director->getOpenGLView();
     if(!glview) {
-        glview = GLViewImpl::create("Hello Ninja!");
+        glview = GLViewImpl::create("Hello Ninja");
         director->setOpenGLView(glview);
     }
-	glview->setFrameSize(1120, 629.6);
-	glview->setDesignResolutionSize(1120, 629.6, ResolutionPolicy::SHOW_ALL);
+
     // turn on display FPS
-    director->setDisplayStats(true);
+    director->setDisplayStats(false);
 
     // set FPS. the default value is 1.0/60 if you don't call this
     director->setAnimationInterval(1.0 / 60);
