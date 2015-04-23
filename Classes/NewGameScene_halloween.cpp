@@ -15,6 +15,7 @@
 #include "GameOverHalloween.h"
 #include "MenuSettings.h"
 #include "GamePauseHalloween.h"
+#include "HighScore.h"
 
 
 
@@ -102,9 +103,6 @@ bool NewGameScene_halloween::init()
     bg_origin = Vec2(bg_sprite_1->getBoundingBox().getMinX(), bg_sprite_1->getBoundingBox().getMinY());
     bg_size = Vec2(bg_sprite_1->getBoundingBox().size);
     
-    //    bg_sprite_1->setScale(0.8);
-    // position the sprite on the center of the screen
-    
     
     auto Move_Down_1 = MoveTo::create(100, Point(bg_size.width / 2 + bg_origin.x, -bg_size.height / 2));
     //	auto action_1 = RepeatForever::create(Move_Down_1);
@@ -144,14 +142,7 @@ bool NewGameScene_halloween::init()
     bg_sprite_4->setTag(1);
     // add the sprite as a child to this layer
     this->addChild(bg_sprite_4, 1);
-//    auto bg_start = Sprite::create("halloween/Halloween_bottom.png");
-//    bg_start->setScale(bg_scale);
-//    bg_start->setPosition(Point(bg_size.width / 2 + bg_origin.x, bg_size.height / 2 + bg_origin.y));
-//    //bg_start->setTag(1);
-//    // add the sprite as a child to this layer
-//    this->addChild(bg_start, 7);
-//    auto Move_Down_4 = MoveTo::create(30, Point(bg_size.width / 2 + bg_origin.x, -bg_size.height / 2));
-//    bg_start->runAction(Move_Down_4);
+
 
     
     // HP label
@@ -217,16 +208,7 @@ bool NewGameScene_halloween::init()
     m_player = Player::create();
     m_player->setScale(bg_scale);
     m_player->playerWidth *= bg_scale;
-    /*
-     m_player->allframe.clear();
-     for (int i = 1; i < 6; i++){
-     auto sf = SpriteFrame::create(StringUtils::format("run/run_left%d.png", i), Rect(0, 0, m_player->playerWidth, m_player->playerWidth));
-     m_player->allframe.pushBack(sf);
-     }
-     */
-    
-    //m_player->spPlayer->setPosition(Point(bg_origin.x + borderWidth + m_player->playerWidth / 2, bg_origin.y + bg_size.height * 0.16f));
-    //m_player->setTag(0);
+
     
     m_player->setPosition(Point(bg_origin.x + borderWidth + m_player->playerWidth / 2, bg_origin.y + bg_size.height * 0.2f));
     this->addChild(m_player, 5, 0);
@@ -325,13 +307,6 @@ bool NewGameScene_halloween::init()
 }
 
 
-//void NewGameScene_japan::onExit()
-//{
-//	Layer::onExit();
-//
-//	_eventDispatcher->removeEventListenersForTarget(this);
-//}
-
 
 void NewGameScene_halloween::GoBack(cocos2d::Ref *pSender){
     CCLOG("go back");
@@ -417,7 +392,7 @@ void NewGameScene_halloween::logic(float t) {
 
 bool NewGameScene_halloween::onTouchBegan(Touch *touch, Event *unsured_event){
     
-//    if (touch->getLocation().x >= bg_origin.x + borderWidth&&touch->getLocation().x <= bg_origin.x + bg_size.width - borderWidth)
+
     if (touch->getLocation().x >= bg_origin.x &&touch->getLocation().x <= bg_origin.x + bg_size.width)
     {
         testTouchBegin = touch->getLocation();
@@ -436,24 +411,7 @@ void NewGameScene_halloween::onTouchEnded(Touch *touch, Event *unused_event){
     
     auto my_player = (Player *) this->getChildByTag(0);
     
-    /*
-     if (testTouchBegin.distance(touch->getLocation()) > 1 && testTouchBegin.x<touch->getLocation().x && player->isLeft == true)
-     {
-     player->setScaleX((player->getScaleX()) * -1.f);
-     player->isLeft = false;
-     player->moveRight();
-     }
-     
-     else if (testTouchBegin.distance(touch->getLocation()) > 1 && testTouchBegin.x>touch->getLocation().x && player->isLeft == false)
-     {
-     player->setScaleX((player->getScaleX()) * -1.f);
-     player->isLeft = true;
-     player->moveLeft();
-     }
-     */
-    
-    
-//    if (valid_touch&&testTouchBegin.distance(touch->getLocation()) > 50 && touch->getLocation().x >= bg_origin.x + borderWidth&&touch->getLocation().x <= bg_origin.x + bg_size.width - borderWidth)
+
     if (valid_touch&&testTouchBegin.distance(touch->getLocation()) > 50 && touch->getLocation().x >= bg_origin.x&&touch->getLocation().x <= bg_origin.x + bg_size.width){
         Vec2 tmp = touch->getLocation() - testTouchBegin;
         sweep_angle = tmp.getAngle();
@@ -624,8 +582,7 @@ void NewGameScene_halloween::newEnemy_speedUp(float t){
             case 1: {
                 
                 enemy = Sprite::create("halloween/Halloween_sickle.png");
-//                enemy->setPosition(Point(size.width - border_width - enemy->getContentSize().width/2 * 0.8, size.height + 100));
-//                enemy->setScale(0.8);
+
                 for(int i = 0; i < 4; i ++){
                     auto sf = SpriteFrame::create("halloween/Halloween_sickle.png", Rect(i * 736 / 4, 0, 736 / 4, 223));
                     treeFram.pushBack(sf);
@@ -642,10 +599,6 @@ void NewGameScene_halloween::newEnemy_speedUp(float t){
                 break;
             case 2: {
                 enemy = Sprite::create("halloween/Halloween_sickle_l.png");
-//                enemy->setPosition(Point(border_width + enemy->getContentSize().width/2 * 0.8, size.height + 100));
-//                enemy->setScale(0.8);
-//                this -> addChild(enemy, 7);
-//                allEnemyRoof.pushBack(enemy);
                 for(int i = 0; i < 4; i ++){
                     auto sf = SpriteFrame::create("halloween/Halloween_sickle_l.png", Rect(i * 736 / 4, 0, 736 / 4, 223));
                     treeFram.pushBack(sf);
@@ -721,10 +674,6 @@ void NewGameScene_halloween::newEnemy_speedUp(float t){
                 break;
             case 6: {
                 enemy = Sprite::create("japan/roof_l.png");
-//                enemy->setPosition(Point(border_width + enemy->getContentSize().width/2 * 0.8, size.height + 100));
-//                enemy->setScale(0.8);
-//                this -> addChild(enemy, 7);
-//                allEnemyRoof.pushBack(enemy);
                 for(int i = 0; i < 4; i ++){
                     auto sf = SpriteFrame::create("halloween/Halloween_sickle_l.png", Rect(i * 736 / 4, 0, 736 / 4, 223));
                     treeFram.pushBack(sf);
@@ -754,10 +703,6 @@ void NewGameScene_halloween::newEnemy_speedUp(float t){
                 break;
             case 8: {
                 enemy = Sprite::create("japan/roof_r.png");
-//                enemy->setPosition(Point(size.width - border_width - enemy->getContentSize().width/2 * 0.8, size.height + 100));
-//                enemy->setScale(0.8);
-//                this -> addChild(enemy, 7);
-//                allEnemyRoof.pushBack(enemy);
                 for(int i = 0; i < 4; i ++){
                     auto sf = SpriteFrame::create("halloween/Halloween_sickle.png", Rect(i * 736 / 4, 0, 736 / 4, 223));
                     treeFram.pushBack(sf);
@@ -772,10 +717,6 @@ void NewGameScene_halloween::newEnemy_speedUp(float t){
             }
                 break;
             case 9: {
-                //                for (int i = 0; i < 4; i++) {
-                //                    auto sf = SpriteFrame::create("japan/crow_left.png", Rect(i*300/4, 0, 300/4, 63));
-                //                    crowFram.pushBack(sf);
-                //                }
                 for (int i = 0; i < 8; i++) {
                     auto sf = SpriteFrame::create("japan/goose_left.png", Rect(i*945/8, 0, 945/8, 85));
                     crowFram.pushBack(sf);
@@ -820,9 +761,6 @@ void NewGameScene_halloween::newEnemy_speedUp(float t){
                 break;
             case 11: {
                 enemy = Sprite::create("japan/roof_l.png");
-//                enemy->setPosition(Point(border_width + enemy->getContentSize().width/2, size.height + 100));
-//                this -> addChild(enemy, 7);
-//                allEnemyRoof.pushBack(enemy);
                 for(int i = 0; i < 4; i ++){
                     auto sf = SpriteFrame::create("halloween/Halloween_sickle_l.png", Rect(i * 736 / 4, 0, 736 / 4, 223));
                     treeFram.pushBack(sf);
@@ -838,9 +776,6 @@ void NewGameScene_halloween::newEnemy_speedUp(float t){
                 break;
             case 12: {
                 enemy = Sprite::create("japan/roof_r.png");
-//                enemy->setPosition(Point(size.width - border_width - enemy->getContentSize().width/2, size.height + 100));
-//                this -> addChild(enemy, 7);
-//                allEnemyRoof.pushBack(enemy);
                 for(int i = 0; i < 4; i ++){
                     auto sf = SpriteFrame::create("halloween/Halloween_sickle.png", Rect(i * 736 / 4, 0, 736 / 4, 223));
                     treeFram.pushBack(sf);
@@ -855,10 +790,7 @@ void NewGameScene_halloween::newEnemy_speedUp(float t){
             }
                 break;
             case 13: {
-                //                for (int i = 0; i < 4; i++) {
-                //                    auto sf = SpriteFrame::create("japan/crow_left.png", Rect(i*300/4, 0, 300/4, 63));
-                //                    crowFram.pushBack(sf);
-                //                }
+
                 for (int i = 0; i < 4; i++) {
                     auto sf = SpriteFrame::create("halloween/Halloween_ghost1.png", Rect(i*425/3, 0, 425/3, 98));
                     crowFram.pushBack(sf);
@@ -914,242 +846,7 @@ void NewGameScene_halloween::newEnemy_speedUp(float t){
 
 
 void NewGameScene_halloween::newEnemy(float t) {
-    //	auto size = Director::getInstance()->getWinSize();
-    //	auto border = Sprite::create("japan/border_j.png");
-    //
-    //	auto border_width = border->getBoundingBox().size.width;
-    //
-    //	auto roof = Sprite::create("japan/roof_r.png");
-    //	roof->setScale(bg_scale);
-    //	int roofWidth = roof->getBoundingBox().size.width * 0.8f;
-    //
-    //
-    //	Sprite * enemy;
-    //	Sprite * star;
-    //	Sprite * crow;
-    //	Vector<SpriteFrame *> crowFram;
-    //
-    //	//enemyNum = 4;
-    //
-    //	enemyNum++;
-    //	CCLOG("working!\n");
-    //	switch (enemyNum) {
-    //
-    //	case 0: {
-    //		enemy = Sprite::create("aaa.png");
-    //		int x = random(border_width + enemy->getContentSize().width / 2 + roofWidth, size.width - border_width - roofWidth - enemy->getContentSize().width / 2);
-    //		enemy->setPosition(Point(x, size.height + 100));
-    //		enemy->setScale(1.2);
-    //		allEnemyFallen.pushBack(enemy);
-    //		this->addChild(enemy, 7);
-    //	}
-    //			break;
-    //	case 1: {
-    //		enemy = Sprite::create("japan/roof_r.png");
-    //		enemy->setPosition(Point(size.width - border_width - enemy->getContentSize().width / 2 * 0.8, size.height + 100));
-    //		enemy->setScale(0.8);
-    //		this->addChild(enemy, 7);
-    //		allEnemyRoof.pushBack(enemy);
-    //	}
-    //			break;
-    //	case 2: {
-    //		enemy = Sprite::create("japan/roof_l.png");
-    //		enemy->setPosition(Point(border_width + enemy->getContentSize().width / 2 * 0.8, size.height + 100));
-    //		enemy->setScale(0.8);
-    //		this->addChild(enemy, 7);
-    //		allEnemyRoof.pushBack(enemy);
-    //	}
-    //			break;
-    //	case 3: {
-    //		for (int i = 0; i < 4; i++) {
-    //			auto sf = SpriteFrame::create("japan/crow_right.png", Rect(i * 300 / 4, 0, 300 / 4, 63));
-    //			crowFram.pushBack(sf);
-    //		}
-    //		auto ani = Animation::createWithSpriteFrames(crowFram, 0.16);
-    //		crow = Sprite::create();
-    //
-    //		crow->runAction(RepeatForever::create(Animate::create(ani)));
-    //		crow->setScale(1.2);
-    //		crow->setPosition(borderWidth + crow->getContentSize().width / 2 + 30, size.height + 100);
-    //		this->addChild(crow, 7);
-    //		allEnemyLeftCrow.pushBack(crow);
-    //	}
-    //			break;
-    //	case 4: {
-    //		for (int i = 0; i < 4; i++) {
-    //			auto sf = SpriteFrame::create("japan/crow_left.png", Rect(i * 300 / 4, 0, 300 / 4, 63));
-    //			crowFram.pushBack(sf);
-    //		}
-    //		crow = Sprite::create();
-    //		crow->runAction(RepeatForever::create(Animate::create(Animation::createWithSpriteFrames(crowFram, 0.16))));
-    //		crow->setScale(1.2);
-    //		crow->setPosition(size.width - borderWidth - crow->getContentSize().width / 2 - 30, size.height + 100);
-    //		this->addChild(crow, 7);
-    //		allEnemyRightCrow.pushBack(crow);
-    //
-    //		int RandNum = random(0, 2);
-    //		//            CCLOG("RandNum %d", RandNum);
-    //		switch (RandNum) {
-    //		case 0:
-    //			enemyNum = -1;
-    //			break;
-    //
-    //		case 1:
-    //			enemyNum = 4;
-    //			break;
-    //
-    //		case 2:
-    //			enemyNum = 9;
-    //			break;
-    //
-    //		default:
-    //			break;
-    //		}
-    //	}
-    //			break;
-    //	case 5: {
-    //		star = Sprite::create("star.png");
-    //		star->setScale(bg_scale);
-    //		int x = random(borderWidth + roofWidth + star->getBoundingBox().size.width / 2, bg_size.width - borderWidth - roofWidth - star->getBoundingBox().size.width / 2);
-    //		star->setPosition(bg_origin.x + x, bg_origin.y + size.height + 100);
-    //		this->addChild(star, 7);
-    //		allStar.pushBack(star);
-    //	}
-    //			break;
-    //	case 6: {
-    //		enemy = Sprite::create("japan/roof_l.png");
-    //		enemy->setPosition(Point(border_width + enemy->getContentSize().width / 2 * 0.8, size.height + 100));
-    //		enemy->setScale(0.8);
-    //		this->addChild(enemy, 7);
-    //		allEnemyRoof.pushBack(enemy);
-    //	}
-    //			break;
-    //	case 7: {
-    //		for (int i = 0; i < 4; i++) {
-    //			auto sf = SpriteFrame::create("japan/crow_right.png", Rect(i * 300 / 4, 0, 300 / 4, 63));
-    //			crowFram.pushBack(sf);
-    //		}
-    //		auto ani = Animation::createWithSpriteFrames(crowFram, 0.16);
-    //		crow = Sprite::create();
-    //		crow->runAction(RepeatForever::create(Animate::create(ani)));
-    //		crow->setScale(1.2);
-    //		crow->setPosition(borderWidth + crow->getContentSize().width / 2 + 30, size.height + 100);
-    //		this->addChild(crow, 7);
-    //		allEnemyLeftCrow.pushBack(crow);
-    //	}
-    //			break;
-    //	case 8: {
-    //		enemy = Sprite::create("japan/roof_r.png");
-    //		enemy->setPosition(Point(size.width - border_width - enemy->getContentSize().width / 2 * 0.8, size.height + 100));
-    //		enemy->setScale(0.8);
-    //		this->addChild(enemy, 7);
-    //		allEnemyRoof.pushBack(enemy);
-    //	}
-    //			break;
-    //	case 9: {
-    //		for (int i = 0; i < 4; i++) {
-    //			auto sf = SpriteFrame::create("japan/crow_left.png", Rect(i * 300 / 4, 0, 300 / 4, 63));
-    //			crowFram.pushBack(sf);
-    //		}
-    //		crow = Sprite::create();
-    //		crow->runAction(RepeatForever::create(Animate::create(Animation::createWithSpriteFrames(crowFram, 0.16))));
-    //		crow->setScale(1.2);
-    //		crow->setPosition(size.width - borderWidth - crow->getContentSize().width / 2 - 30, size.height + 100);
-    //		this->addChild(crow, 7);
-    //		allEnemyRightCrow.pushBack(crow);
-    //		int RandNum = random(0, 2);
-    //		CCLOG("RandNum %d", RandNum);
-    //		switch (RandNum) {
-    //		case 0:
-    //			enemyNum = -1;
-    //			break;
-    //
-    //		case 1:
-    //			enemyNum = 4;
-    //			break;
-    //
-    //		case 2:
-    //			enemyNum = 9;
-    //			break;
-    //
-    //		default:
-    //			break;
-    //		}
-    //	}
-    //			break;
-    //
-    //	case 10: {
-    //		enemy = Sprite::create("ccc.png");
-    //		int x = random(border_width + enemy->getContentSize().width / 2 + roofWidth, size.width - border_width - roofWidth - enemy->getContentSize().width / 2);
-    //		enemy->setPosition(Point(x, size.height + 100));
-    //		enemy->setScale(1.2);
-    //		allEnemyFallen.pushBack(enemy);
-    //		this->addChild(enemy, 7);
-    //	}
-    //			 break;
-    //	case 11: {
-    //		enemy = Sprite::create("japan/roof_l.png");
-    //		enemy->setPosition(Point(border_width + enemy->getContentSize().width / 2, size.height + 100));
-    //		this->addChild(enemy, 7);
-    //		allEnemyRoof.pushBack(enemy);
-    //	}
-    //			 break;
-    //	case 12: {
-    //		enemy = Sprite::create("japan/roof_r.png");
-    //		enemy->setPosition(Point(size.width - border_width - enemy->getContentSize().width / 2, size.height + 100));
-    //		this->addChild(enemy, 7);
-    //		allEnemyRoof.pushBack(enemy);
-    //	}
-    //			 break;
-    //	case 13: {
-    //		for (int i = 0; i < 4; i++) {
-    //			auto sf = SpriteFrame::create("japan/crow_left.png", Rect(i * 300 / 4, 0, 300 / 4, 63));
-    //			crowFram.pushBack(sf);
-    //		}
-    //		crow = Sprite::create();
-    //		crow->runAction(RepeatForever::create(Animate::create(Animation::createWithSpriteFrames(crowFram, 0.16))));
-    //		crow->setScale(1.2);
-    //		crow->setPosition(size.width - borderWidth - crow->getContentSize().width / 2 - 30, size.height + 100);
-    //		this->addChild(crow, 7);
-    //		allEnemyRightCrow.pushBack(crow);
-    //	}
-    //			 break;
-    //	case 14: {
-    //		for (int i = 0; i < 4; i++) {
-    //			auto sf = SpriteFrame::create("japan/crow_right.png", Rect(i * 300 / 4, 0, 300 / 4, 63));
-    //			crowFram.pushBack(sf);
-    //		}
-    //		auto ani = Animation::createWithSpriteFrames(crowFram, 0.16);
-    //		crow = Sprite::create();
-    //		crow->runAction(RepeatForever::create(Animate::create(ani)));
-    //		crow->setScale(1.2);
-    //		crow->setPosition(borderWidth + crow->getContentSize().width / 2 + 30, size.height + 100);
-    //		this->addChild(crow, 7);
-    //		allEnemyLeftCrow.pushBack(crow);
-    //		int RandNum = random(0, 2);
-    //		CCLOG("RandNum %d", RandNum);
-    //		switch (RandNum) {
-    //		case 0:
-    //			enemyNum = -1;
-    //			break;
-    //
-    //		case 1:
-    //			enemyNum = 4;
-    //			break;
-    //
-    //		case 2:
-    //			enemyNum = 9;
-    //			break;
-    //
-    //		default:
-    //			break;
-    //		}
-    //	}
-    //			 break;
-    //
-    //
-    //	default:
-    //		break;
+
     if (!m_player->speedUp || (m_player->speedUp && speedTime > 30)) {
         auto size = Director::getInstance()->getWinSize();
         auto border = Sprite::create("halloween/border_h.png");
@@ -1183,12 +880,6 @@ void NewGameScene_halloween::newEnemy(float t) {
                 break;
             case 1: {
                 enemy = Sprite::create("japan/roof_r.png");
-//                CCLOG("***********rooof**********\n");
-//                
-//                enemy->setPosition(Point(size.width - border_width - enemy->getContentSize().width/2 * 0.8, size.height + 100));
-//                enemy->setScale(0.8);
-//                this -> addChild(enemy, 7);
-//                allEnemyRoof.pushBack(enemy);
                 if (RightWarningLifeTimer <= 0.f)
                 {
                     RightWarning = Sprite::create("warning.png");
@@ -1213,10 +904,6 @@ void NewGameScene_halloween::newEnemy(float t) {
                 break;
             case 2: {
                 enemy = Sprite::create("japan/roof_l.png");
-//                enemy->setPosition(Point(border_width + enemy->getContentSize().width/2 * 0.8, size.height + 100));
-//                enemy->setScale(0.8);
-//                this -> addChild(enemy, 7);
-//                allEnemyRoof.pushBack(enemy);
                 
                 if (LeftWarningLifeTimer <= 0.f)
                 {
@@ -1255,10 +942,6 @@ void NewGameScene_halloween::newEnemy(float t) {
             }
                 break;
             case 4: {
-                //                for (int i = 0; i < 4; i++) {
-                //                    auto sf = SpriteFrame::create("japan/crow_left.png", Rect(i*300/4, 0, 300/4, 63));
-                //                    crowFram.pushBack(sf);
-                //                }
                 for (int i = 0; i < 8; i++) {
                     auto sf = SpriteFrame::create("japan/goose_left.png", Rect(i*945/8, 0, 945/8, 85));
                     crowFram.pushBack(sf);
@@ -1303,10 +986,6 @@ void NewGameScene_halloween::newEnemy(float t) {
                 break;
             case 6: {
                 enemy = Sprite::create("japan/roof_l.png");
-//                enemy->setPosition(Point(border_width + enemy->getContentSize().width/2 * 0.8, size.height + 100));
-//                enemy->setScale(0.8);
-//                this -> addChild(enemy, 7);
-//                allEnemyRoof.pushBack(enemy);
                 if (LeftWarningLifeTimer <= 0.f)
                 {
                     LeftWarning = Sprite::create("warning.png");
@@ -1344,10 +1023,6 @@ void NewGameScene_halloween::newEnemy(float t) {
                 break;
             case 8: {
                 enemy = Sprite::create("japan/roof_r.png");
-//                enemy->setPosition(Point(size.width - border_width - enemy->getContentSize().width/2 * 0.8, size.height + 100));
-//                enemy->setScale(0.8);
-//                this -> addChild(enemy, 7);
-//                allEnemyRoof.pushBack(enemy);
                 if (RightWarningLifeTimer <= 0.f)
                 {
                     RightWarning = Sprite::create("warning.png");
@@ -1371,10 +1046,6 @@ void NewGameScene_halloween::newEnemy(float t) {
             }
                 break;
             case 9: {
-                //                for (int i = 0; i < 4; i++) {
-                //                    auto sf = SpriteFrame::create("japan/crow_left.png", Rect(i*300/4, 0, 300/4, 63));
-                //                    crowFram.pushBack(sf);
-                //                }
                 for (int i = 0; i < 8; i++) {
                     auto sf = SpriteFrame::create("japan/goose_left.png", Rect(i*945/8, 0, 945/8, 85));
                     crowFram.pushBack(sf);
@@ -1419,9 +1090,6 @@ void NewGameScene_halloween::newEnemy(float t) {
                 break;
             case 11: {
                 enemy = Sprite::create("japan/roof_l.png");
-//                enemy->setPosition(Point(border_width + enemy->getContentSize().width/2, size.height + 100));
-//                this -> addChild(enemy, 7);
-//                allEnemyRoof.pushBack(enemy);
                 if (LeftWarningLifeTimer <= 0.f)
                 {
                     LeftWarning = Sprite::create("warning.png");
@@ -1445,9 +1113,6 @@ void NewGameScene_halloween::newEnemy(float t) {
                 break;
             case 12: {
                 enemy = Sprite::create("japan/roof_r.png");
-//                enemy->setPosition(Point(size.width - border_width - enemy->getContentSize().width/2, size.height + 100));
-//                this -> addChild(enemy, 7);
-//                allEnemyRoof.pushBack(enemy);
                 if (RightWarningLifeTimer <= 0.f)
                 {
                     RightWarning = Sprite::create("warning.png");
@@ -1470,10 +1135,6 @@ void NewGameScene_halloween::newEnemy(float t) {
             }
                 break;
             case 13: {
-                //                for (int i = 0; i < 4; i++) {
-                //                    auto sf = SpriteFrame::create("japan/crow_left.png", Rect(i*300/4, 0, 300/4, 63));
-                //                    crowFram.pushBack(sf);
-                //                }
                 for (int i = 0; i < 4; i++) {
                     auto sf = SpriteFrame::create("halloween/Halloween_ghost1.png", Rect(i*425/3, 0, 425/3, 98));
                     crowFram.pushBack(sf);
@@ -1525,100 +1186,7 @@ void NewGameScene_halloween::newEnemy(float t) {
         }
         
     }
-    //	auto size = Director::getInstance()->getWinSize();
-    //	auto border = Sprite::create("border/border_j.png");
-    //	auto border_width = border->getContentSize().width*bg_scale;
-    //
-    //	Sprite * enemy;
-    //    Sprite * star;
-    //    Sprite * crow;
-    //
-    //    int RandNum = random(0, 6);
-    //
-    //    if (enemyLeftRightDis < 12 && enemyLeftRightDis > 9) {
-    //        while (enemyLeftRightDis == RandNum) {
-    //            RandNum = random(0, 13);
-    //        }
-    //
-    //        if (enemyLeftRightDis < 12 && enemyLeftRightDis > 9){
-    //            enemyLeftRightDis = RandNum;
-    //        }
-    //    }
-    //
-    //    auto roof = Sprite::create("japan/roof_r.png");
-    //    int roofWidth = roof->getContentSize().width * bg_scale;
-    //
-    //    if (RandNum < 3) {
-    //        enemy = Sprite::create("japan/roof_r.png");
-    //		enemy->setScale(bg_scale);
-    //		enemy->setPosition(Point(bg_origin.x + bg_size.width - border_width - roofWidth/2, size.height + 100));
-    //    }
-    //    else if (RandNum < 6) {
-    //        enemy = Sprite::create("japan/roof_l.png");
-    //		enemy->setScale(bg_scale);
-    //		enemy->setPosition(Point(bg_origin.x + border_width + roofWidth / 2, size.height + 100));
-    //    }
-    //    else if (RandNum < 9) {
-    //        if (RandNum < 8) {
-    //           enemy = Sprite::create("aaa.png");
-    //        }
-    //        else{
-    //           enemy = Sprite::create("ccc.png");
-    //        }
-    //        int x = random(border_width + enemy->getContentSize().width/2 + roofWidth, size.width- border_width - roofWidth - enemy->getContentSize().width/2);
-    //        enemy->setPosition(Point(x, size.height+100));
-    //    }
-    //    else if (RandNum == 9) {
-    //        star = Sprite::create("star.png");
-    //        int x = random(border_width + star->getContentSize().width/2 + roofWidth, size.width- border_width - roofWidth - star->getContentSize().width/2);
-    //        star->setPosition(Point(x, size.height+100));
-    //    }
-    //    else if (RandNum < 12) {
-    //        Vector<SpriteFrame *> crowFram;
-    //        if (RandNum == 10) {
-    //            for (int i = 0; i < 4; i++) {
-    //                auto sf = SpriteFrame::create("japan/crow_left.png", Rect(i*300/4, 0, 300/4, 63));
-    //                crowFram.pushBack(sf);
-    //            }
-    //
-    //        }
-    //        else {
-    //            for (int i = 0; i < 4; i++) {
-    //                auto sf = SpriteFrame::create("japan/crow_right.png", Rect(i*300/4, 0, 300/4, 63));
-    //                crowFram.pushBack(sf);
-    //            }
-    //        }
-    //        auto ani = Animation::createWithSpriteFrames(crowFram, 0.03);
-    //        crow = Sprite::create();
-    //        crow->runAction(RepeatForever::create(Animate::create(ani)));
-    //    }
-    //
-    //
-    //    if (RandNum < 6 && allEnemyRightCrow.size() == 0 && allEnemyLeftCrow.size() == 0) {
-    //        this->addChild(enemy, 7);
-    //        allEnemyRoof.pushBack(enemy);
-    //    }
-    //    else if (RandNum < 9 && allEnemyRightCrow.size() == 0 && allEnemyLeftCrow.size() == 0) {
-    //        this->addChild(enemy, 7);
-    //        allEnemyFallen.pushBack(enemy);
-    //    }
-    //    else if (RandNum == 9) {
-    //        this->addChild(star, 7);
-    //        allStar.pushBack(star);
-    //    }
-    //    else if (RandNum < 12) {
-    //        if (RandNum == 10 && allEnemyLeftCrow.size() == 0) {
-    //            crow->setPosition(size.width - borderWidth - crow->getContentSize().width/2, size.height + 100);
-    //            allEnemyRightCrow.pushBack(crow);
-    //            this->addChild(crow, 7);
-    //        }
-    //        else if (RandNum == 11 && allEnemyRightCrow.size() == 0){
-    //            crow->setPosition(borderWidth + crow->getContentSize().width/2, size.height + 100);
-    //            allEnemyLeftCrow.pushBack(crow);
-    //            this->addChild(crow, 7);
-    //        }
-    //
-    //    }
+
     
 }
 
@@ -1684,15 +1252,6 @@ void NewGameScene_halloween::update(float t) {
             }
             
             
-            
-            //			auto label = Label::createWithTTF("HP -1", "fonts/Marker Felt.ttf", 24);
-            //			label->setPosition(Point(origin.x + visibleSize.width / 2, 0));
-            //			auto Move_Down_3 = MoveBy::create(1, Vec2(0, visibleSize.height / 2));
-            //			auto action_3 = RepeatForever::create(Move_Down_3);
-            //			label->setColor(Color3B::RED);
-            //			label->runAction(action_3);
-            //			this->addChild(label, 8);
-            
         }
         else if (pp.intersectsRect(er) && HP == 1){
             
@@ -1705,15 +1264,10 @@ void NewGameScene_halloween::update(float t) {
             if(!m_player->speedUp){
                 this->runAction(Sequence::create(shake1, shake2, shake3, shake1, shake2, shake3, shake1, shake2, shake3, shake1, shake2, shake3, NULL));
             }
-            //			auto label = Label::createWithTTF("HP -1", "fonts/Marker Felt.ttf", 24);
-            //			label->setPosition(Point(origin.x + visibleSize.width / 2, 0));
-            //			auto Move_Down_3 = MoveBy::create(1, Vec2(0, visibleSize.height / 2));
-            //			auto action_3 = RepeatForever::create(Move_Down_3);
-            //			label->setColor(Color3B::RED);
-            //			label->runAction(action_3);
-            //			this->addChild(label, 8);
             
             this->pause();
+            auto highScore = HighScore::create();
+            highScore->setHighScore(score);
             Director::getInstance()->replaceScene(TransitionMoveInB::create(2, GameOverHalloween::createScene()));
             
             
@@ -1730,9 +1284,6 @@ void NewGameScene_halloween::update(float t) {
         auto shake3 = MoveTo::create(0.01, Point(p_x, p_y));
         
         if (pp.intersectsRect(er)) {
-            //auto abilityButton = (Menu *) this->getChildByTag(112);
-            //abilityButton->setEnabled(true);
-            //abilityButton->setVisible(true);
             //HP--;
             enemy->removeFromParent();
             allEnemyFallen.eraseObject(enemy);
@@ -1775,26 +1326,7 @@ void NewGameScene_halloween::update(float t) {
             }
         }
         
-        
-        // }
-        //       else if (pp.intersectsRect(er) && HP == 1){
-        //
-        //            enemy->removeFromParent();
-        //            allEnemyFallen.eraseObject(enemy);
-        //            i--;
-        //            this->runAction(Sequence::create(shake1, shake2, shake3, shake1, shake2, shake3, shake1, shake2, shake3, shake1, shake2, shake3, NULL));
-        //
-        //            auto label = Label::createWithTTF("HP -1", "fonts/Marker Felt.ttf", 24);
-        //            label->setPosition(Point(origin.x + visibleSize.width / 2, 0));
-        //            auto Move_Down_3 = MoveBy::create(1, Vec2(0, visibleSize.height / 2));
-        //            auto action_3 = RepeatForever::create(Move_Down_3);
-        //            label->setColor(Color3B::RED);
-        //            label->runAction(action_3);
-        //            this->addChild(label, 8);
-        //
-        //            this->pause();
-        //            Director::getInstance()->replaceScene(TransitionMoveInB::create(2, GameOver::createScene()));
-        //        }
+
     }
     
     //enemy left crow
@@ -1845,6 +1377,8 @@ void NewGameScene_halloween::update(float t) {
                 
                 
                 this->pause();
+                auto highScore = HighScore::create();
+                highScore->setHighScore(score);
                 Director::getInstance()->replaceScene(TransitionMoveInB::create(2, GameOverHalloween::createScene()));
             }
         }
@@ -1866,48 +1400,7 @@ void NewGameScene_halloween::update(float t) {
                 
             }
         }
-        //		if (pp.intersectsRect(er) && HP > 1) {
-        //
-        //
-        //			HP--;
-        //			enemy->removeFromParent();
-        //			allEnemyLeftCrow.eraseObject(enemy);
-        //			i--;
-        //			CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/touchCrow.wav");
-        //			CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/touchCrow.wav");
-        //			CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(2.5);
-        //			this->runAction(Sequence::create(shake1, shake2, shake3, shake1, shake2, shake3, shake1, shake2, shake3, shake1, shake2, shake3, NULL));
-        //
-        //			auto label = Label::createWithTTF("HP -1", "fonts/Marker Felt.ttf", 24);
-        //			label->setPosition(Point(origin.x + visibleSize.width / 2, 0));
-        //			auto Move_Down_3 = MoveBy::create(1, Vec2(0, visibleSize.height / 2));
-        //			auto action_3 = RepeatForever::create(Move_Down_3);
-        //			label->setColor(Color3B::RED);
-        //			label->runAction(action_3);
-        //			this->addChild(label, 8);
-        //
-        //		}
-        //		else if (pp.intersectsRect(er) && HP == 1){
-        //
-        //			enemy->removeFromParent();
-        //			allEnemyLeftCrow.eraseObject(enemy);
-        //			i--;
-        //			CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/touchCrow.wav");
-        //			CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/touchCrow.wav");
-        //			CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(2.5);
-        //			this->runAction(Sequence::create(shake1, shake2, shake3, shake1, shake2, shake3, shake1, shake2, shake3, shake1, shake2, shake3, NULL));
-        //
-        //			auto label = Label::createWithTTF("HP -1", "fonts/Marker Felt.ttf", 24);
-        //			label->setPosition(Point(origin.x + visibleSize.width / 2, 0));
-        //			auto Move_Down_3 = MoveBy::create(1, Vec2(0, visibleSize.height / 2));
-        //			auto action_3 = RepeatForever::create(Move_Down_3);
-        //			label->setColor(Color3B::RED);
-        //			label->runAction(action_3);
-        //			this->addChild(label, 8);
-        //
-        //			this->pause();
-        //			Director::getInstance()->replaceScene(TransitionMoveInB::create(2, GameOver::createScene()));
-        //		}
+
     }
     
     //enemy right crow
@@ -1958,6 +1451,8 @@ void NewGameScene_halloween::update(float t) {
                 
                 
                 this->pause();
+                auto highScore = HighScore::create();
+                highScore->setHighScore(score);
                 Director::getInstance()->replaceScene(TransitionMoveInB::create(2, GameOverHalloween::createScene()));
             }
         }
@@ -1980,48 +1475,7 @@ void NewGameScene_halloween::update(float t) {
             
         }
         
-        //		if (pp.intersectsRect(er) && HP > 1) {
-        //
-        //
-        //			HP--;
-        //			enemy->removeFromParent();
-        //			allEnemyRightCrow.eraseObject(enemy);
-        //			i--;
-        //			CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/touchCrow.wav");
-        //			CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/touchCrow.wav");
-        //			CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(2.5);
-        //			this->runAction(Sequence::create(shake1, shake2, shake3, shake1, shake2, shake3, shake1, shake2, shake3, shake1, shake2, shake3, NULL));
-        //
-        //			auto label = Label::createWithTTF("HP -1", "fonts/Marker Felt.ttf", 24);
-        //			label->setPosition(Point(origin.x + visibleSize.width / 2, 0));
-        //			auto Move_Down_3 = MoveBy::create(1, Vec2(0, visibleSize.height / 2));
-        //			auto action_3 = RepeatForever::create(Move_Down_3);
-        //			label->setColor(Color3B::RED);
-        //			label->runAction(action_3);
-        //			this->addChild(label, 8);
-        //
-        //		}
-        //		else if (pp.intersectsRect(er) && HP == 1){
-        //
-        //			enemy->removeFromParent();
-        //			allEnemyRightCrow.eraseObject(enemy);
-        //			i--;
-        //			CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/touchCrow.wav");
-        //			CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/touchCrow.wav");
-        //			CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(2.5);
-        //			this->runAction(Sequence::create(shake1, shake2, shake3, shake1, shake2, shake3, shake1, shake2, shake3, shake1, shake2, shake3, NULL));
-        //
-        //			auto label = Label::createWithTTF("HP -1", "fonts/Marker Felt.ttf", 24);
-        //			label->setPosition(Point(origin.x + visibleSize.width / 2, 0));
-        //			auto Move_Down_3 = MoveBy::create(1, Vec2(0, visibleSize.height / 2));
-        //			auto action_3 = RepeatForever::create(Move_Down_3);
-        //			label->setColor(Color3B::RED);
-        //			label->runAction(action_3);
-        //			this->addChild(label, 8);
-        //
-        //			this->pause();
-        //			Director::getInstance()->replaceScene(TransitionMoveInB::create(2, GameOver::createScene()));
-        //		}
+
     }
     
     auto labelHp = (Label *) this->getChildByTag(110);
@@ -2042,49 +1496,8 @@ void NewGameScene_halloween::update(float t) {
         Rect er(star->getPositionX(), star->getPositionY(), 40, 50);
         
         if (pp.intersectsRect(er)) {
-            //MenuItemImage *specialSkill= (MenuItemImage*)this->getChildByTag(112);
-            
-            //this->addChild(specialSkill);
-            //skill button
-            //
-            //            auto abilityButtonItem = MenuItemImage::create(
-            //                                                           "bang.png",
-            //                                                           "bang.png",
-            //                                                           CC_CALLBACK_1(NewGameScene_japan::playerAbility_Teleportation, this)
-            //                                                           );
-            //
-            //            abilityButtonItem->setScale(bg_scale);
-            //
-            //            abilityButtonItem->setPosition(bg_origin + abilityButtonItem->getBoundingBox().size/2);
-            //            this->addChild(abilityButtonItem);
-            //abilityButtonTouched = true;
-            
-            //add star into item array
             push_item(item_type::star);
             
-            
-            /*
-             
-             
-             if (item_Array[0] == item_Array[1] && item_Array[0] == item_type::star)
-             {
-             Menu *menu = (Menu*) getChildByTag(Scene_Tag::menu);
-             
-             auto abilityButtonItem = MenuItemImage::create(
-             "Teleport.png",
-             "Teleport.png",
-             CC_CALLBACK_1(NewGameScene_japan::playerAbility_Teleportation, this)
-             );
-             
-             abilityButtonItem->setScale(bg_scale);
-             
-             abilityButtonItem->setPosition(bg_origin + abilityButtonItem->getBoundingBox().size / 2);
-             
-             menu->addChild(abilityButtonItem, 10, Scene_Tag::skill_button);
-             item_Array[0] = item_Array[1] = item_type::none_item;
-             
-             }
-             */
             
             
             //HP++;
@@ -2094,13 +1507,6 @@ void NewGameScene_halloween::update(float t) {
             CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/getStar.wav");
             CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(2.5);
             i--;
-            //			auto label = Label::createWithTTF("HP +1", "fonts/Marker Felt.ttf", 24);
-            //			label->setPosition(Point(origin.x + visibleSize.width / 2, 0));
-            //			auto Move_Down_3 = MoveBy::create(1, Vec2(0, visibleSize.height / 2));
-            //			auto action_3 = RepeatForever::create(Move_Down_3);
-            //			label->setColor(Color3B::RED);
-            //			label->runAction(action_3);
-            //			this->addChild(label, 8);
         }
     }
     
@@ -2131,13 +1537,6 @@ void NewGameScene_halloween::update(float t) {
                 my_player->setPosition(bg_origin.x + bg_size.width - borderWidth - my_player->playerWidth / 2, bg_origin.y + bg_size.height*0.16);
                 
             }
-            /*
-             else if (this->getPositionX() >= origin.x + bgSize.x / 2 && isLeft)
-             {
-             this->setScaleX((this->getScaleX()) * -1.f);
-             isLeft = false;
-             }
-             */
             
         }
         else if (my_player->isInAir&&my_player->isMovingLeft)
@@ -2160,13 +1559,6 @@ void NewGameScene_halloween::update(float t) {
                 
                 
             }
-            /*
-             else if (this->getPositionX() <= origin.x + bgSize.x / 2 && !isLeft)
-             {
-             this->setScaleX((this->getScaleX()) * -1.f);
-             isLeft = true;
-             }
-             */
         }
         
         

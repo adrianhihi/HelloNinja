@@ -58,8 +58,8 @@ bool Credits::init()
     menu_item_7->setScale(1.8);
     
     auto closeItem = MenuItemImage::create(
-                                           "restart.png",
-                                           "restart_1.png",
+                                           "Menu/restart.png",
+                                           "Menu/restart_1.png",
                                            CC_CALLBACK_1(Credits::closeCallback, this));
     
     closeItem->setPosition(Vec2(origin.x + visibleSize.width - closeItem->getContentSize().width/2 ,

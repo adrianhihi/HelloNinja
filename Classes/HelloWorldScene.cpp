@@ -6,6 +6,7 @@
 #include "Setting.h"
 #include "halloween.h"
 #include "MenuSettings.h"
+#include "HighScore.h"
 
 USING_NS_CC;
 HelloWorld::~HelloWorld(){}
@@ -91,13 +92,15 @@ bool HelloWorld::init()
 
 	auto menu_item_4 = MenuItemImage::create("Menu/option.png", "Menu/option1.png", CC_CALLBACK_1(HelloWorld::Settings, this));
 
+    auto menu_item_5 = MenuItemImage::create("Menu/Highscores.png"			, "Menu/Highscores_1.png"		, CC_CALLBACK_1(HelloWorld::Highscores, this));
+    
     menu_item_1->setScale(1.2);
     menu_item_2->setScale(1.2);
     menu_item_3->setScale(1.2);
     menu_item_4->setScale(1.2);
-    //menu_item_5->setScale(0.8);
+    menu_item_5->setScale(0.8);
 	//menu_item_6->setScale(0.8);
-	auto menu = Menu::create(menu_item_1, menu_item_2, menu_item_3, menu_item_4, NULL);
+	auto menu = Menu::create(menu_item_1, menu_item_2, menu_item_3, menu_item_5, menu_item_4, NULL);
 	menu->alignItemsVertically();
 	this->addChild(menu,3);
 
@@ -142,6 +145,8 @@ void HelloWorld::Highscores(cocos2d::Ref *pSender){
 	CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/swordClick.wav");
 	CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/swordClick.wav");
 	CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(0.5);
+    auto scene = HighScore::createScene();
+    Director::getInstance()->pushScene(scene);
 }
 void HelloWorld::Nihon(cocos2d::Ref *pSender){
 	CCLOG("Nihon");
@@ -267,70 +272,7 @@ void HelloWorld::menuCloseCallback(Ref* pSender)
     exit(0);
 #endif
 }
-/*
-void HelloWorld::clickStart(Ref* pSender)
-{
-     //do nothing right now
-	CCLOG("play");
-	auto new_game_scene = Scene::create();
-	//Director::getInstance()->pushScene(new_game_scene);
-	//new_game_scene->addChild(label1);
-	Director::getInstance()->replaceScene(new_game_scene);
 
-	//https://www.youtube.com/watch?v=qXqgSNUf9Cc&list=PLRtjMdoYXLf4od_bOKN3WjAPr7snPXzoe
-	//https://www.youtube.com/watch?v=Vgtu5SJUnrU&index=37&list=PLRtjMdoYXLf4od_bOKN3WjAPr7snPXzoe
-
-}
-
-void HelloWorld::clickResume(Ref* pSender)
-{
-	//do nothing right now
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WP8) || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
-	MessageBox("You pressed the close button. Windows Store Apps do not implement a close button.", "Alert");
-	return;
-#endif
-
-	Director::getInstance()->end();
-
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-	exit(0);
-#endif
-}
-//http://dabuttonfactory.com/   create the button
-//http://www.2cto.com/kf/201501/368610.html
-//http://edu.51cto.com/lesson/id-24803.html class
-
-void HelloWorld::clickOptions(Ref* pSender)
-{
-	//do nothing right now
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WP8) || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
-	MessageBox("You pressed the close button. Windows Store Apps do not implement a close button.", "Alert");
-	return;
-#endif
-
-	Director::getInstance()->end();
-
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-	exit(0);
-#endif
-}
-
-void HelloWorld::clickLevel(Ref* pSender)
-{
-	//do nothing right now
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WP8) || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
-	MessageBox("You pressed the close button. Windows Store Apps do not implement a close button.", "Alert");
-	return;
-#endif
-
-	Director::getInstance()->end();
-
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-	exit(0);
-#endif
-}
-
-*/
 
 //http://blog.csdn.net/musicvs/article/details/24928929
 void HelloWorld::bgMv(float t) {
