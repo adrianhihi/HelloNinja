@@ -28,7 +28,7 @@ bool GameOverSea::init() {
     }
     //add back ground
     auto size = Director::getInstance()->getWinSize();
-    auto spbk = Sprite::create("japan/Nihon_lose.png");
+    auto spbk = Sprite::create("seaworld/lose.png");
     
     
     if(visibleSize.width / spbk->getContentSize().width >= visibleSize.height / spbk->getContentSize().height){

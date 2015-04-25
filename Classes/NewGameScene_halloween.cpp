@@ -142,6 +142,14 @@ bool NewGameScene_halloween::init()
     bg_sprite_4->setTag(1);
     // add the sprite as a child to this layer
     this->addChild(bg_sprite_4, 1);
+    auto bg_start = Sprite::create("halloween/Halloween_bottom.png");
+    bg_start->setScale(bg_scale);
+    bg_start->setPosition(Point(bg_size.width / 2 + bg_origin.x, bg_size.height / 2 + bg_origin.y));
+    //bg_start->setTag(1);
+    // add the sprite as a child to this layer
+    this->addChild(bg_start, 7);
+    auto Move_Down_4 = MoveTo::create(30, Point(bg_size.width / 2 + bg_origin.x, -bg_size.height / 2));
+    bg_start->runAction(Move_Down_4);
 
 
     
@@ -177,10 +185,10 @@ bool NewGameScene_halloween::init()
     //boarder
     
     {
-        auto border1 = Sprite::create("border/Ocean_border.png");
-        auto border3 = Sprite::create("border/Ocean_border.png");
-        auto border2 = Sprite::create("border/Ocean_border2.png");
-        auto border4 = Sprite::create("border/Ocean_border2.png");
+        auto border1 = Sprite::create("halloween/border_h.png");
+        auto border3 = Sprite::create("halloween/border_h.png");
+        auto border2 = Sprite::create("halloween/border_h_2.png");
+        auto border4 = Sprite::create("halloween/border_h_2.png");
         border1->setScale(bg_scale);
         border3->setScale(bg_scale);
         border2->setScale(bg_scale);
@@ -202,6 +210,7 @@ bool NewGameScene_halloween::init()
         
     }
     
+    enemyNum = -1;
     
     //player
     
@@ -550,7 +559,7 @@ void NewGameScene_halloween::jumpToMenu(){
 void NewGameScene_halloween::newEnemy_speedUp(float t){
     if (m_player->speedUp && speedTime < 30) {
         auto size = Director::getInstance()->getWinSize();
-        auto border = Sprite::create("border/Ocean_border.png");
+        auto border = Sprite::create("halloween/border_h.png");
         auto border_width = border->getContentSize().width;
         auto roof = Sprite::create("japan/roof_r.png");
         

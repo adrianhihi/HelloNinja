@@ -28,7 +28,7 @@ bool GameOverHalloween::init() {
     }
     //add back ground
     auto size = Director::getInstance()->getWinSize();
-    auto spbk = Sprite::create("end.png");
+    auto spbk = Sprite::create("halloween/lose.png");
     
     
     if(visibleSize.width / spbk->getContentSize().width >= visibleSize.height / spbk->getContentSize().height){
