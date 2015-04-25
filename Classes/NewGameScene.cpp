@@ -579,7 +579,7 @@ void NewGameScene::newEnemy_speedUp(float t){
                 tree->runAction(RepeatForever::create(Animate::create(ani)));
                 tree->setPosition(Point(size.width - border_width - enemy->getContentSize().width*0.8, size.height + 100));
                 //tree->setScale(0.8);
-                this -> addChild(tree, 3);
+                this -> addChild(tree, 7);
                 allEnemyRoof.pushBack(tree);
                 
             }
@@ -595,7 +595,7 @@ void NewGameScene::newEnemy_speedUp(float t){
                 tree->runAction(RepeatForever::create(Animate::create(ani)));
                 tree->setPosition(Point(border_width + enemy->getContentSize().width * 0.8, size.height + 100));
                 //tree->setScale(0.8);
-                this -> addChild(tree, 3);
+                this -> addChild(tree, 7);
                 allEnemyRoof.pushBack(tree);
             }
                 break;
@@ -670,7 +670,7 @@ void NewGameScene::newEnemy_speedUp(float t){
                 tree->runAction(RepeatForever::create(Animate::create(ani)));
                 tree->setPosition(Point(border_width + enemy->getContentSize().width*0.8, size.height + 100));
                 //tree->setScale(0.8);
-                this -> addChild(tree, 3);
+                this -> addChild(tree, 7);
                 allEnemyRoof.pushBack(tree);
             }
                 break;
@@ -700,7 +700,7 @@ void NewGameScene::newEnemy_speedUp(float t){
                 tree->runAction(RepeatForever::create(Animate::create(ani)));
                 tree->setPosition(Point(size.width - border_width - enemy->getContentSize().width*0.8, size.height + 100));
                 //tree->setScale(0.8);
-                this -> addChild(tree, 3);
+                this -> addChild(tree, 7);
                 allEnemyRoof.pushBack(tree);
             }
                 break;
@@ -758,7 +758,7 @@ void NewGameScene::newEnemy_speedUp(float t){
                 tree->runAction(RepeatForever::create(Animate::create(ani)));
                 tree->setPosition(Point(border_width + enemy->getContentSize().width*0.8, size.height + 100));
                 //tree->setScale(0.8);
-                this -> addChild(tree, 3);
+                this -> addChild(tree, 7);
                 allEnemyRoof.pushBack(tree);
             }
                 break;
@@ -773,14 +773,14 @@ void NewGameScene::newEnemy_speedUp(float t){
                 tree->runAction(RepeatForever::create(Animate::create(ani)));
                 tree->setPosition(Point(size.width - border_width - enemy->getContentSize().width*0.8, size.height + 100));
                 //tree->setScale(0.8);
-                this -> addChild(tree, 3);
+                this -> addChild(tree, 7);
                 allEnemyRoof.pushBack(tree);
             }
                 break;
             case 13: {
 
                 for (int i = 0; i < 4; i++) {
-                    auto sf = SpriteFrame::create("seaworld/fish2.png", Rect(0, 0, 75, 55));
+                    auto sf = SpriteFrame::create("seaworld/fish1.png", Rect(0, 0, 75, 55));
                     crowFram.pushBack(sf);
                 }
                 crow = Sprite::create();
@@ -793,7 +793,7 @@ void NewGameScene::newEnemy_speedUp(float t){
                 break;
             case 14: {
                 for (int i = 0; i < 4; i++) {
-                    auto sf = SpriteFrame::create("seaworld/fish1.png", Rect(0, 0, 75, 55));
+                    auto sf = SpriteFrame::create("seaworld/fish2.png", Rect(0, 0, 75, 55));
                     crowFram.pushBack(sf);
                 }
                 auto ani = Animation::createWithSpriteFrames(crowFram, 0.16);
@@ -879,7 +879,7 @@ void NewGameScene::newEnemy(float t) {
                 tree->runAction(RepeatForever::create(Animate::create(ani)));
                 tree->setPosition(Point(size.width - border_width - enemy->getContentSize().width*0.8, size.height + 100));
                 //tree->setScale(0.8);
-                this -> addChild(tree, 3);
+                this -> addChild(tree, 7);
                 allEnemyRoof.pushBack(tree);
                 
             }
@@ -895,7 +895,7 @@ void NewGameScene::newEnemy(float t) {
                 tree->runAction(RepeatForever::create(Animate::create(ani)));
                 tree->setPosition(Point(border_width + enemy->getContentSize().width * 0.8, size.height + 100));
                 //tree->setScale(0.8);
-                this -> addChild(tree, 3);
+                this -> addChild(tree, 7);
                 allEnemyRoof.pushBack(tree);
             }
                 break;
@@ -970,7 +970,7 @@ void NewGameScene::newEnemy(float t) {
                 tree->runAction(RepeatForever::create(Animate::create(ani)));
                 tree->setPosition(Point(border_width + enemy->getContentSize().width*0.8, size.height + 100));
                 //tree->setScale(0.8);
-                this -> addChild(tree, 3);
+                this -> addChild(tree, 7);
                 allEnemyRoof.pushBack(tree);
             }
                 break;
@@ -1000,7 +1000,7 @@ void NewGameScene::newEnemy(float t) {
                 tree->runAction(RepeatForever::create(Animate::create(ani)));
                 tree->setPosition(Point(size.width - border_width - enemy->getContentSize().width*0.8, size.height + 100));
                 //tree->setScale(0.8);
-                this -> addChild(tree, 3);
+                this -> addChild(tree, 7);
                 allEnemyRoof.pushBack(tree);
             }
                 break;
@@ -1058,7 +1058,7 @@ void NewGameScene::newEnemy(float t) {
                 tree->runAction(RepeatForever::create(Animate::create(ani)));
                 tree->setPosition(Point(border_width + enemy->getContentSize().width*0.8, size.height + 100));
                 //tree->setScale(0.8);
-                this -> addChild(tree, 3);
+                this -> addChild(tree, 7);
                 allEnemyRoof.pushBack(tree);
             }
                 break;
@@ -1073,14 +1073,14 @@ void NewGameScene::newEnemy(float t) {
                 tree->runAction(RepeatForever::create(Animate::create(ani)));
                 tree->setPosition(Point(size.width - border_width - enemy->getContentSize().width*0.8, size.height + 100));
                 //tree->setScale(0.8);
-                this -> addChild(tree, 3);
+                this -> addChild(tree, 7);
                 allEnemyRoof.pushBack(tree);
             }
                 break;
             case 13: {
                 
                 for (int i = 0; i < 4; i++) {
-                    auto sf = SpriteFrame::create("seaworld/fish2.png", Rect(0, 0, 75, 55));
+                    auto sf = SpriteFrame::create("seaworld/fish1.png", Rect(0, 0, 75, 55));
                     crowFram.pushBack(sf);
                 }
                 crow = Sprite::create();
@@ -1093,7 +1093,7 @@ void NewGameScene::newEnemy(float t) {
                 break;
             case 14: {
                 for (int i = 0; i < 4; i++) {
-                    auto sf = SpriteFrame::create("seaworld/fish1.png", Rect(0, 0, 75, 55));
+                    auto sf = SpriteFrame::create("seaworld/fish2.png", Rect(0, 0, 75, 55));
                     crowFram.pushBack(sf);
                 }
                 auto ani = Animation::createWithSpriteFrames(crowFram, 0.16);
@@ -1182,7 +1182,7 @@ void NewGameScene::newEnemy(float t) {
 //                tree->runAction(RepeatForever::create(Animate::create(ani)));
 //                tree->setPosition(Point(size.width - border_width - enemy->getContentSize().width*0.8, size.height + 100));
 //                //tree->setScale(0.8);
-//                this -> addChild(tree, 3);
+//                this -> addChild(tree, 7);
 //                allEnemyRoof.pushBack(tree);
 //            }
 //                break;
@@ -1207,7 +1207,7 @@ void NewGameScene::newEnemy(float t) {
 //                tree->runAction(RepeatForever::create(Animate::create(ani)));
 //                tree->setPosition(Point(border_width + enemy->getContentSize().width*0.8, size.height + 100));
 //                //tree->setScale(0.8);
-//                this -> addChild(tree, 3);
+//                this -> addChild(tree, 7);
 //                allEnemyRoof.pushBack(tree);
 //            }
 //                break;
@@ -1289,7 +1289,7 @@ void NewGameScene::newEnemy(float t) {
 //                tree->runAction(RepeatForever::create(Animate::create(ani)));
 //                tree->setPosition(Point(border_width + enemy->getContentSize().width*0.8, size.height + 100));
 //                //tree->setScale(0.8);
-//                this -> addChild(tree, 3);
+//                this -> addChild(tree, 7);
 //                allEnemyRoof.pushBack(tree);
 //            }
 //                break;
@@ -1328,7 +1328,7 @@ void NewGameScene::newEnemy(float t) {
 //                tree->runAction(RepeatForever::create(Animate::create(ani)));
 //                tree->setPosition(Point(size.width - border_width - enemy->getContentSize().width*0.8, size.height + 100));
 //                //tree->setScale(0.8);
-//                this -> addChild(tree, 3);
+//                this -> addChild(tree, 7);
 //                allEnemyRoof.pushBack(tree);
 //            }
 //                break;
@@ -1395,7 +1395,7 @@ void NewGameScene::newEnemy(float t) {
 //                tree->runAction(RepeatForever::create(Animate::create(ani)));
 //                tree->setPosition(Point(border_width + enemy->getContentSize().width*0.8, size.height + 100));
 //                //tree->setScale(0.8);
-//                this -> addChild(tree, 3);
+//                this -> addChild(tree, 7);
 //                allEnemyRoof.pushBack(tree);
 //            }
 //                break;
@@ -1419,7 +1419,7 @@ void NewGameScene::newEnemy(float t) {
 //                tree->runAction(RepeatForever::create(Animate::create(ani)));
 //                tree->setPosition(Point(size.width - border_width - enemy->getContentSize().width*0.8, size.height + 100));
 //                //tree->setScale(0.8);
-//                this -> addChild(tree, 3);
+//                this -> addChild(tree, 7);
 //                allEnemyRoof.pushBack(tree);
 //            }
 //                break;
