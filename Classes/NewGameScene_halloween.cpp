@@ -161,7 +161,25 @@ bool NewGameScene_halloween::init()
                               origin.y + visibleSize.height - label->getContentSize().height));
     labelHp->setTag(110);
     this->addChild(labelHp, 2);
-    
+
+    //particles effects
+    CCParticleSystem * p1=CCParticleSnow::create();
+    p1->setTexture(CCTextureCache::sharedTextureCache()->addImage("seastar.png"));
+    p1->setAutoRemoveOnFinish(true);
+    p1->setPosition(visibleSize.width/2,visibleSize.height);
+    this->addChild(p1,100);
+    p1->setSpeed(20);
+    p1->setSpeedVar(10);
+    p1->setEmissionRate(2);
+    CCParticleSystem * p2=CCParticleSnow::create();
+    p2->setTexture(CCTextureCache::sharedTextureCache()->addImage("seastar2.png"));
+    p2->setAutoRemoveOnFinish(true);
+    p2->setPosition(visibleSize.width/2,visibleSize.height);
+    this->addChild(p2,100);
+    p2->setSpeed(20);
+    p2->setSpeedVar(10);
+    p2->setEmissionRate(2);
+
     
     //height label
     score = 0;
@@ -577,7 +595,18 @@ void NewGameScene_halloween::newEnemy_speedUp(float t){
         switch (enemyNum) {
                 
             case 0: {
-                enemy = Sprite::create("aaa.png");
+                Vector<SpriteFrame *> allframe2;
+                
+                for (int i = 1; i < 4; i++){
+                    auto sf = SpriteFrame::create(StringUtils::format("pumkin%d.png", i), Rect(0, 0, 100, 100));
+                    allframe2.pushBack(sf);
+                }
+                Animation * animation = Animation::createWithSpriteFrames(allframe2);
+                animation->setDelayPerUnit(0.03);
+                auto ani = Animate::create(animation);
+                enemy = Sprite::create();
+                enemy->runAction(RepeatForever::create(ani));
+
                 
                 CCLOG("*****%f*****\n", border_width + enemy->getContentSize().width/2 + roofWidth - size.width- border_width -roofWidth - enemy->getContentSize().width/2);
                 
@@ -599,7 +628,8 @@ void NewGameScene_halloween::newEnemy_speedUp(float t){
                 auto ani = Animation::createWithSpriteFrames(treeFram, 0.3);
                 tree = Sprite::create();
                 tree->runAction(RepeatForever::create(Animate::create(ani)));
-                tree->setPosition(Point(size.width - border_width - enemy->getContentSize().width*0.8, size.height + 100));
+                tree->setPosition(Point(size.width - border_width - enemy->getContentSize().width*0.6, size.height + 100));
+
                 //tree->setScale(0.8);
                 this -> addChild(tree, 3);
                 allEnemyRoof.pushBack(tree);
@@ -615,8 +645,8 @@ void NewGameScene_halloween::newEnemy_speedUp(float t){
                 auto ani = Animation::createWithSpriteFrames(treeFram, 0.3);
                 tree = Sprite::create();
                 tree->runAction(RepeatForever::create(Animate::create(ani)));
-                tree->setPosition(Point(border_width + enemy->getContentSize().width * 0.8, size.height + 100));
-                //tree->setScale(0.8);
+                tree->setPosition(Point(border_width + enemy->getContentSize().width * 0.6, size.height + 100));
+   //tree->setScale(0.8);
                 this -> addChild(tree, 3);
                 allEnemyRoof.pushBack(tree);
             }
@@ -690,7 +720,9 @@ void NewGameScene_halloween::newEnemy_speedUp(float t){
                 auto ani = Animation::createWithSpriteFrames(treeFram, 0.3);
                 tree = Sprite::create();
                 tree->runAction(RepeatForever::create(Animate::create(ani)));
-                tree->setPosition(Point(border_width + enemy->getContentSize().width*0.8, size.height + 100));
+
+                tree->setPosition(Point(border_width + enemy->getContentSize().width*0.6, size.height + 100));
+
                 //tree->setScale(0.8);
                 this -> addChild(tree, 3);
                 allEnemyRoof.pushBack(tree);
@@ -719,7 +751,9 @@ void NewGameScene_halloween::newEnemy_speedUp(float t){
                 auto ani = Animation::createWithSpriteFrames(treeFram, 0.3);
                 tree = Sprite::create();
                 tree->runAction(RepeatForever::create(Animate::create(ani)));
-                tree->setPosition(Point(size.width - border_width - enemy->getContentSize().width*0.8, size.height + 100));
+
+                tree->setPosition(Point(size.width - border_width - enemy->getContentSize().width*0.6, size.height + 100));
+
                 //tree->setScale(0.8);
                 this -> addChild(tree, 3);
                 allEnemyRoof.pushBack(tree);
@@ -758,7 +792,20 @@ void NewGameScene_halloween::newEnemy_speedUp(float t){
                 break;
                 
             case 10: {
-                enemy = Sprite::create("ccc.png");
+
+                Vector<SpriteFrame *> allframe2;
+                
+                for (int i = 1; i < 4; i++){
+                    auto sf = SpriteFrame::create(StringUtils::format("pumkin%d.png", i), Rect(0, 0, 100, 100));
+                    allframe2.pushBack(sf);
+                }
+                Animation * animation = Animation::createWithSpriteFrames(allframe2);
+                animation->setDelayPerUnit(0.03);
+                auto ani = Animate::create(animation);
+                enemy = Sprite::create();
+                enemy->runAction(RepeatForever::create(ani));
+                
+
                 CCLOG("******%f******\n", border_width + enemy->getContentSize().width/2 + roofWidth - size.width- border_width -roofWidth - enemy->getContentSize().width/2);
                 
                 int x = random(border_width + enemy->getContentSize().width/2 + roofWidth, size.width- border_width -roofWidth - enemy->getContentSize().width/2);
@@ -777,7 +824,9 @@ void NewGameScene_halloween::newEnemy_speedUp(float t){
                 auto ani = Animation::createWithSpriteFrames(treeFram, 0.3);
                 tree = Sprite::create();
                 tree->runAction(RepeatForever::create(Animate::create(ani)));
-                tree->setPosition(Point(border_width + enemy->getContentSize().width*0.8, size.height + 100));
+
+                tree->setPosition(Point(border_width + enemy->getContentSize().width*0.6, size.height + 100));
+
                 //tree->setScale(0.8);
                 this -> addChild(tree, 3);
                 allEnemyRoof.pushBack(tree);
@@ -792,7 +841,9 @@ void NewGameScene_halloween::newEnemy_speedUp(float t){
                 auto ani = Animation::createWithSpriteFrames(treeFram, 0.3);
                 tree = Sprite::create();
                 tree->runAction(RepeatForever::create(Animate::create(ani)));
-                tree->setPosition(Point(size.width - border_width - enemy->getContentSize().width*0.8, size.height + 100));
+
+                tree->setPosition(Point(size.width - border_width - enemy->getContentSize().width*0.6, size.height + 100));
+
                 //tree->setScale(0.8);
                 this -> addChild(tree, 3);
                 allEnemyRoof.pushBack(tree);
@@ -877,7 +928,20 @@ void NewGameScene_halloween::newEnemy(float t) {
         switch (enemyNum) {
                 
             case 0: {
-                enemy = Sprite::create("aaa.png");
+
+                Vector<SpriteFrame *> allframe2;
+                
+                for (int i = 1; i < 4; i++){
+                    auto sf = SpriteFrame::create(StringUtils::format("pumkin%d.png", i), Rect(0, 0, 100, 100));
+                    allframe2.pushBack(sf);
+                }
+                Animation * animation = Animation::createWithSpriteFrames(allframe2);
+                animation->setDelayPerUnit(0.03);
+                auto ani = Animate::create(animation);
+                enemy = Sprite::create();
+                enemy->runAction(RepeatForever::create(ani));
+                
+
                 CCLOG("*****%f*****\n", border_width + enemy->getContentSize().width/2 + roofWidth - size.width- border_width -roofWidth - enemy->getContentSize().width/2);
                 
                 int x = random(border_width + enemy->getContentSize().width/2 + roofWidth, size.width- border_width -roofWidth - enemy->getContentSize().width/2);
@@ -905,7 +969,8 @@ void NewGameScene_halloween::newEnemy(float t) {
                 auto ani = Animation::createWithSpriteFrames(treeFram, 0.3);
                 tree = Sprite::create();
                 tree->runAction(RepeatForever::create(Animate::create(ani)));
-                tree->setPosition(Point(size.width - border_width - enemy->getContentSize().width*0.8, size.height + 100));
+                tree->setPosition(Point(size.width - border_width - enemy->getContentSize().width*0.6, size.height + 100));
+
                 //tree->setScale(0.8);
                 this -> addChild(tree, 3);
                 allEnemyRoof.pushBack(tree);
@@ -929,7 +994,8 @@ void NewGameScene_halloween::newEnemy(float t) {
                 auto ani = Animation::createWithSpriteFrames(treeFram, 0.3);
                 tree = Sprite::create();
                 tree->runAction(RepeatForever::create(Animate::create(ani)));
-                tree->setPosition(Point(border_width + enemy->getContentSize().width*0.8, size.height + 100));
+                tree->setPosition(Point(border_width + enemy->getContentSize().width*0.6, size.height + 100));
+
                 //tree->setScale(0.8);
                 this -> addChild(tree, 3);
                 allEnemyRoof.pushBack(tree);
@@ -1010,7 +1076,8 @@ void NewGameScene_halloween::newEnemy(float t) {
                 auto ani = Animation::createWithSpriteFrames(treeFram, 0.3);
                 tree = Sprite::create();
                 tree->runAction(RepeatForever::create(Animate::create(ani)));
-                tree->setPosition(Point(border_width + enemy->getContentSize().width*0.8, size.height + 100));
+                tree->setPosition(Point(border_width + enemy->getContentSize().width*0.6, size.height + 100));
+
                 //tree->setScale(0.8);
                 this -> addChild(tree, 3);
                 allEnemyRoof.pushBack(tree);
@@ -1048,7 +1115,8 @@ void NewGameScene_halloween::newEnemy(float t) {
                 auto ani = Animation::createWithSpriteFrames(treeFram, 0.3);
                 tree = Sprite::create();
                 tree->runAction(RepeatForever::create(Animate::create(ani)));
-                tree->setPosition(Point(size.width - border_width - enemy->getContentSize().width*0.8, size.height + 100));
+                tree->setPosition(Point(size.width - border_width - enemy->getContentSize().width*0.6, size.height + 100));
+
                 //tree->setScale(0.8);
                 this -> addChild(tree, 3);
                 allEnemyRoof.pushBack(tree);
@@ -1087,7 +1155,19 @@ void NewGameScene_halloween::newEnemy(float t) {
                 break;
                 
             case 10: {
-                enemy = Sprite::create("ccc.png");
+
+                Vector<SpriteFrame *> allframe2;
+                
+                for (int i = 1; i < 4; i++){
+                    auto sf = SpriteFrame::create(StringUtils::format("pumkin%d.png", i), Rect(0, 0, 100, 100));
+                    allframe2.pushBack(sf);
+                }
+                Animation * animation = Animation::createWithSpriteFrames(allframe2);
+                animation->setDelayPerUnit(0.03);
+                auto ani = Animate::create(animation);
+                enemy = Sprite::create();
+                enemy->runAction(RepeatForever::create(ani));
+
                 
                 CCLOG("******%f*****\n", border_width + enemy->getContentSize().width/2 + roofWidth - size.width- border_width -roofWidth - enemy->getContentSize().width/2);
                 int x = random(border_width + enemy->getContentSize().width/2 + roofWidth, size.width- border_width -roofWidth - enemy->getContentSize().width/2);
@@ -1114,7 +1194,9 @@ void NewGameScene_halloween::newEnemy(float t) {
                 auto ani = Animation::createWithSpriteFrames(treeFram, 0.3);
                 tree = Sprite::create();
                 tree->runAction(RepeatForever::create(Animate::create(ani)));
-                tree->setPosition(Point(border_width + enemy->getContentSize().width*0.8, size.height + 100));
+
+                tree->setPosition(Point(border_width + enemy->getContentSize().width*0.6, size.height + 100));
+
                 //tree->setScale(0.8);
                 this -> addChild(tree, 3);
                 allEnemyRoof.pushBack(tree);
@@ -1137,7 +1219,8 @@ void NewGameScene_halloween::newEnemy(float t) {
                 auto ani = Animation::createWithSpriteFrames(treeFram, 0.3);
                 tree = Sprite::create();
                 tree->runAction(RepeatForever::create(Animate::create(ani)));
-                tree->setPosition(Point(size.width - border_width - enemy->getContentSize().width*0.8, size.height + 100));
+                tree->setPosition(Point(size.width - border_width - enemy->getContentSize().width*0.6, size.height + 100));
+
                 //tree->setScale(0.8);
                 this -> addChild(tree, 3);
                 allEnemyRoof.pushBack(tree);
@@ -1530,6 +1613,16 @@ void NewGameScene_halloween::update(float t) {
         if (my_player->isInAir&&!my_player->isMovingLeft)
         {
             
+
+            // phantom effects
+            auto temp_player=Sprite::create("run/run_right5.png");
+            temp_player->setScale(bg_scale);
+            temp_player->setPosition(my_player->getPositionX(),my_player->getPositionY());
+            this->addChild(temp_player, 11, 0);
+            auto fadeout=FadeOut::create(1.0f);
+            temp_player->runAction(fadeout);
+            
+
             if (my_player->getPositionX() == bg_origin.x + borderWidth + my_player->playerWidth / 2){
                 
                 CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/flyAttack.aif");
@@ -1550,6 +1643,15 @@ void NewGameScene_halloween::update(float t) {
         }
         else if (my_player->isInAir&&my_player->isMovingLeft)
         {
+
+            // phantom effects
+            auto temp_player=Sprite::create("run/run_right5.png");
+            temp_player->setScale(bg_scale);
+            temp_player->setPosition(my_player->getPositionX(),my_player->getPositionY());
+            this->addChild(temp_player, 11, 0);
+            auto fadeout=FadeOut::create(1.0f);
+            temp_player->runAction(fadeout);
+
             
             if (my_player->getPositionX() == bg_origin.x + bg_size.width - borderWidth - my_player->playerWidth / 2){
                 CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/flyAttack.aif");

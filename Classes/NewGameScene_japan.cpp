@@ -153,6 +153,34 @@ bool NewGameScene_japan::init()
     this->addChild(labelHeight, 2);
     
     
+
+    //particles effects
+    CCParticleSystem * p1=CCParticleSnow::create();
+    p1->setTexture(CCTextureCache::sharedTextureCache()->addImage("sakura.png"));
+    p1->setAutoRemoveOnFinish(true);
+    p1->setPosition(visibleSize.width/2,visibleSize.height);
+    this->addChild(p1,100);
+    p1->setSpeed(20);
+    p1->setSpeedVar(10);
+    p1->setEmissionRate(2);
+    CCParticleSystem * p2=CCParticleSnow::create();
+    p2->setTexture(CCTextureCache::sharedTextureCache()->addImage("sakura2.png"));
+    p2->setAutoRemoveOnFinish(true);
+    p2->setPosition(visibleSize.width/2,visibleSize.height);
+    this->addChild(p2,100);
+    p2->setSpeed(20);
+    p2->setSpeedVar(10);
+    p2->setEmissionRate(2);
+    CCParticleSystem * p3=CCParticleSnow::create();
+    p3->setTexture(CCTextureCache::sharedTextureCache()->addImage("sakura3.png"));
+    p3->setAutoRemoveOnFinish(true);
+    p3->setPosition(visibleSize.width/2,visibleSize.height);
+    this->addChild(p3,100);
+    p3->setSpeed(20);
+    p3->setSpeedVar(10);
+    p3->setEmissionRate(2);
+    
+
     //item array& skill
     {
         item_Array[0] = item_type::none_item;
@@ -550,7 +578,19 @@ void NewGameScene_japan::newEnemy_speedUp(float t){
         switch (enemyNum) {
                 
             case 0: {
-                enemy = Sprite::create("aaa.png");
+      
+                Vector<SpriteFrame *> allframe2;
+                
+                for (int i = 1; i < 4; i++){
+                    auto sf = SpriteFrame::create(StringUtils::format("bomb%d.png", i), Rect(0, 0, 100, 100));
+                    allframe2.pushBack(sf);
+                }
+                Animation * animation = Animation::createWithSpriteFrames(allframe2);
+                animation->setDelayPerUnit(0.03);
+                auto ani = Animate::create(animation);
+                enemy = Sprite::create();
+                enemy->runAction(RepeatForever::create(ani));
+                
                 int x = random(border_width + enemy->getContentSize().width/2 + roofWidth, size.width- border_width -roofWidth - enemy->getContentSize().width/2);
                 enemy->setPosition(Point(x, size.height+100));
                 enemy->setScale(1.2);
@@ -698,7 +738,19 @@ void NewGameScene_japan::newEnemy_speedUp(float t){
                 break;
                 
             case 10: {
-                enemy = Sprite::create("ccc.png");
+
+                Vector<SpriteFrame *> allframe2;
+                
+                for (int i = 1; i < 4; i++){
+                    auto sf = SpriteFrame::create(StringUtils::format("bomb%d.png", i), Rect(0, 0, 100, 100));
+                    allframe2.pushBack(sf);
+                }
+                Animation * animation = Animation::createWithSpriteFrames(allframe2);
+                animation->setDelayPerUnit(0.03);
+                auto ani = Animate::create(animation);
+                enemy = Sprite::create();
+                enemy->runAction(RepeatForever::create(ani));
+
                 int x = random(border_width + enemy->getContentSize().width/2 + roofWidth, size.width- border_width -roofWidth - enemy->getContentSize().width/2);
                 enemy->setPosition(Point(x, size.height+100));
                 enemy->setScale(1.2);
@@ -797,7 +849,19 @@ void NewGameScene_japan::newEnemy(float t) {
         switch (enemyNum) {
                 
             case 0: {
-                enemy = Sprite::create("aaa.png");
+
+                Vector<SpriteFrame *> allframe2;
+                
+                for (int i = 1; i < 4; i++){
+                    auto sf = SpriteFrame::create(StringUtils::format("bomb%d.png", i), Rect(0, 0, 100, 100));
+                    allframe2.pushBack(sf);
+                }
+                Animation * animation = Animation::createWithSpriteFrames(allframe2);
+                animation->setDelayPerUnit(0.03);
+                auto ani = Animate::create(animation);
+                enemy = Sprite::create();
+                enemy->runAction(RepeatForever::create(ani));
+            
                 CCLOG("*******aaaaaaaa*********\n");
                 
                 int x = random(border_width + enemy->getContentSize().width/2 + roofWidth, size.width- border_width -roofWidth - enemy->getContentSize().width/2);
@@ -954,7 +1018,20 @@ void NewGameScene_japan::newEnemy(float t) {
                 break;
                 
             case 10: {
-                enemy = Sprite::create("ccc.png");
+
+                Vector<SpriteFrame *> allframe2;
+                
+                for (int i = 1; i < 4; i++){
+                    auto sf = SpriteFrame::create(StringUtils::format("bomb%d.png", i), Rect(0, 0, 100, 100));
+                    allframe2.pushBack(sf);
+                }
+                Animation * animation = Animation::createWithSpriteFrames(allframe2);
+                animation->setDelayPerUnit(0.03);
+                auto ani = Animate::create(animation);
+                enemy = Sprite::create();
+                enemy->runAction(RepeatForever::create(ani));
+                
+
                 int x = random(border_width + enemy->getContentSize().width/2 + roofWidth, size.width- border_width -roofWidth - enemy->getContentSize().width/2);
                 enemy->setPosition(Point(x, size.height+100));
                 enemy->setScale(1.2);
@@ -1354,6 +1431,14 @@ void NewGameScene_japan::update(float t) {
         
         if (my_player->isInAir&&!my_player->isMovingLeft)
         {
+   // phantom effects
+            auto temp_player=Sprite::create("run/run_right5.png");
+            temp_player->setScale(bg_scale);
+            temp_player->setPosition(my_player->getPositionX(),my_player->getPositionY());
+            this->addChild(temp_player, 11, 0);
+            auto fadeout=FadeOut::create(1.0f);
+            temp_player->runAction(fadeout);
+
             
             if (my_player->getPositionX() == bg_origin.x + borderWidth + my_player->playerWidth / 2){
                 
@@ -1375,7 +1460,15 @@ void NewGameScene_japan::update(float t) {
         }
         else if (my_player->isInAir&&my_player->isMovingLeft)
         {
-            
+
+            // phantom effects
+            auto temp_player=Sprite::create("run/run_right5.png");
+            temp_player->setScale(bg_scale);
+            temp_player->setPosition(my_player->getPositionX(),my_player->getPositionY());
+            this->addChild(temp_player, 11, 0);
+            auto fadeout=FadeOut::create(1.0f);
+            temp_player->runAction(fadeout);
+
             if (my_player->getPositionX() == bg_origin.x + bg_size.width - borderWidth - my_player->playerWidth / 2){
                 CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/flyAttack.aif");
                 CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/flyAttack.aif");
