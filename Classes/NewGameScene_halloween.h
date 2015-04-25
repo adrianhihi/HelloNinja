@@ -117,6 +117,8 @@ private:
     
     void timeController(float t);
     
+    void fadeOut(float t);
+    
     void EnemyFlip();
     void update(float t);
     void killMe(Node * pSender);

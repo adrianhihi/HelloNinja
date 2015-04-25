@@ -82,6 +82,7 @@ private:
     
     int enemyLeftRightDis;
     void logic(float t);
+    void fadeOut(float t);
     Player* m_player;
     bool onContactBegin(PhysicsContact& contact);
     

@@ -147,6 +147,32 @@ bool NewGameScene::init()
     labelHp->setTag(110);
     this->addChild(labelHp, 2);
     
+
+    //particles effects
+    CCParticleSystem * p1=CCParticleSnow::create();
+    p1->setTexture(CCTextureCache::sharedTextureCache()->addImage("seagrass.png"));
+    p1->setAutoRemoveOnFinish(true);
+    p1->setPosition(visibleSize.width/2,visibleSize.height);
+    this->addChild(p1,100);
+    p1->setSpeed(20);
+    p1->setSpeedVar(10);
+    p1->setEmissionRate(2);
+    CCParticleSystem * p2=CCParticleSnow::create();
+    p2->setTexture(CCTextureCache::sharedTextureCache()->addImage("seagrass2.png"));
+    p2->setAutoRemoveOnFinish(true);
+    p2->setPosition(visibleSize.width/2,visibleSize.height);
+    this->addChild(p2,100);
+    p2->setSpeed(20);
+    p2->setSpeedVar(10);
+    p2->setEmissionRate(2);
+    /*CCParticleSystem * p3=CCParticleSnow::create();
+     p3->setTexture(CCTextureCache::sharedTextureCache()->addImage("sakura3.png"));
+     p3->setAutoRemoveOnFinish(true);
+     p3->setPosition(visibleSize.width/2,visibleSize.height);
+     this->addChild(p3,100);
+     p3->setSpeed(20);
+     p3->setSpeedVar(10);
+     p3->setEmissionRate(2);*/
     
     //height label
     score = 0;
@@ -286,6 +312,7 @@ bool NewGameScene::init()
     this->schedule(schedule_selector(NewGameScene::moveStar));
     this->schedule(schedule_selector(NewGameScene::moveEnemyLeft));
     this->schedule(schedule_selector(NewGameScene::moveEnemyRight));
+    this->schedule(schedule_selector(NewGameScene::fadeOut), 0.03);
     
     
     
@@ -300,6 +327,32 @@ bool NewGameScene::init()
 }
 
 
+void NewGameScene::fadeOut(float t) {
+    auto my_player = (Player *) this->getChildByTag(0);
+    if (my_player->isInAir&&!my_player->isMovingLeft)
+    {
+        
+        // phantom effects
+        auto temp_player=Sprite::create("run/run_right5.png");
+        temp_player->setScale(bg_scale);
+        temp_player->setPosition(my_player->getPositionX(),my_player->getPositionY());
+        this->addChild(temp_player, 11, 0);
+        auto fadeout=FadeOut::create(1.0f);
+        temp_player->runAction(fadeout);
+    }
+    else if (my_player->isInAir&&my_player->isMovingLeft)
+    {
+        
+        // phantom effects
+        auto temp_player=Sprite::create("run/run_left5.png");
+        temp_player->setScale(bg_scale);
+        temp_player->setPosition(my_player->getPositionX(),my_player->getPositionY());
+        this->addChild(temp_player, 11, 0);
+        auto fadeout=FadeOut::create(1.0f);
+        temp_player->runAction(fadeout);
+    }
+    
+}
 
 void NewGameScene::GoBack(cocos2d::Ref *pSender){
     CCLOG("go back");
@@ -458,7 +511,7 @@ void NewGameScene::moveEnemyFallen(float t)
     for (int i = 0; i < allEnemyFallen.size(); i++)
     {
         auto enemy = allEnemyFallen.at(i);
-        enemy->setPositionY(enemy->getPositionY() + iSpeed - 15);
+        enemy->setPositionY(enemy->getPositionY() + iSpeed - 10);
         if (enemy->getPositionY() < 0)
         {
             enemy->removeFromParent();
@@ -555,8 +608,22 @@ void NewGameScene::newEnemy_speedUp(float t){
         switch (enemyNum) {
                 
             case 0: {
-                enemy = Sprite::create("seaworld/shuimu.png");
+
                 
+                Vector<SpriteFrame *> allframe2;
+                
+                for (int i = 1; i < 4; i++){
+                    auto sf = SpriteFrame::create(StringUtils::format("jelly%d.png", i), Rect(0, 0, 100, 100));
+                    allframe2.pushBack(sf);
+                }
+                Animation * animation = Animation::createWithSpriteFrames(allframe2);
+                animation->setDelayPerUnit(0.08);
+                auto ani = Animate::create(animation);
+                enemy = Sprite::create();
+                enemy->runAction(RepeatForever::create(ani));
+                
+               // enemy = Sprite::create("seaworld/shuimu.png");
+
                 CCLOG("*****%f*****\n", border_width + enemy->getContentSize().width/2 + roofWidth - size.width- border_width -roofWidth - enemy->getContentSize().width/2);
                 
                 int x = random(border_width + enemy->getContentSize().width/2 + roofWidth, size.width- border_width -roofWidth - enemy->getContentSize().width/2);
@@ -579,7 +646,10 @@ void NewGameScene::newEnemy_speedUp(float t){
                 tree->runAction(RepeatForever::create(Animate::create(ani)));
                 tree->setPosition(Point(size.width - border_width - enemy->getContentSize().width*0.8, size.height + 100));
                 //tree->setScale(0.8);
-                this -> addChild(tree, 3);
+
+
+                this -> addChild(tree, 7);
+
                 allEnemyRoof.pushBack(tree);
                 
             }
@@ -595,7 +665,11 @@ void NewGameScene::newEnemy_speedUp(float t){
                 tree->runAction(RepeatForever::create(Animate::create(ani)));
                 tree->setPosition(Point(border_width + enemy->getContentSize().width * 0.8, size.height + 100));
                 //tree->setScale(0.8);
-                this -> addChild(tree, 3);
+
+
+                this -> addChild(tree, 7);
+
+
                 allEnemyRoof.pushBack(tree);
             }
                 break;
@@ -670,7 +744,10 @@ void NewGameScene::newEnemy_speedUp(float t){
                 tree->runAction(RepeatForever::create(Animate::create(ani)));
                 tree->setPosition(Point(border_width + enemy->getContentSize().width*0.8, size.height + 100));
                 //tree->setScale(0.8);
-                this -> addChild(tree, 3);
+
+
+                this -> addChild(tree, 7);
+
                 allEnemyRoof.pushBack(tree);
             }
                 break;
@@ -700,7 +777,10 @@ void NewGameScene::newEnemy_speedUp(float t){
                 tree->runAction(RepeatForever::create(Animate::create(ani)));
                 tree->setPosition(Point(size.width - border_width - enemy->getContentSize().width*0.8, size.height + 100));
                 //tree->setScale(0.8);
-                this -> addChild(tree, 3);
+
+                this -> addChild(tree, 7);
+
+
                 allEnemyRoof.pushBack(tree);
             }
                 break;
@@ -737,7 +817,21 @@ void NewGameScene::newEnemy_speedUp(float t){
                 break;
                 
             case 10: {
-                enemy = Sprite::create("seaworld/shuimu.png");
+
+                
+                Vector<SpriteFrame *> allframe2;
+                
+                for (int i = 1; i < 4; i++){
+                    auto sf = SpriteFrame::create(StringUtils::format("jelly%d.png", i), Rect(0, 0, 100, 100));
+                    allframe2.pushBack(sf);
+                }
+                Animation * animation = Animation::createWithSpriteFrames(allframe2);
+                animation->setDelayPerUnit(0.08);
+                auto ani = Animate::create(animation);
+                enemy = Sprite::create();
+                enemy->runAction(RepeatForever::create(ani));
+                //enemy = Sprite::create("seaworld/shuimu.png");
+
                 CCLOG("******%f******\n", border_width + enemy->getContentSize().width/2 + roofWidth - size.width- border_width -roofWidth - enemy->getContentSize().width/2);
                 
                 int x = random(border_width + enemy->getContentSize().width/2 + roofWidth, size.width- border_width -roofWidth - enemy->getContentSize().width/2);
@@ -758,7 +852,8 @@ void NewGameScene::newEnemy_speedUp(float t){
                 tree->runAction(RepeatForever::create(Animate::create(ani)));
                 tree->setPosition(Point(border_width + enemy->getContentSize().width*0.8, size.height + 100));
                 //tree->setScale(0.8);
-                this -> addChild(tree, 3);
+                this -> addChild(tree, 7);
+
                 allEnemyRoof.pushBack(tree);
             }
                 break;
@@ -773,14 +868,20 @@ void NewGameScene::newEnemy_speedUp(float t){
                 tree->runAction(RepeatForever::create(Animate::create(ani)));
                 tree->setPosition(Point(size.width - border_width - enemy->getContentSize().width*0.8, size.height + 100));
                 //tree->setScale(0.8);
-                this -> addChild(tree, 3);
+
+                this -> addChild(tree, 7);
+
+
                 allEnemyRoof.pushBack(tree);
             }
                 break;
             case 13: {
 
                 for (int i = 0; i < 4; i++) {
-                    auto sf = SpriteFrame::create("seaworld/fish2.png", Rect(0, 0, 75, 55));
+
+
+                    auto sf = SpriteFrame::create("seaworld/fish1.png", Rect(0, 0, 75, 55));
+
                     crowFram.pushBack(sf);
                 }
                 crow = Sprite::create();
@@ -793,7 +894,10 @@ void NewGameScene::newEnemy_speedUp(float t){
                 break;
             case 14: {
                 for (int i = 0; i < 4; i++) {
-                    auto sf = SpriteFrame::create("seaworld/fish1.png", Rect(0, 0, 75, 55));
+
+                    auto sf = SpriteFrame::create("seaworld/fish2.png", Rect(0, 0, 75, 55));
+
+
                     crowFram.pushBack(sf);
                 }
                 auto ani = Animation::createWithSpriteFrames(crowFram, 0.16);
@@ -855,7 +959,21 @@ void NewGameScene::newEnemy(float t) {
         switch (enemyNum) {
                 
             case 0: {
-                enemy = Sprite::create("seaworld/shuimu.png");
+    
+                Vector<SpriteFrame *> allframe2;
+                
+                for (int i = 1; i < 4; i++){
+                    auto sf = SpriteFrame::create(StringUtils::format("jelly%d.png", i), Rect(0, 0, 100, 100));
+                    allframe2.pushBack(sf);
+                }
+                Animation * animation = Animation::createWithSpriteFrames(allframe2);
+                animation->setDelayPerUnit(0.08);
+                auto ani = Animate::create(animation);
+                enemy = Sprite::create();
+                enemy->runAction(RepeatForever::create(ani));
+                
+                //enemy = Sprite::create("seaworld/shuimu.png");
+
                 
                 CCLOG("*****%f*****\n", border_width + enemy->getContentSize().width/2 + roofWidth - size.width- border_width -roofWidth - enemy->getContentSize().width/2);
                 
@@ -879,7 +997,9 @@ void NewGameScene::newEnemy(float t) {
                 tree->runAction(RepeatForever::create(Animate::create(ani)));
                 tree->setPosition(Point(size.width - border_width - enemy->getContentSize().width*0.8, size.height + 100));
                 //tree->setScale(0.8);
-                this -> addChild(tree, 3);
+
+                this -> addChild(tree, 7);
+
                 allEnemyRoof.pushBack(tree);
                 
             }
@@ -895,7 +1015,10 @@ void NewGameScene::newEnemy(float t) {
                 tree->runAction(RepeatForever::create(Animate::create(ani)));
                 tree->setPosition(Point(border_width + enemy->getContentSize().width * 0.8, size.height + 100));
                 //tree->setScale(0.8);
-                this -> addChild(tree, 3);
+
+                this -> addChild(tree, 7);
+
+
                 allEnemyRoof.pushBack(tree);
             }
                 break;
@@ -970,7 +1093,9 @@ void NewGameScene::newEnemy(float t) {
                 tree->runAction(RepeatForever::create(Animate::create(ani)));
                 tree->setPosition(Point(border_width + enemy->getContentSize().width*0.8, size.height + 100));
                 //tree->setScale(0.8);
-                this -> addChild(tree, 3);
+
+                this -> addChild(tree, 7);
+
                 allEnemyRoof.pushBack(tree);
             }
                 break;
@@ -1000,7 +1125,9 @@ void NewGameScene::newEnemy(float t) {
                 tree->runAction(RepeatForever::create(Animate::create(ani)));
                 tree->setPosition(Point(size.width - border_width - enemy->getContentSize().width*0.8, size.height + 100));
                 //tree->setScale(0.8);
-                this -> addChild(tree, 3);
+
+                this -> addChild(tree, 7);
+
                 allEnemyRoof.pushBack(tree);
             }
                 break;
@@ -1037,7 +1164,22 @@ void NewGameScene::newEnemy(float t) {
                 break;
                 
             case 10: {
-                enemy = Sprite::create("seaworld/shuimu.png");
+
+                
+                Vector<SpriteFrame *> allframe2;
+                
+                for (int i = 1; i < 4; i++){
+                    auto sf = SpriteFrame::create(StringUtils::format("jelly%d.png", i), Rect(0, 0, 100, 100));
+                    allframe2.pushBack(sf);
+                }
+                Animation * animation = Animation::createWithSpriteFrames(allframe2);
+                animation->setDelayPerUnit(0.08);
+                auto ani = Animate::create(animation);
+                enemy = Sprite::create();
+                enemy->runAction(RepeatForever::create(ani));
+                
+                //enemy = Sprite::create("seaworld/shuimu.png");
+
                 CCLOG("******%f******\n", border_width + enemy->getContentSize().width/2 + roofWidth - size.width- border_width -roofWidth - enemy->getContentSize().width/2);
                 
                 int x = random(border_width + enemy->getContentSize().width/2 + roofWidth, size.width- border_width -roofWidth - enemy->getContentSize().width/2);
@@ -1058,7 +1200,9 @@ void NewGameScene::newEnemy(float t) {
                 tree->runAction(RepeatForever::create(Animate::create(ani)));
                 tree->setPosition(Point(border_width + enemy->getContentSize().width*0.8, size.height + 100));
                 //tree->setScale(0.8);
-                this -> addChild(tree, 3);
+
+                this -> addChild(tree, 7);
+
                 allEnemyRoof.pushBack(tree);
             }
                 break;
@@ -1073,14 +1217,17 @@ void NewGameScene::newEnemy(float t) {
                 tree->runAction(RepeatForever::create(Animate::create(ani)));
                 tree->setPosition(Point(size.width - border_width - enemy->getContentSize().width*0.8, size.height + 100));
                 //tree->setScale(0.8);
-                this -> addChild(tree, 3);
+
+                this -> addChild(tree, 7);
+
                 allEnemyRoof.pushBack(tree);
             }
                 break;
             case 13: {
                 
                 for (int i = 0; i < 4; i++) {
-                    auto sf = SpriteFrame::create("seaworld/fish2.png", Rect(0, 0, 75, 55));
+                    auto sf = SpriteFrame::create("seaworld/fish1.png", Rect(0, 0, 75, 55));
+
                     crowFram.pushBack(sf);
                 }
                 crow = Sprite::create();
@@ -1093,7 +1240,9 @@ void NewGameScene::newEnemy(float t) {
                 break;
             case 14: {
                 for (int i = 0; i < 4; i++) {
-                    auto sf = SpriteFrame::create("seaworld/fish1.png", Rect(0, 0, 75, 55));
+
+                    auto sf = SpriteFrame::create("seaworld/fish2.png", Rect(0, 0, 75, 55));
+
                     crowFram.pushBack(sf);
                 }
                 auto ani = Animation::createWithSpriteFrames(crowFram, 0.16);
@@ -1130,352 +1279,7 @@ void NewGameScene::newEnemy(float t) {
         }
     }
 
-//    if (!m_player->speedUp || (m_player->speedUp && speedTime > 30)) {
-//        auto size = Director::getInstance()->getWinSize();
-//        auto border = Sprite::create("border/Ocean_border.png");
-//        auto border_width = border->getContentSize().width;
-//        auto roof = Sprite::create("japan/roof_r.png");
-//        
-//        int roofWidth = roof->getContentSize().width * 0.8f;
-//        
-//        
-//        Sprite * enemy;
-//        Sprite * star;
-//        Sprite * crow;
-//        Sprite * tree;
-//        Vector<SpriteFrame *> crowFram;
-//        Vector<SpriteFrame *> treeFram;
-//        //enemyNum = 4;
-//        enemyNum ++;
-//        CCLOG("working!\n");
-//        switch (enemyNum) {
-//                
-//            case 0: {
-//                enemy = Sprite::create("seaworld/shuimu.png");
-//                CCLOG("*****%f*****\n", border_width + enemy->getContentSize().width/2 + roofWidth - size.width- border_width -roofWidth - enemy->getContentSize().width/2);
-//                
-//                int x = random(border_width + enemy->getContentSize().width/2 + roofWidth, size.width- border_width -roofWidth - enemy->getContentSize().width/2);
-//                enemy->setPosition(Point(x, size.height+100));
-//                enemy->setScale(1.2);
-//                allEnemyFallen.pushBack(enemy);
-//                this->addChild(enemy, 7);
-//            }
-//                break;
-//            case 1: {
-//                enemy = Sprite::create("japan/roof_r.png");
-//
-//                if (RightWarningLifeTimer <= 0.f)
-//                {
-//                    RightWarning = Sprite::create("warning.png");
-//                    RightWarning->setPosition(size.width - RightWarning->getContentSize().width / 2.f, size.height*2.f / 5.f);
-//                    RightWarning->setScale(0.5f);
-//                    RightWarningLifeTimer = 0.5f;
-//                    this->addChild(RightWarning, 10);
-//                }
-//                
-//                for(int i = 0; i < 4; i ++){
-//                    auto sf = SpriteFrame::create("seaworld/fish1.png", Rect(0, 0, 75, 55));
-//                    treeFram.pushBack(sf);
-//                }
-//                auto ani = Animation::createWithSpriteFrames(treeFram, 0.3);
-//                tree = Sprite::create();
-//                tree->runAction(RepeatForever::create(Animate::create(ani)));
-//                tree->setPosition(Point(size.width - border_width - enemy->getContentSize().width*0.8, size.height + 100));
-//                //tree->setScale(0.8);
-//                this -> addChild(tree, 3);
-//                allEnemyRoof.pushBack(tree);
-//            }
-//                break;
-//            case 2: {
-//                enemy = Sprite::create("japan/roof_l.png");
-//
-//                
-//                if (LeftWarningLifeTimer <= 0.f)
-//                {
-//                    LeftWarning = Sprite::create("warning.png");
-//                    LeftWarning->setPosition(LeftWarning->getContentSize().width / 2.f, size.height*2.f / 5.f);
-//                    LeftWarning->setScale(0.5f);
-//                    LeftWarningLifeTimer = 0.5f;
-//                    this->addChild(LeftWarning, 10);
-//                }
-//                for(int i = 0; i < 4; i ++){
-//                    auto sf = SpriteFrame::create("seaworld/fish2.png", Rect(0, 0, 75, 55));
-//                    treeFram.pushBack(sf);
-//                }
-//                auto ani = Animation::createWithSpriteFrames(treeFram, 0.3);
-//                tree = Sprite::create();
-//                tree->runAction(RepeatForever::create(Animate::create(ani)));
-//                tree->setPosition(Point(border_width + enemy->getContentSize().width*0.8, size.height + 100));
-//                //tree->setScale(0.8);
-//                this -> addChild(tree, 3);
-//                allEnemyRoof.pushBack(tree);
-//            }
-//                break;
-//            case 3: {
-//                for (int i = 0; i < 4; i++) {
-//                    auto sf = SpriteFrame::create("seaworld/fish2.png", Rect(0, 0, 75, 55));
-//                    crowFram.pushBack(sf);
-//                }
-//                auto ani = Animation::createWithSpriteFrames(crowFram, 0.16);
-//                crow = Sprite::create();
-//                
-//                crow->runAction(RepeatForever::create(Animate::create(ani)));
-//                crow->setScale(1.2);
-//                crow->setPosition(borderWidth + crow->getContentSize().width/2 + 30, size.height + 100);
-//                this->addChild(crow, 7);
-//                allEnemyLeftCrow.pushBack(crow);
-//            }
-//                break;
-//            case 4: {
-//
-//                for (int i = 0; i < 8; i++) {
-//                    auto sf = SpriteFrame::create("seaworld/fish1.png", Rect(0, 0, 75, 55));
-//                    crowFram.pushBack(sf);
-//                }
-//                crow = Sprite::create();
-//                crow->runAction(RepeatForever::create(Animate::create(Animation::createWithSpriteFrames(crowFram, 0.16))));
-//                crow->setScale(1.2);
-//                crow->setPosition(size.width - borderWidth - crow->getContentSize().width/2 - 40, size.height + 100);
-//                this->addChild(crow, 7);
-//                allEnemyRightCrow.pushBack(crow);
-//                
-//                int RandNum = random(0, 2);
-//                switch (RandNum) {
-//                    case 0:
-//                        enemyNum = -1;
-//                        break;
-//                        
-//                    case 1:
-//                        enemyNum = 4;
-//                        break;
-//                        
-//                    case 2:
-//                        enemyNum = 9;
-//                        break;
-//                        
-//                    default:
-//                        break;
-//                }
-//            }
-//                break;
-//                
-//            case 5: {
-//                
-//                star = Sprite::create("seaworld/bonus_seastar.png");
-//                int x = random(border_width + star->getContentSize().width/2 + roofWidth, size.width- border_width - roofWidth - star->getContentSize().width/2);
-//
-//                star->setPosition(Point(x, size.height+100));
-//                this->addChild(star, 7);
-//                allStar.pushBack(star);
-//            }
-//                break;
-//            case 6: {
-//                enemy = Sprite::create("japan/roof_l.png");
-//
-//                if (LeftWarningLifeTimer <= 0.f)
-//                {
-//                    LeftWarning = Sprite::create("warning.png");
-//                    LeftWarning->setPosition(LeftWarning->getContentSize().width / 2.f, size.height*2.f / 5.f);
-//                    LeftWarning->setScale(0.5f);
-//                    LeftWarningLifeTimer = 0.5f;
-//                    this->addChild(LeftWarning, 10);
-//                }
-//                for(int i = 0; i < 4; i ++){
-//                    auto sf = SpriteFrame::create("seaworld/fish2.png", Rect(0, 0, 75, 55));
-//                    treeFram.pushBack(sf);
-//                }
-//                auto ani = Animation::createWithSpriteFrames(treeFram, 0.3);
-//                tree = Sprite::create();
-//                tree->runAction(RepeatForever::create(Animate::create(ani)));
-//                tree->setPosition(Point(border_width + enemy->getContentSize().width*0.8, size.height + 100));
-//                //tree->setScale(0.8);
-//                this -> addChild(tree, 3);
-//                allEnemyRoof.pushBack(tree);
-//            }
-//                break;
-//            case 7: {
-//                for (int i = 0; i < 4; i++) {
-//                    auto sf = SpriteFrame::create("seaworld/fish2.png", Rect(0, 0, 75, 55));
-//                    crowFram.pushBack(sf);
-//                }
-//                auto ani = Animation::createWithSpriteFrames(crowFram, 0.16);
-//                crow = Sprite::create();
-//                crow->runAction(RepeatForever::create(Animate::create(ani)));
-//                crow->setScale(1.2);
-//                crow->setPosition(borderWidth + crow->getContentSize().width/2 + 30, size.height + 100);
-//                this->addChild(crow, 7);
-//                allEnemyLeftCrow.pushBack(crow);
-//            }
-//                break;
-//            case 8: {
-//                enemy = Sprite::create("japan/roof_r.png");
-//
-//                if (RightWarningLifeTimer <= 0.f)
-//                {
-//                    RightWarning = Sprite::create("warning.png");
-//                    RightWarning->setPosition(size.width - RightWarning->getContentSize().width / 2.f, size.height*2.f / 5.f);
-//                    RightWarning->setScale(0.5f);
-//                    RightWarningLifeTimer = 0.5f;
-//                    this->addChild(RightWarning, 10);
-//                }
-//                
-//                for(int i = 0; i < 4; i ++){
-//                    auto sf = SpriteFrame::create("seaworld/fish1.png", Rect(0, 0, 75, 55));
-//                    treeFram.pushBack(sf);
-//                }
-//                auto ani = Animation::createWithSpriteFrames(treeFram, 0.3);
-//                tree = Sprite::create();
-//                tree->runAction(RepeatForever::create(Animate::create(ani)));
-//                tree->setPosition(Point(size.width - border_width - enemy->getContentSize().width*0.8, size.height + 100));
-//                //tree->setScale(0.8);
-//                this -> addChild(tree, 3);
-//                allEnemyRoof.pushBack(tree);
-//            }
-//                break;
-//            case 9: {
-//                for (int i = 0; i < 8; i++) {
-//                    auto sf = SpriteFrame::create("seaworld/fish1.png", Rect(0, 0, 75, 55));
-//                    crowFram.pushBack(sf);
-//                }
-//                crow = Sprite::create();
-//                crow->runAction(RepeatForever::create(Animate::create(Animation::createWithSpriteFrames(crowFram, 0.16))));
-//                crow->setScale(1.2);
-//                crow->setPosition(size.width - borderWidth - crow->getContentSize().width/2 - 40, size.height + 100);
-//                this->addChild(crow, 7);
-//                allEnemyRightCrow.pushBack(crow);
-//                int RandNum = random(0, 2);
-//                CCLOG("RandNum %d", RandNum);
-//                switch (RandNum) {
-//                    case 0:
-//                        enemyNum = -1;
-//                        break;
-//                        
-//                    case 1:
-//                        enemyNum = 4;
-//                        break;
-//                        
-//                    case 2:
-//                        enemyNum = 9;
-//                        break;
-//                        
-//                    default:
-//                        break;
-//                }
-//            }
-//                break;
-//                
-//            case 10: {
-//                enemy = Sprite::create("seaworld/shuimu.png");
-//                
-//                CCLOG("******%f*****\n", border_width + enemy->getContentSize().width/2 + roofWidth - size.width- border_width -roofWidth - enemy->getContentSize().width/2);
-//                int x = random(border_width + enemy->getContentSize().width/2 + roofWidth, size.width- border_width -roofWidth - enemy->getContentSize().width/2);
-//                enemy->setPosition(Point(x, size.height+100));
-//                enemy->setScale(1.2);
-//                allEnemyFallen.pushBack(enemy);
-//                this->addChild(enemy, 7);
-//            }
-//                break;
-//            case 11: {
-//                enemy = Sprite::create("japan/roof_l.png");
-//
-//                if (LeftWarningLifeTimer <= 0.f)
-//                {
-//                    LeftWarning = Sprite::create("warning.png");
-//                    LeftWarning->setPosition(LeftWarning->getContentSize().width / 2.f, size.height*2.f / 5.f);
-//                    LeftWarning->setScale(0.5f);
-//                    LeftWarningLifeTimer = 0.5f;
-//                    this->addChild(LeftWarning, 10);
-//                }
-//                for(int i = 0; i < 4; i ++){
-//                    auto sf = SpriteFrame::create("seaworld/fish2.png", Rect(0, 0, 75, 55));
-//                    treeFram.pushBack(sf);
-//                }
-//                auto ani = Animation::createWithSpriteFrames(treeFram, 0.3);
-//                tree = Sprite::create();
-//                tree->runAction(RepeatForever::create(Animate::create(ani)));
-//                tree->setPosition(Point(border_width + enemy->getContentSize().width*0.8, size.height + 100));
-//                //tree->setScale(0.8);
-//                this -> addChild(tree, 3);
-//                allEnemyRoof.pushBack(tree);
-//            }
-//                break;
-//            case 12: {
-//                enemy = Sprite::create("japan/roof_r.png");
-//                
-//                if (RightWarningLifeTimer <= 0.f)
-//                {
-//                    RightWarning = Sprite::create("warning.png");
-//                    RightWarning->setPosition(size.width - RightWarning->getContentSize().width / 2.f, size.height*2.f / 5.f);
-//                    RightWarning->setScale(0.5f);
-//                    RightWarningLifeTimer = 0.5f;
-//                    this->addChild(RightWarning, 10);
-//                }
-//                for(int i = 0; i < 4; i ++){
-//                    auto sf = SpriteFrame::create("seaworld/fish1.png", Rect(0, 0, 75, 55));
-//                    treeFram.pushBack(sf);
-//                }
-//                auto ani = Animation::createWithSpriteFrames(treeFram, 0.3);
-//                tree = Sprite::create();
-//                tree->runAction(RepeatForever::create(Animate::create(ani)));
-//                tree->setPosition(Point(size.width - border_width - enemy->getContentSize().width*0.8, size.height + 100));
-//                //tree->setScale(0.8);
-//                this -> addChild(tree, 3);
-//                allEnemyRoof.pushBack(tree);
-//            }
-//                break;
-//            case 13: {
-//
-//                for (int i = 0; i < 4; i++) {
-//                    auto sf = SpriteFrame::create("seaworld/fish2.png", Rect(0, 0, 75, 55));
-//                    crowFram.pushBack(sf);
-//                }
-//                crow = Sprite::create();
-//                crow->runAction(RepeatForever::create(Animate::create(Animation::createWithSpriteFrames(crowFram, 0.16))));
-//                crow->setScale(1.2);
-//                crow->setPosition(size.width - borderWidth - crow->getContentSize().width/2 - 30, size.height + 100);
-//                this->addChild(crow, 7);
-//                allEnemyRightCrow.pushBack(crow);
-//            }
-//                break;
-//            case 14: {
-//                for (int i = 0; i < 4; i++) {
-//                    auto sf = SpriteFrame::create("seaworld/fish1.png", Rect(0, 0, 75, 55));
-//                    crowFram.pushBack(sf);
-//                }
-//                auto ani = Animation::createWithSpriteFrames(crowFram, 0.16);
-//                crow = Sprite::create();
-//                crow->runAction(RepeatForever::create(Animate::create(ani)));
-//                crow->setScale(1.2);
-//                crow->setPosition(borderWidth + crow->getContentSize().width/2 + 30, size.height + 100);
-//                this->addChild(crow, 7);
-//                allEnemyLeftCrow.pushBack(crow);
-//                int RandNum = random(0, 2);
-//                
-//                switch (RandNum) {
-//                    case 0:
-//                        enemyNum = -1;
-//                        break;
-//                        
-//                    case 1:
-//                        enemyNum = 4;
-//                        break;
-//                        
-//                    case 2:
-//                        enemyNum = 9;
-//                        break;
-//                        
-//                    default:
-//                        break;
-//                }
-//            }
-//                break;
-//                
-//                
-//            default:
-//                break;
-//        }
-//        
-//    }
+
 
     
 }
@@ -1813,6 +1617,15 @@ void NewGameScene::update(float t) {
         
         if (my_player->isInAir&&!my_player->isMovingLeft)
         {
+
+            // phantom effects
+//            auto temp_player=Sprite::create("run/run_right5.png");
+//            temp_player->setScale(bg_scale);
+//            temp_player->setPosition(my_player->getPositionX(),my_player->getPositionY());
+//            this->addChild(temp_player, 11, 0);
+//            auto fadeout=FadeOut::create(1.0f);
+//            temp_player->runAction(fadeout);
+
             
             if (my_player->getPositionX() == bg_origin.x + borderWidth + my_player->playerWidth / 2){
                 
@@ -1834,6 +1647,15 @@ void NewGameScene::update(float t) {
         }
         else if (my_player->isInAir&&my_player->isMovingLeft)
         {
+
+            // phantom effects
+//            auto temp_player=Sprite::create("run/run_right5.png");
+//            temp_player->setScale(bg_scale);
+//            temp_player->setPosition(my_player->getPositionX(),my_player->getPositionY());
+//            this->addChild(temp_player, 11, 0);
+//            auto fadeout=FadeOut::create(1.0f);
+//            temp_player->runAction(fadeout);
+
             
             if (my_player->getPositionX() == bg_origin.x + bg_size.width - borderWidth - my_player->playerWidth / 2){
                 CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/flyAttack.aif");
@@ -1913,7 +1735,7 @@ void NewGameScene::playerAbility_Teleportation()
     }
     else if (!my_player->isInAir&&!my_player->isLeft)
     {
-        
+
         if (my_player->getPositionX() == bg_origin.x + bg_size.width - borderWidth - my_player->playerWidth / 2){
             CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/swipSword.wav");
             CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/swipSword.wav");
