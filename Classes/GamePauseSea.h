@@ -1,29 +1,29 @@
 //
-//  GamePauseHalloween.h
-//  Ninja
+//  GamePauseSea.h
+//  ninjaMidterm
 //
-//  Created by Haimo Bai on 4/2/15.
+//  Created by ZhaoLei on 4/19/15.
 //
 //
 
-#ifndef __Ninja__GamePauseHalloween__
-#define __Ninja__GamePauseHalloween__
+#ifndef __ninjaMidterm__GamePauseSea__
+#define __ninjaMidterm__GamePauseSea__
 
 #include "cocos2d.h"
-#include "NewGameScene_halloween.h"
+#include "NewGameScene.h"
 
 USING_NS_CC;
 
-class GamePauseHalloween : public cocos2d::Layer
+class GamePauseSea : public cocos2d::Layer
 {
 public:
     
-    ~GamePauseHalloween();
+    ~GamePauseSea();
     static cocos2d::Scene* createScene();
     bool init();
     void goback(CCObject*);
     void resumegame(CCObject*);
-    CREATE_FUNC(GamePauseHalloween);
+    CREATE_FUNC(GamePauseSea);
     void pauseMusicCallback(CCObject* pSender);
     void recoverMusicCallback(CCObject* pSender);
     void restart(CCObject* pSender);
@@ -34,5 +34,4 @@ private:
     Sprite *bg;
 };
 
-
-#endif
+#endif /* defined(__ninjaMidterm__GamePauseSea__) */
